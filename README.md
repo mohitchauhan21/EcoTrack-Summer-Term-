@@ -2,8 +2,6 @@
 
 ### Carbon Emission Tracking & Analytics Platform
 
-![React 19](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white) ![Node.js](https://img.shields.io/badge/Node.js-Express-339933?logo=node.js&logoColor=white) ![MongoDB](https://img.shields.io/badge/MongoDB-Mongoose-47A248?logo=mongodb&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white) ![Vite](https://img.shields.io/badge/Vite-8-646CFF?logo=vite&logoColor=white) ![License](https://img.shields.io/badge/License-ISC-blue)
-
 EcoTrack empowers companies to **log**, **visualize**, and **report** their carbon emissions — enabling data-driven sustainability decisions through an intuitive analytics dashboard.
 
 ---
