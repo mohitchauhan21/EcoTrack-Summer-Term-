@@ -14,6 +14,13 @@ import notFound from './middleware/notFound.js';
 
 // Routes
 import healthRoutes from './routes/healthRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import companyRoutes from './routes/companyRoutes.js';
+import logRoutes from './routes/logRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
+import uploadRoutes from './routes/uploadRoutes.js';
+import exportRoutes from './routes/exportRoutes.js';
+import profileRoutes from './routes/profileRoutes.js';
 
 // =====================================================
 // Load environment variables
@@ -75,6 +82,13 @@ app.use('/uploads', express.static('uploads'));
 // API Routes
 // =====================================================
 app.use('/api/health', healthRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/company', companyRoutes);
+app.use('/api/logs', logRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/upload', uploadRoutes);
+app.use('/api/export', exportRoutes);
+app.use('/api/profile', profileRoutes);
 
 // =====================================================
 // Error Handling

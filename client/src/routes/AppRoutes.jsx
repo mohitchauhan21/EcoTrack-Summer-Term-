@@ -3,6 +3,9 @@ import { Routes, Route } from 'react-router-dom';
 // Layouts
 import MainLayout from '../components/layouts/MainLayout';
 
+// Components
+import ProtectedRoute from '../components/common/ProtectedRoute';
+
 // Pages
 import Landing from '../pages/Landing';
 import Login from '../pages/Login';
@@ -19,7 +22,7 @@ import NotFound from '../pages/NotFound';
  * Application route definitions.
  *
  * Public routes: Landing, Login, Register, NotFound
- * App routes (with layout): Dashboard, CompanySetup, CarbonLogs, CsvUpload, Analytics, Profile
+ * App routes (with layout + auth): Dashboard, CompanySetup, CarbonLogs, CsvUpload, Analytics, Profile
  */
 const AppRoutes = () => {
   return (
@@ -29,8 +32,14 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
 
-      {/* App Routes — With MainLayout (Navbar + Sidebar + Footer) */}
-      <Route element={<MainLayout />}>
+      {/* App Routes — Protected + MainLayout (Navbar + Sidebar + Footer) */}
+      <Route
+        element={
+          <ProtectedRoute>
+            <MainLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/company-setup" element={<CompanySetup />} />
         <Route path="/carbon-logs" element={<CarbonLogs />} />

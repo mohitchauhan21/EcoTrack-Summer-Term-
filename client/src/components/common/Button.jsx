@@ -3,14 +3,7 @@ import { motion } from 'framer-motion';
 import { Loader2 } from 'lucide-react';
 
 /**
- * Reusable Button component with variants, sizes, and loading state.
- *
- * @param {'primary'|'secondary'|'outline'|'danger'|'ghost'} variant
- * @param {'sm'|'md'|'lg'} size
- * @param {boolean} isLoading - Shows spinner and disables button
- * @param {boolean} fullWidth - Stretches to container width
- * @param {React.ReactNode} icon - Optional leading icon
- * @param {React.ReactNode} children
+ * Reusable Button component with premium variants, sizes, and loading state.
  */
 const Button = forwardRef(
   (
@@ -28,31 +21,31 @@ const Button = forwardRef(
     ref
   ) => {
     const baseStyles =
-      'inline-flex items-center justify-center font-medium rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
+      'inline-flex items-center justify-center font-medium rounded-xl transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed';
 
     const variants = {
       primary:
-        'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800 focus:ring-primary-500 shadow-sm hover:shadow-md',
+        'bg-gradient-to-r from-primary-500 to-accent-500 text-white hover:shadow-[0_8px_25px_-5px_rgba(16,185,129,0.4)] hover:scale-[1.02] active:scale-[0.98] focus:ring-primary-500 border border-primary-400/20',
       secondary:
-        'bg-secondary-100 text-secondary-800 hover:bg-secondary-200 active:bg-secondary-300 focus:ring-secondary-400',
+        'bg-white text-secondary-800 hover:bg-secondary-50 active:bg-secondary-100 focus:ring-secondary-400 border border-secondary-200 shadow-[0_2px_10px_-3px_rgba(0,0,0,0.05)] hover:shadow-[0_4px_15px_-3px_rgba(0,0,0,0.08)]',
       outline:
-        'border-2 border-primary-600 text-primary-600 hover:bg-primary-50 active:bg-primary-100 focus:ring-primary-500',
+        'bg-white/50 backdrop-blur-sm border-2 border-primary-500/30 text-primary-600 hover:bg-primary-50 hover:border-primary-500 hover:shadow-[0_4px_15px_-3px_rgba(16,185,129,0.2)] active:bg-primary-100 focus:ring-primary-500',
       danger:
-        'bg-danger-500 text-white hover:bg-danger-600 active:bg-danger-700 focus:ring-danger-400 shadow-sm',
+        'bg-gradient-to-r from-danger-500 to-rose-500 text-white hover:shadow-[0_8px_25px_-5px_rgba(239,68,68,0.4)] hover:scale-[1.02] active:scale-[0.98] focus:ring-danger-400 border border-danger-400/20',
       ghost:
-        'text-secondary-600 hover:bg-secondary-100 active:bg-secondary-200 focus:ring-secondary-400',
+        'text-secondary-600 hover:bg-secondary-100/50 hover:text-secondary-900 active:bg-secondary-200 focus:ring-secondary-400',
     };
 
     const sizes = {
       sm: 'px-3 py-1.5 text-sm gap-1.5',
-      md: 'px-4 py-2 text-sm gap-2',
-      lg: 'px-6 py-3 text-base gap-2.5',
+      md: 'px-4 py-2.5 text-sm gap-2',
+      lg: 'px-6 py-3.5 text-base gap-2.5',
     };
 
     return (
       <motion.button
         ref={ref}
-        whileTap={{ scale: 0.97 }}
+        whileTap={variant !== 'primary' && variant !== 'danger' ? { scale: 0.97 } : {}}
         className={`${baseStyles} ${variants[variant]} ${sizes[size]} ${fullWidth ? 'w-full' : ''} ${className}`}
         disabled={disabled || isLoading}
         {...props}
@@ -60,7 +53,13 @@ const Button = forwardRef(
         {isLoading ? (
           <Loader2 className="h-4 w-4 animate-spin" />
         ) : icon ? (
-          <span className="shrink-0">{icon}</span>
+          <motion.span 
+            className="shrink-0"
+            whileHover={{ rotate: [-5, 5, -5, 0], scale: 1.1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {icon}
+          </motion.span>
         ) : null}
         {children}
       </motion.button>

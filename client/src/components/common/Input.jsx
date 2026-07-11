@@ -45,18 +45,18 @@ const Input = forwardRef(
             ref={ref}
             id={inputId}
             type={type}
-            className={`w-full rounded-lg border bg-white px-4 py-2.5 text-sm text-secondary-900 placeholder:text-secondary-400 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-0 ${
-              icon ? 'pl-10' : ''
+            className={`w-full rounded-xl border bg-white/50 backdrop-blur-sm px-4 py-3 text-[15px] text-secondary-900 placeholder:text-secondary-400 transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-0 focus:bg-white ${
+              icon ? 'pl-11' : ''
             } ${
               error
-                ? 'border-danger-400 focus:ring-danger-400 focus:border-danger-400'
-                : 'border-secondary-300 focus:ring-primary-500 focus:border-primary-500 hover:border-secondary-400'
+                ? 'border-danger-400 focus:ring-danger-400 focus:border-danger-400 shadow-[0_0_0_1px_rgba(239,68,68,0.1)]'
+                : 'border-secondary-200 focus:ring-primary-500 focus:border-primary-500 hover:border-secondary-300 shadow-sm focus:shadow-[0_4px_15px_-3px_rgba(16,185,129,0.15)]'
             } ${className}`}
             {...props}
           />
         </div>
         {error && (
-          <p className="mt-1.5 text-sm text-danger-500">{error}</p>
+          <p className="mt-1.5 text-sm text-danger-500 font-medium">{error}</p>
         )}
         {helperText && !error && (
           <p className="mt-1.5 text-sm text-secondary-500">{helperText}</p>

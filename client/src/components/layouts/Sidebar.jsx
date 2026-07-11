@@ -10,15 +10,6 @@ import {
   ChevronLeft,
 } from 'lucide-react';
 
-/**
- * Collapsible sidebar with navigation links.
- *
- * @param {boolean} isOpen - Controls sidebar visibility on mobile
- * @param {Function} onClose - Closes sidebar on mobile
- * @param {boolean} isCollapsed - Desktop collapsed state
- * @param {Function} onToggleCollapse - Toggles desktop collapse
- */
-
 const navItems = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/company-setup', icon: Building2, label: 'Company Setup' },
@@ -35,33 +26,45 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
   };
 
   const SidebarContent = () => (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full bg-white/40 backdrop-blur-md">
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-4 space-y-1 overflow-y-auto">
+      <nav className="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
         {navItems.map((item) => (
           <NavLink
             key={item.to}
             to={item.to}
             onClick={onClose}
             className={({ isActive }) =>
-              `flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 group ${
+              `relative flex items-center gap-3 px-3 py-2.5 rounded-xl text-[15px] font-medium transition-all duration-300 group overflow-hidden ${
                 isActive
-                  ? 'bg-primary-50 text-primary-700 border-l-3 border-primary-600'
-                  : 'text-secondary-600 hover:bg-secondary-50 hover:text-secondary-900'
+                  ? 'text-primary-700 bg-white/80 shadow-[0_2px_10px_-3px_rgba(16,185,129,0.15)] border border-primary-100/50'
+                  : 'text-secondary-600 hover:bg-white/60 hover:text-secondary-900 hover:shadow-sm'
               }`
             }
           >
-            <item.icon className={`h-5 w-5 shrink-0 ${isCollapsed ? 'mx-auto' : ''}`} />
-            {!isCollapsed && <span>{item.label}</span>}
+            {({ isActive }) => (
+              <>
+                {/* Active Indicator Line */}
+                {isActive && (
+                  <motion.div 
+                    layoutId="activeNav"
+                    className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-to-b from-primary-500 to-accent-500 rounded-r-full"
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
+                <item.icon className={`h-5 w-5 shrink-0 transition-transform duration-300 ${isActive ? 'text-primary-600' : 'group-hover:scale-110 group-hover:text-primary-500'} ${isCollapsed ? 'mx-auto' : ''}`} />
+                {!isCollapsed && <span>{item.label}</span>}
+              </>
+            )}
           </NavLink>
         ))}
       </nav>
 
-      {/* Collapse Toggle (desktop only) */}
-      <div className="hidden lg:block p-3 border-t border-secondary-100">
+      {/* Collapse Toggle */}
+      <div className="hidden lg:block p-4 border-t border-secondary-200/50">
         <button
           onClick={onToggleCollapse}
-          className="flex items-center justify-center w-full p-2 rounded-lg text-secondary-400 hover:bg-secondary-100 hover:text-secondary-600 transition-colors"
+          className="flex items-center justify-center w-full p-2.5 rounded-xl bg-white/50 text-secondary-500 hover:bg-white hover:text-primary-600 hover:shadow-sm border border-transparent hover:border-secondary-100 transition-all duration-200"
           aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
           <ChevronLeft
@@ -83,7 +86,7 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm lg:hidden"
+            className="fixed inset-0 z-30 bg-secondary-900/40 backdrop-blur-sm lg:hidden"
             onClick={onClose}
           />
         )}
@@ -95,15 +98,15 @@ const Sidebar = ({ isOpen, onClose, isCollapsed, onToggleCollapse }) => {
         animate={isOpen ? 'open' : 'closed'}
         variants={sidebarVariants}
         transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-        className="fixed top-16 left-0 z-30 h-[calc(100vh-4rem)] w-64 bg-white border-r border-secondary-200 lg:hidden"
+        className="fixed top-[4.5rem] left-0 z-30 h-[calc(100vh-4.5rem)] w-64 border-r border-white/60 shadow-xl lg:hidden"
       >
         <SidebarContent />
       </motion.aside>
 
       {/* Desktop Sidebar */}
       <aside
-        className={`hidden lg:flex flex-col h-[calc(100vh-4rem)] bg-white border-r border-secondary-200 transition-all duration-300 sticky top-16 ${
-          isCollapsed ? 'w-[72px]' : 'w-64'
+        className={`hidden lg:flex flex-col h-[calc(100vh-4.5rem)] border-r border-white/60 transition-all duration-300 sticky top-[4.5rem] ${
+          isCollapsed ? 'w-[80px]' : 'w-64'
         }`}
       >
         <SidebarContent />

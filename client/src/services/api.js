@@ -46,10 +46,9 @@ api.interceptors.response.use(
       const { status } = error.response;
 
       if (status === 401) {
-        // Unauthorized — clear stored token
+        // Unauthorized — clear stored token and redirect to login
         localStorage.removeItem('token');
-        // Optionally redirect to login
-        // window.location.href = '/login';
+        window.location.href = '/login';
       }
 
       if (status === 403) {
