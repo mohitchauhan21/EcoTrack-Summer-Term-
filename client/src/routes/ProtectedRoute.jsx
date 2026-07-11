@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import Loader from './Loader';
+import { useAuth } from '../context/AuthContext';
+import Loader from '../components/common/Loader';
 
 /**
  * ProtectedRoute — redirects to /login if user is not authenticated.
