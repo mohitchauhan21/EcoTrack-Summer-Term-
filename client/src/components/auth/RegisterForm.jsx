@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import Input from '../common/Input';
 import Button from '../common/Button';
 import toast from 'react-hot-toast';
+import { emailValidation, passwordValidation, nameValidation, confirmPasswordValidation } from '../../utils/validators';
 
 const RegisterForm = () => {
   const { register: registerUser } = useAuth();
@@ -43,13 +44,7 @@ const RegisterForm = () => {
         placeholder="John Doe"
         icon={<User className="h-4 w-4" />}
         error={errors.name?.message}
-        {...register('name', {
-          required: 'Name is required',
-          maxLength: {
-            value: 50,
-            message: 'Name cannot exceed 50 characters',
-          },
-        })}
+        {...register('name', nameValidation)}
       />
 
       <Input
@@ -58,13 +53,7 @@ const RegisterForm = () => {
         placeholder="you@company.com"
         icon={<Mail className="h-4 w-4" />}
         error={errors.email?.message}
-        {...register('email', {
-          required: 'Email is required',
-          pattern: {
-            value: /^\\S+@\\S+\\.\\S+$/,
-            message: 'Please enter a valid email',
-          },
-        })}
+        {...register('email', emailValidation)}
       />
 
       <div className="relative">
@@ -74,13 +63,7 @@ const RegisterForm = () => {
           placeholder="Create a password"
           icon={<Lock className="h-4 w-4" />}
           error={errors.password?.message}
-          {...register('password', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Password must be at least 6 characters',
-            },
-          })}
+          {...register('password', passwordValidation)}
         />
         <button
           type="button"
@@ -97,10 +80,7 @@ const RegisterForm = () => {
         placeholder="Confirm your password"
         icon={<Lock className="h-4 w-4" />}
         error={errors.confirmPassword?.message}
-        {...register('confirmPassword', {
-          required: 'Please confirm your password',
-          validate: (value) => value === password || 'Passwords do not match',
-        })}
+        {...register('confirmPassword', confirmPasswordValidation(password))}
       />
 
       <Button

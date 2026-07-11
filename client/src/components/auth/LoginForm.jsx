@@ -6,6 +6,7 @@ import { useAuth } from '../../context/AuthContext';
 import Input from '../common/Input';
 import Button from '../common/Button';
 import toast from 'react-hot-toast';
+import { emailValidation, passwordValidation } from '../../utils/validators';
 
 const LoginForm = () => {
   const { login } = useAuth();
@@ -25,7 +26,6 @@ const LoginForm = () => {
   const onSubmit = async (formData) => {
     setIsLoading(true);
     try {
-      // In the context, login should ideally support the rememberMe flag, but we'll pass it to backend eventually
       await login(formData.email, formData.password, formData.rememberMe);
       navigate(from, { replace: true });
     } catch (error) {
@@ -44,13 +44,7 @@ const LoginForm = () => {
         placeholder="you@company.com"
         icon={<Mail className="h-4 w-4" />}
         error={errors.email?.message}
-        {...register('email', {
-          required: 'Email is required',
-          pattern: {
-            value: /^\\S+@\\S+\\.\\S+$/,
-            message: 'Please enter a valid email',
-          },
-        })}
+        {...register('email', emailValidation)}
       />
 
       <div className="relative">
@@ -60,13 +54,7 @@ const LoginForm = () => {
           placeholder="Enter your password"
           icon={<Lock className="h-4 w-4" />}
           error={errors.password?.message}
-          {...register('password', {
-            required: 'Password is required',
-            minLength: {
-              value: 6,
-              message: 'Password must be at least 6 characters',
-            },
-          })}
+          {...register('password', passwordValidation)}
         />
         <button
           type="button"
