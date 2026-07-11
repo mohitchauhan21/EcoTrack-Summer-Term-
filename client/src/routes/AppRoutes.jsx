@@ -4,7 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../components/layouts/MainLayout';
 
 // Components
-import ProtectedRoute from '../components/common/ProtectedRoute';
+import ProtectedRoute from './ProtectedRoute';
 
 // Pages
 import Landing from '../pages/Landing';
