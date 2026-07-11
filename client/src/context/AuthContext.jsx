@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
-import api from '../services/api';
+import authService from '../services/authService';
 import toast from 'react-hot-toast';
 
 const AuthContext = createContext(null);
@@ -24,8 +24,8 @@ export const AuthProvider = ({ children }) => {
     }
 
     try {
-      const { data } = await api.get('/auth/me');
-      setUser(data.data.user);
+      const data = await authService.getMe();
+      setUser(data.user);
       setToken(storedToken);
     } catch {
       localStorage.removeItem('token');
@@ -44,8 +44,8 @@ export const AuthProvider = ({ children }) => {
    * Register a new user.
    */
   const register = async (name, email, password) => {
-    const { data } = await api.post('/auth/register', { name, email, password });
-    const { user: newUser, token: newToken } = data.data;
+    const data = await authService.register(name, email, password);
+    const { user: newUser, token: newToken } = data;
     localStorage.setItem('token', newToken);
     setToken(newToken);
     setUser(newUser);
@@ -56,9 +56,9 @@ export const AuthProvider = ({ children }) => {
   /**
    * Log in an existing user.
    */
-  const login = async (email, password) => {
-    const { data } = await api.post('/auth/login', { email, password });
-    const { user: loggedInUser, token: newToken } = data.data;
+  const login = async (email, password, rememberMe = false) => {
+    const data = await authService.login(email, password, rememberMe);
+    const { user: loggedInUser, token: newToken } = data;
     localStorage.setItem('token', newToken);
     setToken(newToken);
     setUser(loggedInUser);
@@ -69,11 +69,17 @@ export const AuthProvider = ({ children }) => {
   /**
    * Log out the current user.
    */
-  const logout = () => {
-    localStorage.removeItem('token');
-    setToken(null);
-    setUser(null);
-    toast.success('Logged out successfully');
+  const logout = async () => {
+    try {
+      await authService.logout();
+    } catch (error) {
+      console.error('Logout API failed:', error);
+    } finally {
+      localStorage.removeItem('token');
+      setToken(null);
+      setUser(null);
+      toast.success('Logged out successfully');
+    }
   };
 
   /**
