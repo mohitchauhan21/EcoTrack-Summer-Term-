@@ -25,7 +25,8 @@ import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) {
-  const { isAuthenticated, role } = useAuth();
+  const { isAuthenticated, role, isLoading } = useAuth();
+  if (isLoading) return null; // still checking localStorage, don't redirect yet
   if (!isAuthenticated) return <Navigate to="/login" />;
   if (allowedRoles && role && !allowedRoles.includes(role)) {
     return <Navigate to="/dashboard" />;

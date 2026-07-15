@@ -16,7 +16,7 @@ export async function seedData() {
     }
 
     console.log("Creating company...");
-    const company = await Company.create({ name: "Acme Corporation", region: "Mumbai/India" });
+    const company = await Company.create({ name: "Acme Corporation", region: "India" });
 
     console.log("Creating departments...");
     const depts = await Department.insertMany([

@@ -11,6 +11,7 @@ interface AuthState {
 }
 
 interface AuthContextType extends AuthState {
+  isLoading: boolean;
   login: (data: { companyName: string, role: Role, userName: string, departmentId?: string }) => void;
   logout: () => void;
 }
@@ -24,12 +25,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     role: null,
     userName: null,
   });
+  // Tracks whether we've finished checking localStorage for an existing session.
+  // Without this, ProtectedRoute would see isAuthenticated=false on the very
+  // first render (before the effect below runs) and redirect to /login even
+  // when a valid session exists in localStorage.
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const storedAuth = localStorage.getItem("auth");
     if (storedAuth) {
       setAuth(JSON.parse(storedAuth));
     }
+    setIsLoading(false);
   }, []);
 
   const login = (data: { companyName: string, role: Role, userName: string, departmentId?: string }) => {
@@ -45,7 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ ...auth, login, logout }}>
+    <AuthContext.Provider value={{ ...auth, isLoading, login, logout }}>
       {children}
     </AuthContext.Provider>
   );

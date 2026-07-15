@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { Company } from "../models/Company.js";
+import { Company, VALID_REGIONS } from "../models/Company.js";
 
 export const getCompany = async (req: Request, res: Response) => {
   try {
@@ -13,7 +13,16 @@ export const getCompany = async (req: Request, res: Response) => {
 
 export const updateCompany = async (req: Request, res: Response) => {
   try {
-    const { name, region } = req.body;
+    const name = typeof req.body.name === "string" ? req.body.name.trim() : "";
+    const region = req.body.region;
+
+    if (!name) {
+      return res.status(400).json({ message: "Company name is required" });
+    }
+    if (!VALID_REGIONS.includes(region)) {
+      return res.status(400).json({ message: `Region must be one of: ${VALID_REGIONS.join(", ")}` });
+    }
+
     let company = await Company.findOne();
     if (company) {
       company.name = name;

@@ -2,12 +2,24 @@ import React, { useState, useEffect } from "react";
 import { X, Plus } from "lucide-react";
 import apiClient from "../../api/axiosClient";
 
-export default function DepartmentTaggingStep() {
+interface Props {
+  companyId?: string;
+}
+
+export default function DepartmentTaggingStep({ companyId: companyIdProp }: Props) {
   const [tags, setTags] = useState<{ _id: string; name: string }[]>([]);
   const [newTag, setNewTag] = useState("");
+  const [companyId, setCompanyId] = useState<string | undefined>(companyIdProp);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetchTags();
+    if (!companyIdProp) {
+      // Fallback for when this step is used standalone without a companyId prop.
+      apiClient.get("/company")
+        .then((res) => setCompanyId(res.data._id))
+        .catch((err) => console.error("Error fetching company", err));
+    }
   }, []);
 
   const fetchTags = async () => {
@@ -22,17 +34,19 @@ export default function DepartmentTaggingStep() {
   const handleAddTag = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTag.trim()) return;
-    
+    if (!companyId) {
+      setError("Company details are still loading. Please try again in a moment.");
+      return;
+    }
+
     try {
-      // Assuming company is already created, we might need companyId but backend might handle if only 1 company.
-      // Wait, backend createDepartment expects { companyId, name }. We should fetch company to get ID, or modify backend to auto-attach if single company.
-      // Let's modify backend or fetch company here.
-      const compRes = await apiClient.get("/company");
-      await apiClient.post("/departments", { companyId: compRes.data._id, name: newTag.trim() });
+      setError(null);
+      await apiClient.post("/departments", { companyId, name: newTag.trim() });
       setNewTag("");
       fetchTags();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error adding tag", error);
+      setError(error?.response?.data?.message || "Failed to add tag");
     }
   };
 
@@ -52,6 +66,12 @@ export default function DepartmentTaggingStep() {
         <h2 className="text-xl font-light tracking-wide text-zinc-100">Department Tagging Engine</h2>
       </div>
       <p className="text-sm text-zinc-500 mb-8 ml-14">Create Department Tags (Used for future categorization & filtering)</p>
+
+      {error && (
+        <div className="mb-6 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+          {error}
+        </div>
+      )}
       
       <form onSubmit={handleAddTag} className="flex space-x-3 mb-8">
         <input

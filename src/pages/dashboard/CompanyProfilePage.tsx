@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import apiClient from '../../api/axiosClient';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
+import { COUNTRIES } from '../../constants/regions';
 
 export default function CompanyProfilePage() {
   const { role } = useAuth();
@@ -63,7 +64,7 @@ export default function CompanyProfilePage() {
         </div>
 
         <div>
-          <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Region</label>
+          <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Country</label>
           <select
             value={formData.region}
             onChange={(e) => setFormData({ ...formData, region: e.target.value })}
@@ -71,12 +72,10 @@ export default function CompanyProfilePage() {
             className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500/50 transition-colors disabled:opacity-50 cursor-pointer"
             required
           >
-            <option value="" disabled>Select Region</option>
-            <option value="North America">North America</option>
-            <option value="Europe">Europe</option>
-            <option value="Asia Pacific">Asia Pacific</option>
-            <option value="Latin America">Latin America</option>
-            <option value="Middle East & Africa">Middle East & Africa</option>
+            <option value="" disabled>Select Country</option>
+            {COUNTRIES.map((country) => (
+              <option key={country} value={country}>{country}</option>
+            ))}
           </select>
         </div>
 
