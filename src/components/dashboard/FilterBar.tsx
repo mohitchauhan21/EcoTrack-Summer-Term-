@@ -33,8 +33,8 @@ export default function FilterBar() {
 
   const handleDatePresetChange = (preset: string) => {
     const now = new Date();
-    let startDate = null;
-    let endDate = now.toISOString();
+    let startDate: string | null = null;
+    let endDate: string | null = now.toISOString();
 
     if (preset === "This Month") {
       startDate = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();

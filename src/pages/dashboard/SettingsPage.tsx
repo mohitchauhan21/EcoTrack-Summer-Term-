@@ -158,4 +158,44 @@ export default function SettingsPage() {
             { id: "emailNotifications", icon: Mail, label: "Email Notifications", desc: "Receive updates and alerts via email", checked: emailNotifications, set: setEmailNotifications },
             { id: "pushNotifications", icon: BellRing, label: "Push Notifications", desc: "Get real-time notifications in your browser", checked: pushNotifications, set: setPushNotifications },
             { id: "weeklyReports", icon: Activity, label: "Weekly Report Digest", desc: "Weekly summary of your emissions data", checked: weeklyReports, set: setWeeklyReports },
-            { id: "anomalyAlerts", icon: Shield, label: "Anomaly Alerts", d
+            { id: "anomalyAlerts", icon: Shield, label: "Anomaly Alerts", desc: "Get alerts for unusual emission spikes", checked: anomalyAlerts, set: setAnomalyAlerts }
+          ].map((item) => (
+            <div key={item.id} className="flex items-start justify-between p-4 bg-zinc-900/30 border border-white/5 rounded-xl">
+              <div className="flex gap-4">
+                <div className="w-10 h-10 rounded-xl bg-[#0f0f0f] border border-white/5 flex items-center justify-center shrink-0">
+                  <item.icon className="w-5 h-5 text-zinc-400" />
+                </div>
+                <div>
+                  <h3 className="text-sm font-medium text-zinc-200">{item.label}</h3>
+                  <p className="text-xs text-zinc-500 mt-1">{item.desc}</p>
+                </div>
+              </div>
+              <div className={`w-10 h-5 rounded-full transition-colors duration-200 mt-2 cursor-pointer ${item.checked ? 'bg-emerald-500' : 'bg-zinc-700'}`}
+                onClick={() => item.set(!item.checked)}>
+                <div className={`w-4 h-4 bg-white rounded-full transition-transform duration-200 ${item.checked ? 'translate-x-5' : 'translate-x-0.5'} mt-0.5`} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="flex items-center gap-4 pt-4 border-t border-white/5">
+        <button 
+          onClick={handleSave}
+          disabled={saving}
+          className="flex-1 sm:flex-none px-6 py-3 bg-emerald-500 hover:bg-emerald-600 text-white rounded-xl text-sm font-medium transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          <Save className="w-4 h-4" />
+          {saving ? 'Saving...' : 'Save Settings'}
+        </button>
+        <button 
+          onClick={handleReset}
+          className="px-6 py-3 bg-zinc-900 border border-white/5 hover:bg-zinc-800 text-zinc-300 rounded-xl text-sm font-medium transition-colors flex items-center justify-center gap-2"
+        >
+          <RotateCcw className="w-4 h-4" />
+          Reset Defaults
+        </button>
+      </div>
+    </div>
+  );
+}

@@ -60,7 +60,7 @@ export default function DepartmentBarChart() {
             <XAxis type="number" stroke="#a1a1aa" fontSize={12} tickLine={false} axisLine={false} />
             <YAxis dataKey="name" type="category" stroke="#a1a1aa" fontSize={12} tickLine={false} axisLine={false} width={100} />
             <Tooltip 
-              formatter={(value: number) => [`${value} tCO2e`, 'Emissions']}
+              formatter={(value: any) => [`${value} tCO2e`, 'Emissions']}
               contentStyle={{ backgroundColor: '#18181b', borderColor: '#27272a', color: '#f4f4f5', borderRadius: '8px' }}
               cursor={{ fill: '#27272a', opacity: 0.4 }}
             />

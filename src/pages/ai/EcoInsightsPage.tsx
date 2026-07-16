@@ -203,7 +203,20 @@ export default function EcoInsightsPage() {
       </div>
 
       {activeTab === "insights" ? (
-        <>
-          {/* Summary Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
-            <div clas
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-5">
+          <div className="bg-[#0f0f0f] border border-white/5 rounded-xl p-6 col-span-full flex flex-col items-center text-center">
+            <Sparkles className="w-8 h-8 text-emerald-500 mb-3" />
+            <h3 className="text-zinc-100 font-medium">AI Insights Coming Soon</h3>
+            <p className="text-sm text-zinc-500 mt-1">We are generating personalized recommendations based on your data.</p>
+          </div>
+        </div>
+      ) : (
+        <div className="bg-[#0f0f0f] border border-white/5 rounded-xl p-6 flex flex-col items-center text-center">
+          <Bot className="w-8 h-8 text-blue-500 mb-3" />
+          <h3 className="text-zinc-100 font-medium">AI Assistant Coming Soon</h3>
+          <p className="text-sm text-zinc-500 mt-1">The AI assistant is being prepared for you.</p>
+        </div>
+      )}
+    </div>
+  );
+}

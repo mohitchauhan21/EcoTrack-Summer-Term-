@@ -43,11 +43,11 @@ function FloatingOrbs() {
   return (
     <>
       {/* Large floating gradient orbs */}
-      <div className="absolute top-[-10%] left-[-5%] w-[800px] h-[800px] rounded-full opacity-[0.03] animate-float-slow" 
+      <div className="absolute top-[-10%] left-[-5%] w-[800px] h-[800px] rounded-full opacity-[0.03] animate-float-slow"
         style={{ background: 'radial-gradient(circle, #10b981 0%, transparent 70%)', filter: 'blur(60px)' }} />
-      <div className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full opacity-[0.03] animate-float-reverse" 
+      <div className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full opacity-[0.03] animate-float-reverse"
         style={{ background: 'radial-gradient(circle, #06b6d4 0%, transparent 70%)', filter: 'blur(60px)' }} />
-      <div className="absolute top-[40%] left-[60%] w-[400px] h-[400px] rounded-full opacity-[0.02] animate-float" 
+      <div className="absolute top-[40%] left-[60%] w-[400px] h-[400px] rounded-full opacity-[0.02] animate-float"
         style={{ background: 'radial-gradient(circle, #8b5cf6 0%, transparent 70%)', filter: 'blur(60px)' }} />
     </>
   );
@@ -61,9 +61,9 @@ function OrbitalRing() {
       <div className="absolute inset-24 border border-blue-500/10 rounded-full animate-float-reverse" style={{ animationDuration: '12s' }} />
       <div className="absolute inset-36 border border-purple-500/10 rounded-full animate-float" style={{ animationDuration: '15s' }} />
       {/* Orbiting dots */}
-      <div className="absolute w-3 h-3 bg-emerald-500/40 rounded-full animate-float" 
+      <div className="absolute w-3 h-3 bg-emerald-500/40 rounded-full animate-float"
         style={{ top: 'calc(50% - 6px)', left: 'calc(50% - 6px)', animation: 'orbit 8s linear infinite' }} />
-      <div className="absolute w-2 h-2 bg-blue-500/40 rounded-full animate-float-reverse" 
+      <div className="absolute w-2 h-2 bg-blue-500/40 rounded-full animate-float-reverse"
         style={{ top: 'calc(50% - 4px)', left: 'calc(50% - 4px)', animation: 'orbit-reverse 12s linear infinite' }} />
       {/* Center glow */}
       <div className="absolute inset-[35%] bg-emerald-500/5 rounded-full blur-3xl animate-breathe" />
@@ -147,26 +147,26 @@ export default function LandingPage() {
           <Particles />
           <FloatingOrbs />
           <OrbitalRing />
-          
+
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36 flex flex-col items-center text-center relative z-10 w-full">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-1.5 mb-8 animate-fade-in-up">
               <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
               <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest">Carbon Intelligence Platform v2.0</span>
             </div>
-            
+
             {/* Main heading */}
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-zinc-100 mb-6 leading-tight animate-fade-in-up delay-200">
               Track. Measure.
               <br />
               <span className="text-gradient-animate font-medium">Decarbonize.</span>
             </h1>
-            
+
             <p className="text-lg md:text-xl text-zinc-400 max-w-3xl mb-12 font-medium leading-relaxed animate-fade-in-up delay-300">
-              EcoTrack simplifies carbon accounting for modern businesses. Ingest data, automate CO2e conversions, 
+              EcoTrack simplifies carbon accounting for modern businesses. Ingest data, automate CO2e conversions,
               and gain <span className="text-emerald-400">actionable AI-powered insights</span> across your entire organization.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-400">
               <Link
                 to="/login"
@@ -185,4 +185,13 @@ export default function LandingPage() {
 
             {/* Scroll indicator */}
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-              <div className="w-6 h
+              <div className="w-6 h-10 rounded-full border-2 border-zinc-400/50 flex items-start justify-center pt-2">
+                <div className="w-1 h-2 bg-zinc-400/70 rounded-full" />
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  );
+};

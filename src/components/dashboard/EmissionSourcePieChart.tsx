@@ -71,7 +71,7 @@ export default function EmissionSourcePieChart() {
               ))}
             </Pie>
             <Tooltip 
-              formatter={(value: number) => [`${value} tCO2e`, 'Emissions']}
+              formatter={(value: any) => [`${value} tCO2e`, 'Emissions']}
               contentStyle={{ backgroundColor: '#18181b', borderColor: '#27272a', color: '#f4f4f5', borderRadius: '8px' }}
             />
             <Legend 
