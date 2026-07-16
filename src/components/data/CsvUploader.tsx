@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { Upload, FileText, AlertCircle, CheckCircle2 } from "lucide-react";
+import { Upload, FileText, AlertCircle, CheckCircle2, UploadCloud } from "lucide-react";
 import apiClient from "../../api/axiosClient";
 import { useToast } from "../../context/ToastContext";
 
@@ -12,6 +12,7 @@ export default function CsvUploader({ onSuccess }: Props) {
   const [headers, setHeaders] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ insertedCount: number, errorCount: number, errors: any[] } | null>(null);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
 
@@ -26,7 +27,7 @@ export default function CsvUploader({ onSuccess }: Props) {
         setHeaders(firstLine.split(',').map(h => h.trim().replace(/['"]/g, '')));
       }
     };
-    reader.readAsText(selectedFile.slice(0, 1024)); // Read first 1KB
+    reader.readAsText(selectedFile.slice(0, 1024));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -37,6 +38,7 @@ export default function CsvUploader({ onSuccess }: Props) {
 
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
+    setIsDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       const droppedFile = e.dataTransfer.files[0];
       if (droppedFile.name.endsWith('.csv') || droppedFile.type === 'text/csv') {
@@ -75,19 +77,32 @@ export default function CsvUploader({ onSuccess }: Props) {
   };
 
   return (
-    <div className="bg-[#0f0f0f] border border-white/5 rounded-2xl p-6 h-full flex flex-col">
-      <h3 className="text-sm font-bold uppercase tracking-widest text-zinc-100 mb-6">Bulk Upload (CSV)</h3>
+    <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8 h-full flex flex-col shadow-sm">
+      <h3 className="text-sm font-bold uppercase tracking-widest dark:text-zinc-100 text-gray-900 mb-8">Bulk Upload (CSV)</h3>
       
       {!file ? (
         <div 
-          className="flex-grow flex flex-col justify-center border-2 border-dashed border-white/10 rounded-xl p-8 text-center hover:border-emerald-500/30 hover:bg-white/[0.02] transition-colors cursor-pointer"
+          className={`flex-grow flex flex-col justify-center items-center border-2 border-dashed rounded-xl p-10 text-center transition-all duration-300 cursor-pointer ${
+            isDragging 
+              ? "border-emerald-500 bg-emerald-500/5" 
+              : "dark:border-white/10 border-gray-300 hover:border-emerald-500/50 hover:bg-gray-50 dark:hover:bg-white/[0.02]"
+          }`}
           onClick={() => fileInputRef.current?.click()}
-          onDragOver={(e) => e.preventDefault()}
+          onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
+          onDragLeave={(e) => { e.preventDefault(); setIsDragging(false); }}
           onDrop={handleDrop}
         >
-          <Upload className="w-8 h-8 text-zinc-600 mx-auto mb-3" />
-          <p className="text-zinc-300 font-medium text-sm">Click or drag CSV file here</p>
-          <p className="text-zinc-500 text-xs mt-2">Expected columns: date, department, activityType, rawAmount, rawUnit, source</p>
+          <div className={`w-20 h-20 rounded-full flex items-center justify-center mb-6 transition-colors duration-300 ${
+             isDragging ? "bg-emerald-500/20 text-emerald-500" : "dark:bg-white/5 bg-gray-100 dark:text-zinc-400 text-gray-500"
+          }`}>
+             <UploadCloud className="w-10 h-10" />
+          </div>
+          <p className="dark:text-zinc-200 text-gray-800 font-medium text-lg mb-2">
+             {isDragging ? "Drop your file here..." : "Click or drag CSV file here"}
+          </p>
+          <p className="dark:text-zinc-500 text-gray-500 text-sm max-w-[250px] leading-relaxed mx-auto">
+             Expected columns: date, department, activityType, rawAmount, rawUnit, source
+          </p>
           <input 
             type="file" 
             accept=".csv" 
@@ -97,18 +112,20 @@ export default function CsvUploader({ onSuccess }: Props) {
           />
         </div>
       ) : (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between bg-zinc-900 border border-white/10 rounded-lg p-4">
-            <div className="flex items-center space-x-3">
-              <FileText className="w-6 h-6 text-emerald-500" />
+        <div className="space-y-6 flex-grow flex flex-col justify-center">
+          <div className="flex items-center justify-between dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg p-5">
+            <div className="flex items-center space-x-4">
+              <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
+                <FileText className="w-5 h-5 text-emerald-500" />
+              </div>
               <div>
-                <p className="text-zinc-200 font-medium text-sm">{file.name}</p>
-                <p className="text-zinc-500 text-xs mt-1">{(file.size / 1024).toFixed(1)} KB</p>
+                <p className="dark:text-zinc-200 text-gray-800 font-medium text-sm">{file.name}</p>
+                <p className="dark:text-zinc-500 text-gray-500 text-xs mt-1">{(file.size / 1024).toFixed(1)} KB</p>
               </div>
             </div>
             <button 
               onClick={() => { setFile(null); setResult(null); setHeaders([]); }}
-              className="text-zinc-500 hover:text-white text-xs font-bold uppercase tracking-wider transition-colors"
+              className="dark:text-zinc-500 text-gray-500 hover:text-red-400 text-xs font-bold uppercase tracking-wider transition-colors px-3 py-2 rounded-lg hover:bg-red-500/10"
               disabled={loading}
             >
               Remove
@@ -116,11 +133,11 @@ export default function CsvUploader({ onSuccess }: Props) {
           </div>
 
           {!result && headers.length > 0 && (
-            <div className="bg-zinc-900 border border-white/5 rounded-lg p-4">
-              <h4 className="text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-3">Detected Columns</h4>
+            <div className="dark:bg-zinc-900 bg-gray-50 border dark:border-white/5 border-gray-200 rounded-lg p-5">
+              <h4 className="text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500 mb-4">Detected Columns</h4>
               <div className="flex flex-wrap gap-2">
                 {headers.map((h, i) => (
-                  <span key={i} className="bg-white/5 border border-white/10 text-zinc-300 text-xs px-2 py-1 rounded">
+                  <span key={i} className="bg-white/5 border dark:border-white/10 border-gray-200 dark:text-zinc-300 text-gray-700 text-xs px-2.5 py-1.5 rounded font-medium">
                     {h}
                   </span>
                 ))}
@@ -129,29 +146,31 @@ export default function CsvUploader({ onSuccess }: Props) {
           )}
 
           {!result ? (
-            <button
-              onClick={handleUpload}
-              disabled={loading}
-              className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-500 text-black font-bold uppercase tracking-wide py-3 rounded-lg transition-colors text-sm"
-            >
-              {loading ? "Uploading..." : "Confirm & Process"}
-            </button>
+            <div className="mt-auto pt-4">
+              <button
+                onClick={handleUpload}
+                disabled={loading}
+                className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 bg-gray-200 disabled:dark:text-zinc-500 text-gray-500 text-black font-bold uppercase tracking-wide py-3.5 rounded-lg transition-all duration-300 text-sm shadow-[0_0_20px_rgba(16,185,129,0.15)] hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] disabled:shadow-none"
+              >
+                {loading ? "Processing Upload..." : "Confirm & Process"}
+              </button>
+            </div>
           ) : (
-            <div className="space-y-3">
-              <div className="flex items-center space-x-2 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-4 py-3 rounded-md">
-                <CheckCircle2 className="w-5 h-5" />
+            <div className="space-y-4">
+              <div className="flex items-center space-x-3 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-5 py-4 rounded-lg">
+                <CheckCircle2 className="w-6 h-6" />
                 <span className="font-medium text-sm">Successfully inserted {result.insertedCount} rows.</span>
               </div>
               
               {result.errorCount > 0 && (
-                <div className="text-red-400 bg-red-500/10 border border-red-500/20 px-4 py-3 rounded-md">
-                  <div className="flex items-center space-x-2 mb-2">
-                    <AlertCircle className="w-5 h-5" />
+                <div className="text-red-400 bg-red-500/10 border border-red-500/20 px-5 py-4 rounded-lg">
+                  <div className="flex items-center space-x-3 mb-3">
+                    <AlertCircle className="w-6 h-6" />
                     <span className="font-medium text-sm">Skipped {result.errorCount} rows due to errors.</span>
                   </div>
-                  <div className="max-h-32 overflow-y-auto text-xs space-y-1">
+                  <div className="max-h-32 overflow-y-auto text-xs space-y-2 pl-9">
                     {result.errors.map((err, i) => (
-                      <div key={i}>Row {err.row}: {err.reason}</div>
+                      <div key={i} className="opacity-80">Row {err.row}: {err.reason}</div>
                     ))}
                   </div>
                 </div>

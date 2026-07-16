@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Plus, Trash2, UserCog } from 'lucide-react';
+import { Select } from '../../components/ui/Select';
 import apiClient from '../../api/axiosClient';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
@@ -16,6 +17,25 @@ interface Department {
   _id: string;
   name: string;
 }
+
+const getRoleRank = (r: string) => {
+  switch (r) {
+    case 'superadmin': return 1;
+    case 'admin': return 2;
+    case 'executive': return 3;
+    case 'employee': return 4;
+    default: return 99;
+  }
+};
+
+const getRoleColor = (role: string) => {
+  switch (role) {
+    case 'superadmin': return 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20';
+    case 'admin': return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20';
+    case 'executive': return 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20';
+    default: return 'bg-gray-500/10 text-gray-600 dark:text-gray-400 border-gray-500/20';
+  }
+};
 
 export default function UsersPage() {
   const { role } = useAuth();
@@ -105,125 +125,162 @@ export default function UsersPage() {
   const canManage = role === 'admin' || role === 'superadmin';
 
   if (loading) {
-    return <div className="text-zinc-500">Loading...</div>;
+    return <div className="dark:text-zinc-500 text-gray-500">Loading...</div>;
   }
 
   return (
     <div className="max-w-6xl space-y-8">
       <div>
-        <h1 className="text-3xl font-light text-zinc-100 mb-2">Users</h1>
-        <p className="text-zinc-500 text-sm">
+        <h1 className="text-3xl font-light dark:text-zinc-100 text-gray-900 mb-2">Users</h1>
+        <p className="dark:text-zinc-500 text-gray-500 text-sm">
           Manage your organization's users and their roles.
         </p>
       </div>
 
       {canManage && (
-        <form onSubmit={handleAddUser} className="bg-[#0f0f0f] border border-white/5 rounded-2xl p-6 mb-8 grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
-          <div className="md:col-span-1">
-            <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Name</label>
-            <input
-              type="text"
-              value={newUser.name}
-              onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-              className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500/50 transition-colors"
-              required
-            />
+        <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8 mb-8 shadow-sm">
+          <div className="mb-8">
+            <h3 className="text-sm font-bold uppercase tracking-widest dark:text-zinc-100 text-gray-900 mb-1">Add New User</h3>
+            <p className="dark:text-zinc-500 text-gray-500 text-xs">Create a new member and assign their role and department.</p>
           </div>
-          <div className="md:col-span-1">
-            <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Email</label>
-            <input
-              type="email"
-              value={newUser.email}
-              onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-              className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500/50 transition-colors"
-              required
-            />
-          </div>
-          <div className="md:col-span-1">
-            <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Role</label>
-            <select
-              value={newUser.role}
-              onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
-              className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500/50 transition-colors cursor-pointer"
-            >
-              <option value="employee">Employee</option>
-              <option value="executive">Executive</option>
-              <option value="admin">Admin</option>
-            </select>
-          </div>
-          <div className="md:col-span-1">
-            <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Department</label>
-            <select
-              value={newUser.departmentId}
-              onChange={(e) => setNewUser({ ...newUser, departmentId: e.target.value })}
-              className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500/50 transition-colors cursor-pointer"
-            >
-              <option value="">None / Corporate</option>
-              {departments.map(d => (
-                <option key={d._id} value={d._id}>{d.name}</option>
-              ))}
-            </select>
-          </div>
-          <div className="md:col-span-1">
-            <button
-              type="submit"
-              disabled={adding || !newUser.name || !newUser.email}
-              className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-500 text-black px-4 py-3 rounded-lg font-bold uppercase tracking-wide transition-colors text-sm flex items-center justify-center gap-2"
-            >
-              <Plus className="w-4 h-4" />
-              Add User
-            </button>
-          </div>
-        </form>
+          
+          <form onSubmit={handleAddUser} className="flex flex-col">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 mb-8">
+              <div className="space-y-2">
+                <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Name</label>
+                <input
+                  type="text"
+                  value={newUser.name}
+                  onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
+                  className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                  placeholder="Enter full name"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Email</label>
+                <input
+                  type="email"
+                  value={newUser.email}
+                  onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
+                  className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                  placeholder="Enter email address"
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Role</label>
+                <Select
+                  value={newUser.role}
+                  onChange={(value) => setNewUser({ ...newUser, role: value })}
+                  options={[
+                    { value: 'employee', label: 'Employee' },
+                    { value: 'executive', label: 'Executive' },
+                    ...(role === 'superadmin' ? [
+                      { value: 'admin', label: 'Admin' },
+                      { value: 'superadmin', label: 'Super Admin' }
+                    ] : [])
+                  ]}
+                />
+              </div>
+              <div className="space-y-2">
+                <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Department</label>
+                <Select
+                  value={newUser.departmentId}
+                  onChange={(value) => setNewUser({ ...newUser, departmentId: value })}
+                  options={[
+                    { value: '', label: 'None / Corporate' },
+                    ...departments.map(d => ({ value: d._id, label: d.name }))
+                  ]}
+                />
+              </div>
+            </div>
+            
+            <div className="flex justify-end pt-4 border-t dark:border-white/5 border-gray-100">
+              <button
+                type="submit"
+                disabled={adding || !newUser.name || !newUser.email}
+                className="bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 bg-gray-200 disabled:dark:text-zinc-500 text-gray-500 text-black px-6 py-3.5 rounded-lg font-bold uppercase tracking-wide transition-all duration-300 text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.15)] hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] disabled:shadow-none min-w-[160px]"
+              >
+                {adding ? (
+                  "Adding User..."
+                ) : (
+                  <>
+                    <Plus className="w-4 h-4" />
+                    Add User
+                  </>
+                )}
+              </button>
+            </div>
+          </form>
+        </div>
       )}
 
-      <div className="bg-[#0f0f0f] border border-white/5 rounded-2xl overflow-hidden">
+      <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl overflow-hidden">
         {users.length === 0 ? (
-          <div className="p-8 text-center text-zinc-500 text-sm">
+          <div className="p-8 text-center dark:text-zinc-500 text-gray-500 text-sm">
             No users found.
           </div>
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b border-white/5">
-                <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-zinc-500">Name</th>
-                <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-zinc-500">Email</th>
-                <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-zinc-500">Role</th>
-                <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-zinc-500">Department</th>
-                {canManage && <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold text-zinc-500 text-right">Actions</th>}
+              <tr className="border-b dark:border-white/5 border-gray-200 dark:bg-[#0a0a0a] bg-gray-50/80">
+                <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Name</th>
+                <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Email</th>
+                <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Role</th>
+                <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Department</th>
+                {canManage && <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500 text-right">Actions</th>}
               </tr>
             </thead>
-            <tbody className="text-sm text-zinc-300">
-              {users.map((user) => (
-                <tr key={user._id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                  <td className="px-6 py-4 font-medium text-zinc-100 flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center border border-emerald-500/20">
-                      <UserCog className="w-4 h-4" />
-                    </div>
-                    {user.name}
-                  </td>
-                  <td className="px-6 py-4">{user.email}</td>
-                  <td className="px-6 py-4">
-                    <span className="px-2.5 py-1 rounded text-[10px] uppercase tracking-widest font-bold bg-white/5 border border-white/10">
-                      {user.role}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-zinc-400">
-                    {user.departmentId ? user.departmentId.name : 'Corporate'}
-                  </td>
-                  {canManage && (
-                    <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => handleDelete(user._id)}
-                        className="text-red-400 hover:text-red-300 transition-colors p-2 rounded-lg hover:bg-red-500/10 inline-flex items-center"
-                        title="Delete User"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
+            <tbody className="text-sm dark:text-zinc-300 text-gray-700">
+              {users.map((user) => {
+                const isProtected = role !== 'superadmin' && getRoleRank(role || '') >= getRoleRank(user.role);
+                
+                return (
+                  <tr key={user._id} className="border-b dark:border-white/5 border-gray-200 dark:hover:bg-white/[0.02] hover:bg-gray-50 transition-colors">
+                    <td className="px-6 py-4 font-medium dark:text-zinc-100 text-gray-900 flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center border border-emerald-500/20">
+                        <UserCog className="w-4 h-4" />
+                      </div>
+                      {user.name}
                     </td>
-                  )}
-                </tr>
-              ))}
+                    <td className="px-6 py-4">{user.email}</td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-2">
+                        <span className={`px-2.5 py-1 rounded text-[10px] uppercase tracking-widest font-bold border ${getRoleColor(user.role)}`}>
+                          {user.role}
+                        </span>
+                        {isProtected && (
+                          <span className="text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500 flex items-center gap-1">
+                            &bull; Protected
+                          </span>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 dark:text-zinc-400 text-gray-600">
+                      {user.departmentId ? user.departmentId.name : 'Corporate'}
+                    </td>
+                    {canManage && (
+                      <td className="px-6 py-4 text-right">
+                        <button
+                          onClick={() => {
+                            if (!isProtected) handleDelete(user._id);
+                          }}
+                          disabled={isProtected}
+                          className={`inline-flex items-center p-2 rounded-lg transition-colors ${
+                            isProtected 
+                              ? "text-gray-300 dark:text-zinc-700 cursor-not-allowed opacity-50" 
+                              : "text-red-400 hover:text-red-300 hover:bg-red-500/10"
+                          }`}
+                          title={isProtected ? "Protected account. Insufficient permissions." : "Delete User"}
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </td>
+                    )}
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         )}

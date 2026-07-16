@@ -34,8 +34,8 @@ export default function AnalyticsPage() {
   return (
     <div className="max-w-6xl space-y-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-light text-zinc-100 mb-2">Analytics</h1>
-        <p className="text-zinc-500 text-sm">
+        <h1 className="text-3xl font-light dark:text-zinc-100 text-gray-900 mb-2">Analytics</h1>
+        <p className="dark:text-zinc-500 text-gray-500 text-sm">
           Deep dive into corporate carbon emissions data and trends.
         </p>
       </div>

@@ -50,12 +50,12 @@ export default function NotFoundPage() {
           <Search className="w-8 h-8 text-emerald-500" />
         </div>
         
-        <h1 className="text-8xl md:text-9xl font-light text-zinc-100 mb-4 tracking-tight">
+        <h1 className="text-8xl md:text-9xl font-light dark:text-zinc-100 text-gray-900 mb-4 tracking-tight">
           4<span className="text-gradient-animate">0</span>4
         </h1>
         
-        <p className="text-xl text-zinc-400 mb-2 font-light">Page not found</p>
-        <p className="text-zinc-600 text-sm mb-10 max-w-md mx-auto">
+        <p className="text-xl dark:text-zinc-400 text-gray-600 mb-2 font-light">Page not found</p>
+        <p className="dark:text-zinc-600 text-gray-400 text-sm mb-10 max-w-md mx-auto">
           The page you're looking for doesn't exist or has been moved. 
           Let's get you back on track.
         </p>

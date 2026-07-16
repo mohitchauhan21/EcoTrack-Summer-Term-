@@ -106,7 +106,7 @@ function AnimatedStat({ end, suffix = "", label }: { end: number; suffix?: strin
       <div className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">
         {count.toLocaleString()}{suffix}
       </div>
-      <div className="text-zinc-500 text-sm font-medium uppercase tracking-widest group-hover:text-zinc-300 transition-colors">{label}</div>
+      <div className="dark:text-zinc-500 text-gray-500 text-sm font-medium uppercase tracking-widest group-hover:dark:text-zinc-300 text-gray-700 transition-colors">{label}</div>
     </div>
   );
 }
@@ -140,7 +140,7 @@ function SectionReveal({ children, className = "" }: { children: React.ReactNode
 
 export default function LandingPage() {
   return (
-    <div className="flex-1 bg-[#050505] flex flex-col pt-16 overflow-hidden">
+    <div className="flex-1 dark:bg-[#050505] bg-white flex flex-col pt-16 overflow-hidden transition-colors">
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative overflow-hidden min-h-[90vh] flex items-center">
@@ -156,15 +156,15 @@ export default function LandingPage() {
             </div>
 
             {/* Main heading */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-zinc-100 mb-6 leading-tight animate-fade-in-up delay-200">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold dark:text-white text-gray-900 mb-6 leading-tight animate-fade-in-up delay-200 tracking-tight">
               Track. Measure.
               <br />
-              <span className="text-gradient-animate font-medium">Decarbonize.</span>
+              <span className="text-gradient-animate font-bold">Decarbonize.</span>
             </h1>
 
-            <p className="text-lg md:text-xl text-zinc-400 max-w-3xl mb-12 font-medium leading-relaxed animate-fade-in-up delay-300">
+            <p className="text-lg md:text-xl dark:text-zinc-400 text-gray-600 max-w-3xl mb-12 font-medium leading-relaxed animate-fade-in-up delay-300">
               EcoTrack simplifies carbon accounting for modern businesses. Ingest data, automate CO2e conversions,
-              and gain <span className="text-emerald-400">actionable AI-powered insights</span> across your entire organization.
+              and gain <span className="text-emerald-400">actionable insights</span> across your entire organization.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-400">
@@ -177,7 +177,7 @@ export default function LandingPage() {
               </Link>
               <a
                 href="#features"
-                className="inline-flex items-center justify-center space-x-2 glass-light text-white px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white/10"
+                className="inline-flex items-center justify-center space-x-2 dark:glass-light bg-gray-200 dark:text-white text-gray-900 px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest transition-all duration-300 dark:hover:bg-white/10 hover:bg-gray-300"
               >
                 <span>Explore Features</span>
               </a>
@@ -190,6 +190,22 @@ export default function LandingPage() {
               </div>
             </div>
           </div>
+        </section>
+
+        {/* Placeholders for Navigation */}
+        <section id="features" className="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t dark:border-white/5 border-gray-200">
+          <h2 className="text-3xl font-bold dark:text-white text-gray-900">Features</h2>
+          <p className="dark:text-zinc-400 text-gray-500 mt-4 max-w-2xl mx-auto">Explore how EcoTrack can help you automate carbon accounting and gain actionable insights.</p>
+        </section>
+
+        <section id="about" className="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t dark:border-white/5 border-gray-200">
+          <h2 className="text-3xl font-bold dark:text-white text-gray-900">About Us</h2>
+          <p className="dark:text-zinc-400 text-gray-500 mt-4 max-w-2xl mx-auto">Learn more about our mission to decarbonize modern businesses through transparent data.</p>
+        </section>
+
+        <section id="contact" className="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t dark:border-white/5 border-gray-200">
+          <h2 className="text-3xl font-bold dark:text-white text-gray-900">Contact</h2>
+          <p className="dark:text-zinc-400 text-gray-500 mt-4 max-w-2xl mx-auto">Get in touch with our enterprise sales team to start your journey.</p>
         </section>
       </main>
     </div>

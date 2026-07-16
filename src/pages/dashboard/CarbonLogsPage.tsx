@@ -7,32 +7,46 @@ import { useAuth } from "../../context/AuthContext";
 
 export default function CarbonLogsPage() {
   const [refreshTrigger, setRefreshTrigger] = useState(0);
+  const [editingLog, setEditingLog] = useState<any | null>(null);
   const { role } = useAuth();
 
   const handleDataAdded = () => {
     setRefreshTrigger(prev => prev + 1);
+    setEditingLog(null);
   };
 
   return (
-    <div className="max-w-6xl space-y-6">
-      <div className="mb-6">
-        <h1 className="text-3xl font-light text-zinc-100">
+    <div className="max-w-6xl space-y-10 pb-12">
+      {/* 1. Page Header */}
+      <div>
+        <h1 className="text-3xl font-light dark:text-zinc-100 text-gray-900 mb-2">
           {role === 'employee' ? 'My Data Entries' : 'Carbon Logs'}
         </h1>
-        <p className="text-zinc-500 text-sm mt-1">
+        <p className="dark:text-zinc-500 text-gray-500 text-sm">
           {role === 'employee' ? 'Manage your department carbon logs.' : 'Manage corporate carbon logs and import bulk data.'}
         </p>
       </div>
 
-      <div className={`grid grid-cols-1 ${role !== 'employee' ? 'lg:grid-cols-2' : ''} gap-6`}>
-        <ManualEntryForm onSuccess={handleDataAdded} />
+      {/* 2. Data Entry Section */}
+      <div className={`grid grid-cols-1 ${role !== 'employee' ? 'lg:grid-cols-2' : ''} gap-6 items-stretch`}>
+        <ManualEntryForm 
+          onSuccess={handleDataAdded} 
+          editingLog={editingLog} 
+          onCancelEdit={() => setEditingLog(null)} 
+        />
         {role !== 'employee' && <CsvUploader onSuccess={handleDataAdded} />}
       </div>
 
-      <div className="pt-6">
-        <FilterBar />
-        <div className="mt-6">
-          <LogsTable refreshTrigger={refreshTrigger} />
+      <div className="space-y-6 pt-2">
+        {/* 3. Action Toolbar */}
+        <FilterBar hideLogEntry />
+        
+        {/* 4. Emission Logs Table */}
+        <div>
+          <LogsTable 
+            refreshTrigger={refreshTrigger} 
+            onEdit={(log) => setEditingLog(log)}
+          />
         </div>
       </div>
     </div>

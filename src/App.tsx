@@ -8,6 +8,7 @@ import { BrowserRouter, Routes, Route, Navigate, Outlet } from "react-router-dom
 import { FilterProvider } from "./context/FilterContext";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import { ToastProvider } from "./context/ToastContext";
+import { ThemeProvider } from "./context/ThemeContext";
 import Navbar from "./components/layout/Navbar";
 import DashboardLayout from "./components/layout/DashboardLayout";
 import LandingPage from "./pages/LandingPage";
@@ -21,10 +22,8 @@ import CarbonLogsPage from "./pages/dashboard/CarbonLogsPage";
 import AnalyticsPage from "./pages/dashboard/AnalyticsPage";
 import ReportsPage from "./pages/dashboard/ReportsPage";
 import UsersPage from "./pages/dashboard/UsersPage";
-import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import OnboardingPage from "./pages/OnboardingPage";
-import EcoInsightsPage from "./pages/ai/EcoInsightsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) {
@@ -48,11 +47,12 @@ function PublicLayout() {
 
 export default function App() {
   return (
-    <AuthProvider>
-      <ToastProvider>
-        <FilterProvider>
-          <BrowserRouter>
-            <div className="font-sans text-zinc-100 bg-[#050505] min-h-screen flex flex-col">
+    <ThemeProvider>
+      <AuthProvider>
+        <ToastProvider>
+          <FilterProvider>
+            <BrowserRouter>
+              <div className="font-sans min-h-screen flex flex-col transition-colors duration-300 theme-root">
               <Routes>
                 {/* Public Routes with Navbar */}
                 <Route element={<PublicLayout />}>
@@ -122,7 +122,7 @@ export default function App() {
                     </ProtectedRoute>
                   } />
 
-                  {/* Analytics & Reports & Eco Insights */}
+                  {/* Analytics & Reports */}
                   <Route path="analytics" element={
                     <ProtectedRoute allowedRoles={["superadmin", "admin", "executive"]}>
                       <AnalyticsPage />
@@ -133,21 +133,11 @@ export default function App() {
                       <ReportsPage />
                     </ProtectedRoute>
                   } />
-                  <Route path="insights" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin", "executive"]}>
-                      <EcoInsightsPage />
-                    </ProtectedRoute>
-                  } />
 
-                  {/* Users & Settings */}
+                  {/* Users */}
                   <Route path="users" element={
                     <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
                       <UsersPage />
-                    </ProtectedRoute>
-                  } />
-                  <Route path="settings" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
-                      <SettingsPage />
                     </ProtectedRoute>
                   } />
                 </Route>
@@ -155,10 +145,11 @@ export default function App() {
                 {/* 404 - Not Found */}
                 <Route path="*" element={<NotFoundPage />} />
               </Routes>
-            </div>
-          </BrowserRouter>
-        </FilterProvider>
-      </ToastProvider>
-    </AuthProvider>
+              </div>
+            </BrowserRouter>
+          </FilterProvider>
+        </ToastProvider>
+      </AuthProvider>
+    </ThemeProvider>
   );
 }
