@@ -74,7 +74,7 @@ Built with a **React 19** frontend and an **Express + MongoDB** backend, it incl
 | 🤖 | **Eco Insights AI** | Google Gemini chat assistant for carbon reduction recommendations |
 | 📄 | **Exportable Reports** | Generate PDF/Excel sustainability reports (ExcelJS-powered) |
 | 🏢 | **Multi-Tenant RBAC** | 5-tier role system: Superadmin → Admin → Executive → Manager → Viewer |
-| 🔐 | **Secure Authentication** | JWT tokens, bcrypt hashing, forgot/reset password flow |
+| 🔐 | **Secure Authentication** | JWT tokens, bcrypt hashing, forgot/reset password flow, show/hide password toggle |
 | 🌙 | **Theme Engine** | Dark, Light, and System themes with custom accent colors |
 | 📱 | **Responsive Layout** | Mobile-first design with collapsible sidebar |
 | ⚡ | **Zero-Setup Dev Mode** | `mongodb-memory-server` auto-spins an in-memory DB — no MongoDB install needed |
