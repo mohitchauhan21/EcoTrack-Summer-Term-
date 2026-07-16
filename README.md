@@ -1,670 +1,477 @@
-# EcoTrack — Corporate Carbon Emissions Tracking Platform
+<div align="center">
 
-> **Version**: 0.0.0 (MVP)
-> **Last Updated**: 2026-07-12
-> **Stack**: React 19 · TypeScript · Express 4 · MongoDB (in-memory) · Vite · TailwindCSS 4 · Recharts
-
----
-
-## Table of Contents
-
-1. [Project Overview](#project-overview)
-2. [Architecture & How It Works](#architecture--how-it-works)
-3. [Directory Structure](#directory-structure)
-4. [Technology Stack & Dependencies](#technology-stack--dependencies)
-5. [Getting Started](#getting-started)
-6. [Database & Data Models](#database--data-models)
-7. [Backend API Reference](#backend-api-reference)
-8. [Frontend Application](#frontend-application)
-9. [Authentication & RBAC](#authentication--rbac)
-10. [Routing Map](#routing-map)
-11. [Components Reference](#components-reference)
-12. [Design System & Styling](#design-system--styling)
-13. [Key Behaviors & Gotchas](#key-behaviors--gotchas)
-14. [Known Limitations & TODOs](#known-limitations--todos)
-15. [CSV Upload Format](#csv-upload-format)
-
----
-
-## Project Overview
-
-**EcoTrack** is a corporate sustainability intelligence platform that allows organizations to:
-
-- **Ingest** carbon emission data via manual entry or bulk CSV upload.
-- **Automatically convert** raw activity data (kWh, miles, kg) into carbon equivalents (tCO2e) using predefined conversion factors.
-- **Visualize** emissions via line-trend charts and pie-chart breakdowns by activity type.
-- **Filter** all analytics by department and date range.
-- **Export** filtered data as Excel (`.xlsx`) reports with a live **Data Preview Table**.
-- **Manage** departments, users, and company profile through a role-based admin panel with **Toast Notifications**.
-- **Industry-Grade UX**: Features glassmorphism authentication pages, animated KPI counters, and seamless transitions.
-
-The application is designed for a **Corporate Sustainability Officer** (admin) who manages their company's carbon data, with supporting roles for data-entry employees and read-only executives.
-
----
-
-## Architecture & How It Works
-
-EcoTrack is a **unified MERN-like monolith** where the Express backend and the Vite/React frontend are served from a single process.
+<br/>
 
 ```
-┌──────────────────────────────────────────────────┐
-│                   server.ts                      │
-│  ┌──────────────┐    ┌────────────────────────┐  │
-│  │  Express API  │    │  Vite Dev Middleware    │  │
-│  │  /api/*       │    │  (SPA, HMR)            │  │
-│  └──────┬───────┘    └────────────┬───────────┘  │
-│         │                         │              │
-│         ▼                         ▼              │
-│  ┌──────────────┐    ┌────────────────────────┐  │
-│  │  Mongoose     │    │  React 19 App          │  │
-│  │  Models       │    │  (BrowserRouter)       │  │
-│  └──────┬───────┘    └────────────────────────┘  │
-│         │                                        │
-│         ▼                                        │
-│  ┌──────────────────────────────────────────┐    │
-│  │  MongoDB (in-memory or MONGO_URI)        │    │
-│  └──────────────────────────────────────────┘    │
-└──────────────────────────────────────────────────┘
+███████╗ ██████╗ ██████╗ ████████╗██████╗  █████╗  ██████╗██╗  ██╗
+██╔════╝██╔════╝██╔═══██╗╚══██╔══╝██╔══██╗██╔══██╗██╔════╝██║ ██╔╝
+█████╗  ██║     ██║   ██║   ██║   ██████╔╝███████║██║     █████╔╝ 
+██╔══╝  ██║     ██║   ██║   ██║   ██╔══██╗██╔══██║██║     ██╔═██╗ 
+███████╗╚██████╗╚██████╔╝   ██║   ██║  ██║██║  ██║╚██████╗██║  ██╗
+╚══════╝ ╚═════╝ ╚═════╝    ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝╚═╝  ╚═╝
 ```
 
-**How `npm run dev` works:**
+### 🌿 Corporate Carbon Emissions Tracking & Sustainability Intelligence Platform
 
-1. `tsx server.ts` is executed.
-2. `connectDb()` is called:
-   - If `process.env.MONGO_URI` is set, it connects to an external MongoDB instance.
-   - **Otherwise**, it downloads and starts `mongodb-memory-server` (~660MB binary on first run, cached after), creates an ephemeral in-memory DB, and calls `seedData()` to populate it with mock data (1 company, 4 departments, 400 emission logs).
-3. Express mounts all API routes under `/api/*`.
-4. Vite is launched in **middleware mode** (`middlewareMode: true`) and attached to Express, so the React SPA is served from the same port.
-5. The server listens on **`http://0.0.0.0:3000`**.
+**Measure. Track. Reduce. Repeat.**
 
-> **Critical**: On first run, the MongoDB binary download takes several minutes. The server will appear unresponsive until the download completes and `seedData()` finishes. Watch the terminal for `Server running on http://0.0.0.0:3000`.
+<br/>
+
+[![React](https://img.shields.io/badge/React_19-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
+[![Express](https://img.shields.io/badge/Express_4-000000?style=for-the-badge&logo=express&logoColor=white)](https://expressjs.com/)
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
+[![Vite](https://img.shields.io/badge/Vite_6-646CFF?style=for-the-badge&logo=vite&logoColor=white)](https://vitejs.dev/)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
+
+<br/>
+
+[🐛 Report a Bug](https://github.com/mohitchauhan21/EcoTrack-Summer-Term-/issues) · [✨ Request a Feature](https://github.com/mohitchauhan21/EcoTrack-Summer-Term-/issues) · [📖 View Docs](#api-reference)
+
+</div>
+
+<br/>
 
 ---
 
-## Directory Structure
+## 📋 Table of Contents
+
+- [What is EcoTrack?](#-what-is-ecotrack)
+- [Features at a Glance](#-features-at-a-glance)
+- [Tech Stack](#-tech-stack)
+- [System Architecture](#-system-architecture)
+- [Project Structure](#-project-structure)
+- [Getting Started](#-getting-started)
+- [Environment Variables](#-environment-variables)
+- [Demo Credentials](#-demo-credentials)
+- [Pages & Routes](#-pages--routes)
+- [API Reference](#-api-reference)
+- [Role-Based Access Control](#-role-based-access-control)
+- [Contributing](#-contributing)
+- [License](#-license)
+
+---
+
+## 🌍 What is EcoTrack?
+
+**EcoTrack** is a full-stack web platform built to help corporations **measure, monitor, and reduce their carbon footprint** — all from one clean, modern dashboard.
+
+From logging raw emission data and auto-converting it to CO₂e, to generating regulatory-ready reports and getting real-time AI recommendations powered by **Google Gemini** — EcoTrack gives sustainability teams everything they need in one place.
+
+> **No fluff. Just data, insights, and action.**
+
+Built with a **React 19** frontend and an **Express + MongoDB** backend, it includes complete JWT authentication, multi-role access control, interactive charts, CSV import/export, in-memory database for zero-setup demos, and a Gemini AI assistant for smart carbon reduction guidance.
+
+---
+
+## ✨ Features at a Glance
+
+| | Feature | What it does |
+|---|---|---|
+| 🏭 | **Carbon Log Management** | Create, edit, delete emission entries across electricity, fuel, water, waste & refrigerants |
+| 🧮 | **Auto CO₂e Conversion** | 100+ built-in emission factors — units auto-converted to CO₂e on entry |
+| 📊 | **Interactive Analytics** | Recharts-powered trend graphs, department breakdowns, and KPI cards |
+| 🤖 | **Eco Insights AI** | Google Gemini chat assistant for carbon reduction recommendations |
+| 📄 | **Exportable Reports** | Generate PDF/Excel sustainability reports (ExcelJS-powered) |
+| 🏢 | **Multi-Tenant RBAC** | 5-tier role system: Superadmin → Admin → Executive → Manager → Viewer |
+| 🔐 | **Secure Authentication** | JWT tokens, bcrypt hashing, forgot/reset password flow |
+| 🌙 | **Theme Engine** | Dark, Light, and System themes with custom accent colors |
+| 📱 | **Responsive Layout** | Mobile-first design with collapsible sidebar |
+| ⚡ | **Zero-Setup Dev Mode** | `mongodb-memory-server` auto-spins an in-memory DB — no MongoDB install needed |
+
+---
+
+## 🛠️ Tech Stack
+
+<details>
+<summary><strong>Frontend</strong></summary>
+
+| Package | Version | Role |
+|---|---|---|
+| `react` + `react-dom` | ^19.0.1 | UI framework |
+| `typescript` | ~5.8.2 | Type safety |
+| `vite` | ^6.2.3 | Dev server & bundler |
+| `tailwindcss` | ^4.1.14 | Utility-first CSS |
+| `react-router-dom` | ^7.18.1 | Client-side routing |
+| `recharts` | ^3.9.2 | Charts & data visualization |
+| `lucide-react` | ^0.546.0 | Icon library |
+| `motion` | ^12.23.24 | Animations |
+| `axios` | ^1.18.1 | HTTP client |
+| `date-fns` | ^4.4.0 | Date formatting |
+| `clsx` + `tailwind-merge` | latest | Conditional class merging |
+
+</details>
+
+<details>
+<summary><strong>Backend</strong></summary>
+
+| Package | Version | Role |
+|---|---|---|
+| `express` | ^4.21.2 | REST API server |
+| `mongoose` | ^9.7.4 | MongoDB ODM |
+| `jsonwebtoken` | ^9.0.3 | JWT auth tokens |
+| `bcryptjs` | ^3.0.3 | Password hashing |
+| `cors` | ^2.8.6 | Cross-origin requests |
+| `dotenv` | ^17.4.2 | Environment config |
+| `multer` | ^2.2.0 | File upload handling |
+| `csv-parser` | ^3.2.1 | CSV file parsing |
+| `exceljs` | ^4.4.0 | Excel report generation |
+| `tsx` | ^4.21.0 | TypeScript execution (dev) |
+| `esbuild` | ^0.25.0 | Server bundler (prod) |
+| `mongodb-memory-server` | ^11.2.0 | In-memory DB for dev/demo |
+
+</details>
+
+<details>
+<summary><strong>AI & Cloud</strong></summary>
+
+| Service | Purpose |
+|---|---|
+| Google Gemini API | AI-powered carbon insights & chat assistant |
+
+</details>
+
+---
+
+## 🏗️ System Architecture
 
 ```
-zip/                            # Project root
-├── index.html                  # Vite HTML entry point
-├── server.ts                   # Express + Vite entry (the "main" file)
-├── package.json                # NPM scripts & dependencies
-├── tsconfig.json               # TypeScript config (ES2022, bundler resolution)
-├── vite.config.ts              # Vite config (React plugin, TailwindCSS plugin)
-├── .env.example                # Environment variable template
+┌──────────────────────────────────────────────────────────────────┐
+│                         BROWSER                                  │
+│                                                                  │
+│  React 19 · TypeScript · Vite · TailwindCSS 4 · Recharts        │
+│  React Router v7 · Motion · Lucide Icons · Axios                │
+└─────────────────────────────┬────────────────────────────────────┘
+                              │  HTTP / REST  (port 3000)
+┌─────────────────────────────▼────────────────────────────────────┐
+│                       EXPRESS SERVER                             │
+│                                                                  │
+│   /api/auth          →  authRoutes.ts                           │
+│   /api/company       →  companyRoutes.ts                        │
+│   /api/departments   →  departmentRoutes.ts                     │
+│   /api/logs          →  logRoutes.ts                            │
+│   /api/analytics     →  analyticsRoutes.ts                      │
+│   /api/users         →  userRoutes.ts                           │
+│                                                                  │
+│   Middleware: JWT Auth · RBAC · CORS · JSON body parser         │
+└─────────────────────────────┬────────────────────────────────────┘
+                              │  Mongoose ODM
+┌─────────────────────────────▼────────────────────────────────────┐
+│                         MONGODB                                  │
+│                                                                  │
+│   Users · Companies · Departments · EmissionLogs               │
+│                                                                  │
+│   ⚡ Dev: mongodb-memory-server (auto, no install required)     │
+│   🚀 Prod: MongoDB Atlas or self-hosted via MONGO_URI           │
+└──────────────────────────────────────────────────────────────────┘
+                              │
+┌─────────────────────────────▼────────────────────────────────────┐
+│                    GOOGLE GEMINI API                             │
+│         AI insights · Carbon chat assistant · Reports           │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+---
+
+## 📂 Project Structure
+
+```
+EcoTrack-Summer-Term-/
 │
-├── server/                     # Backend code
-│   ├── controllers/
-│   │   ├── analyticsController.ts    # Summary, trend, by-source, export
-│   │   ├── companyController.ts      # Get/update company
-│   │   ├── departmentController.ts   # CRUD departments
-│   │   ├── logController.ts          # CRUD logs, bulk CSV upload
-│   │   └── userController.ts         # CRUD users
-│   ├── middleware/
-│   │   └── upload.ts                 # Multer config (CSV only, 10MB max)
-│   ├── models/
-│   │   ├── Company.ts                # { name, region, createdAt }
-│   │   ├── Department.ts             # { companyId, name, active }
-│   │   ├── EmissionLog.ts            # { companyId, departmentId, date, activityType, rawAmount, rawUnit, carbonEquivalent, source }
-│   │   └── User.ts                   # { name, email, role, companyId, departmentId, createdAt }
-│   ├── routes/
-│   │   ├── analyticsRoutes.ts
+├── 📄 server.ts                    # App entry point — Express + Vite + DB bootstrap
+├── 📄 vite.config.ts               # Vite config (React plugin + TailwindCSS)
+├── 📄 tsconfig.json                # TypeScript config
+├── 📄 package.json                 # Scripts & dependencies
+├── 📄 .env.example                 # Environment variable template
+│
+├── 📁 server/                      # ── BACKEND ──────────────────────────────────
+│   ├── controllers/                #   Business logic (auth, logs, analytics...)
+│   ├── middleware/                 #   JWT auth guard · Role-based access (RBAC)
+│   ├── models/                     #   Mongoose schemas
+│   │   ├── User.ts                 #     User accounts & roles
+│   │   ├── Company.ts              #     Company/tenant data
+│   │   ├── Department.ts           #     Departments within a company
+│   │   └── EmissionLog.ts          #     Carbon emission log entries
+│   ├── routes/                     #   Express route definitions
+│   │   ├── authRoutes.ts
 │   │   ├── companyRoutes.ts
 │   │   ├── departmentRoutes.ts
 │   │   ├── logRoutes.ts
+│   │   ├── analyticsRoutes.ts
 │   │   └── userRoutes.ts
-│   ├── scripts/
-│   │   └── seedMockData.ts           # Seeds 1 company, 4 depts, 400 logs
-│   └── utils/
-│       └── conversionFactors.ts      # CO2e conversion factors & calculator
+│   ├── scripts/                    #   Seed script — auto-populates demo data
+│   └── utils/                      #   Shared helpers & emission factor constants
 │
-├── src/                        # Frontend code (React)
-│   ├── main.tsx                # ReactDOM entry
-│   ├── index.css               # Global CSS (imports Tailwind)
-│   ├── App.tsx                 # Router, ProtectedRoute, layout structure
-│   │
-│   ├── api/
-│   │   └── axiosClient.ts      # Axios instance (baseURL: "/api")
-│   │
-│   ├── context/
-│   │   ├── AuthContext.tsx      # Auth state, login/logout, role, localStorage persistence
-│   │   ├── FilterContext.tsx    # Global filter state (department, date range, preset)
-│   │   └── ToastContext.tsx     # Global toast notification provider
-│   │
-│   ├── components/
-│   │   ├── dashboard/
-│   │   │   ├── EmissionSourcePieChart.tsx   # Recharts pie chart by activity type
-│   │   │   ├── EmissionTrendChart.tsx       # Recharts line chart of monthly emissions
-│   │   │   ├── FilterBar.tsx               # Department + date range + preset selector
-│   │   │   ├── KpiCard.tsx                 # Single KPI display card
-│   │   │   ├── DepartmentBarChart.tsx      # Recharts bar chart of department emissions
-│   │   │   └── RecentActivityFeed.tsx      # Timeline feed of recent logs
-│   │   ├── data/
-│   │   │   ├── CsvUploader.tsx             # Drag-and-drop CSV bulk upload (with Toasts)
-│   │   │   ├── LogsTable.tsx               # Paginated emission logs table
-│   │   │   └── ManualEntryForm.tsx         # Single-entry form (with Toasts)
-│   │   ├── layout/
-│   │   │   ├── DashboardLayout.tsx         # Sidebar + main content area + mobile menu
-│   │   │   ├── Footer.tsx                  # Simple footer
-│   │   │   └── Navbar.tsx                  # Public pages top navbar
-│   │   └── onboarding/
-│   │       ├── CompanyBoundariesStep.tsx    # Company name/region form
-│   │       └── DepartmentTaggingStep.tsx    # Add departments step
-│   │
-│   └── pages/
-│       ├── LandingPage.tsx                 # Public marketing/hero page
-│       ├── DashboardPage.tsx               # Main dashboard (KPIs + charts)
-│       ├── DataManagementPage.tsx           # Legacy data page (superseded by CarbonLogsPage)
-│       ├── OnboardingPage.tsx              # First-time setup wizard
-│       ├── ProfilePage.tsx                 # User profile display
-│       ├── auth/
-│       │   ├── LoginPage.tsx               # Mock role-based login
-│       │   ├── RegisterPage.tsx            # Register form (UI only)
-│       │   └── ForgotPasswordPage.tsx      # Forgot password (UI only)
-│       └── dashboard/
-│           ├── AnalyticsPage.tsx            # Charts + KPIs with filters
-│           ├── CarbonLogsPage.tsx           # Manual entry + CSV upload + logs table
-│           ├── CompanyProfilePage.tsx       # View/edit company details
-│           ├── DepartmentsPage.tsx          # List/add/delete departments
-│           ├── ReportsPage.tsx              # Date range filters + CSV export
-│           ├── SettingsPage.tsx             # Theme/notification prefs (localStorage)
-│           └── UsersPage.tsx               # List/add/delete users
+└── 📁 src/                         # ── FRONTEND ─────────────────────────────────
+    ├── App.tsx                     #   Root component & route tree
+    ├── main.tsx                    #   React DOM entry
+    ├── index.css                   #   Global styles & animations
+    │
+    ├── api/                        #   Axios API service modules
+    ├── components/
+    │   ├── dashboard/              #   Dashboard widgets & charts
+    │   ├── data/                   #   Data tables & input forms
+    │   ├── layout/                 #   Navbar, Sidebar, DashboardLayout
+    │   ├── onboarding/             #   Onboarding flow components
+    │   └── ui/                     #   Reusable UI primitives
+    │
+    ├── constants/                  #   Emission factors, categories, config
+    ├── context/                    #   AuthContext · ToastContext · FilterContext
+    │
+    └── pages/
+        ├── LandingPage.tsx         #   Public marketing page
+        ├── DashboardPage.tsx       #   Main dashboard overview
+        ├── ProfilePage.tsx         #   User profile settings
+        ├── OnboardingPage.tsx      #   New user onboarding
+        ├── NotFoundPage.tsx        #   404 page
+        ├── auth/
+        │   ├── LoginPage.tsx
+        │   ├── RegisterPage.tsx
+        │   └── ForgotPasswordPage.tsx
+        ├── dashboard/
+        │   ├── CarbonLogsPage.tsx
+        │   ├── AnalyticsPage.tsx
+        │   ├── ReportsPage.tsx
+        │   ├── DepartmentsPage.tsx
+        │   ├── CompanyProfilePage.tsx
+        │   ├── UsersPage.tsx
+        │   └── SettingsPage.tsx
+        └── ai/
+            └── EcoInsightsPage.tsx
 ```
 
 ---
 
-## Technology Stack & Dependencies
-
-| Layer | Technology | Version | Purpose |
-|-------|-----------|---------|---------|
-| **Runtime** | Node.js | 18+ | Server runtime |
-| **Language** | TypeScript | ~5.8 | Type safety across frontend & backend |
-| **Frontend Framework** | React | 19 | UI components |
-| **Bundler** | Vite | 6.2 | Dev server, HMR, build |
-| **CSS** | TailwindCSS | 4.1 | Utility-first styling via `@tailwindcss/vite` plugin |
-| **Routing** | react-router-dom | 7.18 | Client-side SPA routing |
-| **Charts** | Recharts | 3.9 | Line charts, pie charts |
-| **HTTP Client** | Axios | 1.18 | Frontend → Backend API calls |
-| **Icons** | lucide-react | 0.546 | SVG icon library |
-| **Animation** | Motion (Framer) | 12.23 | Micro-animations (available but lightly used) |
-| **Backend** | Express | 4.21 | REST API server |
-| **Database** | Mongoose | 9.7 | MongoDB ODM |
-| **In-Memory DB** | mongodb-memory-server | 11.2 | Zero-config ephemeral MongoDB for development |
-| **File Upload** | Multer | 2.2 | Multipart form handling for CSV |
-| **CSV Parsing** | csv-parser | 3.2 | Stream-based CSV parsing |
-| **Excel Export** | ExcelJS | 4.4 | Generate `.xlsx` report files |
-| **Date Utils** | date-fns | 4.4 | Date formatting in FilterBar |
-| **TS Runner** | tsx | 4.21 | Run TypeScript directly without pre-compilation |
-
-### NPM Scripts
-
-| Script | Command | Description |
-|--------|---------|-------------|
-| `dev` | `tsx server.ts` | Start development server (Express + Vite middleware on port 3000) |
-| `build` | `vite build && esbuild server.ts ...` | Build production frontend + bundle server |
-| `start` | `node dist/server.cjs` | Run production build |
-| `lint` | `tsc --noEmit` | Type-check the entire project |
-
----
-
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- **Node.js** ≥ 18
-- **npm** (comes with Node)
-- ~1GB free disk space (for MongoDB binary download on first run)
+| Tool | Minimum Version | Download |
+|---|---|---|
+| Node.js | 18.x | [nodejs.org](https://nodejs.org/) |
+| npm | 9.x | Included with Node.js |
+| MongoDB | 6.x *(optional)* | [mongodb.com](https://www.mongodb.com/try/download/community) |
 
-### Installation & Running
+> **No MongoDB?** No problem — skip it entirely. EcoTrack auto-starts an in-memory MongoDB and seeds it with demo data when `MONGO_URI` is not set.
+
+---
+
+### Installation
 
 ```bash
-# 1. Install dependencies
+# Clone the repository
+git clone https://github.com/mohitchauhan21/EcoTrack-Summer-Term-.git
+cd EcoTrack-Summer-Term-
+
+# Install dependencies
 npm install
 
-# 2. Start development server
+# Copy environment template
+cp .env.example .env
+```
+
+---
+
+## 🔧 Environment Variables
+
+Open `.env` and configure the following:
+
+```env
+# ─── Required ─────────────────────────────────────────────────────────────────
+
+# Your Google Gemini API key (get one at https://aistudio.google.com)
+GEMINI_API_KEY="your-gemini-api-key-here"
+
+# Secret used to sign JWT tokens — use any long random string
+JWT_SECRET="replace-with-a-long-random-secret"
+
+# ─── Optional ─────────────────────────────────────────────────────────────────
+
+# MongoDB connection URI
+# Leave EMPTY to use the built-in in-memory database (great for development!)
+MONGO_URI=""
+
+# The URL this app is served at (used for callbacks and links)
+APP_URL="http://localhost:3000"
+```
+
+---
+
+### Running the App
+
+```bash
+# Start in development mode (frontend + backend served together)
 npm run dev
-
-# 3. Wait for the terminal to print:
-#    "Server running on http://0.0.0.0:3000"
-#    (First run downloads ~660MB MongoDB binary — be patient)
-
-# 4. Open http://localhost:3000 in your browser
 ```
 
-### Environment Variables (Optional)
+Open **[http://localhost:3000](http://localhost:3000)** in your browser. ✅
 
-If you want to use an external MongoDB instead of the in-memory one, create a `.env` file:
-
+```bash
+# Other commands
+npm run build     # Build for production
+npm run start     # Run the production build
+npm run preview   # Preview the Vite production build locally
+npm run lint      # TypeScript type-check (no emit)
+npm run clean     # Delete the dist/ folder
 ```
-MONGO_URI=mongodb://localhost:27017/ecotrack
-```
-
-When `MONGO_URI` is set, the seed script is **not** run automatically.
 
 ---
 
-## Database & Data Models
+## 🔑 Demo Credentials
 
-### Company
+When running without `MONGO_URI`, demo data is auto-seeded. Use any of these accounts to explore the platform:
 
-| Field | Type | Required | Default | Notes |
-|-------|------|----------|---------|-------|
-| `name` | String | ✅ | — | Company name |
-| `region` | String | ✅ | — | Geographic region |
-| `createdAt` | Date | — | `Date.now` | Auto-set |
-
-> **Important**: The app currently uses a **singleton pattern** — `Company.findOne()` is called everywhere. There is only ONE company in the database at a time.
-
-### Department
-
-| Field | Type | Required | Default | Notes |
-|-------|------|----------|---------|-------|
-| `companyId` | ObjectId (ref: Company) | ✅ | — | Parent company |
-| `name` | String | ✅ | — | Department name |
-| `active` | Boolean | — | `true` | Soft-delete flag |
-
-### EmissionLog
-
-| Field | Type | Required | Default | Notes |
-|-------|------|----------|---------|-------|
-| `companyId` | ObjectId (ref: Company) | ✅ | — | Parent company |
-| `departmentId` | ObjectId (ref: Department) | ✅ | — | Owning department |
-| `date` | Date | ✅ | — | Date of the activity |
-| `activityType` | String (enum) | ✅ | — | `"Travel"`, `"Utilities"`, `"Supply Chain"`, or `"Other"` |
-| `rawAmount` | Number | ✅ | — | Raw numeric value of the activity |
-| `rawUnit` | String | ✅ | — | Unit of the raw amount (e.g., `"miles"`, `"kWh"`, `"kg"`) |
-| `carbonEquivalent` | Number | ✅ | — | Computed tCO2e value |
-| `source` | String | — | — | Description or origin of the data |
-| `createdAt` | Date | — | `Date.now` | Auto-set |
-
-### User
-
-| Field | Type | Required | Default | Notes |
-|-------|------|----------|---------|-------|
-| `name` | String | ✅ | — | Full name |
-| `email` | String | ✅ (unique) | — | Email address |
-| `role` | String (enum) | ✅ | — | `"superadmin"`, `"admin"`, `"employee"`, `"executive"` |
-| `companyId` | ObjectId (ref: Company) | ✅ | — | Parent company |
-| `departmentId` | ObjectId (ref: Department) | — | — | Optional department assignment |
-| `createdAt` | Date | — | `Date.now` | Auto-set |
-
-### Carbon Conversion Factors
-
-Defined in `server/utils/conversionFactors.ts`:
-
-| Activity Type | Unit | Factor (kg CO2e per unit) |
-|---------------|------|---------------------------|
-| Utilities | kWh | 0.475 |
-| Travel | miles | 0.254 |
-| Supply Chain | kg | 2.1 |
-| Other | unit | 1.0 |
-
-The `calculateCarbonEquivalent(activityType, unit, rawAmount)` function returns the value in **tonnes** (divides by 1000).
-
-### Seed Data
-
-On startup (in-memory mode), `seedMockData.ts` creates:
-- **1 Company**: "Acme Corporation", region "Mumbai/India"
-- **4 Departments**: HR, Sales, Manufacturing, Logistics
-- **400 Emission Logs**: Random data spanning the past 12 months, skewed so ~50% come from Logistics. Activity types are skewed per department (e.g., Manufacturing → Utilities, Logistics → Supply Chain/Travel).
+| Role | Email | Password | What you can do |
+|---|---|---|---|
+| 🔴 **Superadmin** | `superadmin@ecotrack.com` | `password123` | Full access across all companies |
+| 🟠 **Admin** | `admin@techcorp.com` | `password123` | Full access within a company |
+| 🟡 **Executive** | `exec@techcorp.com` | `password123` | View analytics & reports |
+| 🟢 **Manager** | `manager@techcorp.com` | `password123` | Manage team's emission logs |
+| 🔵 **Viewer** | `viewer@techcorp.com` | `password123` | Read-only access |
 
 ---
 
-## Backend API Reference
+## 📄 Pages & Routes
 
-Base URL: `/api`
+| Page | Route | Access | Description |
+|---|---|---|---|
+| Landing | `/` | Public | Marketing homepage |
+| Login | `/login` | Public | Sign in with JWT |
+| Register | `/register` | Public | Create company + account |
+| Forgot Password | `/forgot-password` | Public | Password reset flow |
+| Dashboard | `/dashboard` | Auth | KPI overview cards |
+| Carbon Logs | `/dashboard/logs` | Auth | Log & manage emission entries |
+| Analytics | `/dashboard/analytics` | Auth | Charts, trends, comparisons |
+| Reports | `/dashboard/reports` | Auth | Export PDF/Excel reports |
+| Departments | `/dashboard/departments` | Auth | Manage departments |
+| Company Profile | `/dashboard/company` | Admin | Company settings |
+| Users | `/dashboard/users` | Admin | Team & role management |
+| Eco Insights AI | `/dashboard/eco-insights` | Auth | Gemini AI carbon assistant |
+| Settings | `/dashboard/settings` | Auth | Theme, notifications, security |
+| Profile | `/profile` | Auth | Personal profile & password |
+| 404 | `*` | — | Animated not-found page |
 
-### Health Check
+---
+
+## 📡 API Reference
+
+Base URL: `http://localhost:3000/api`
+
+### 🔐 Auth — `/api/auth`
 
 | Method | Endpoint | Description |
-|--------|----------|-------------|
-| `GET` | `/api/health` | Returns `{ status: "ok" }` |
+|---|---|---|
+| `POST` | `/register` | Register a new user and company |
+| `POST` | `/login` | Authenticate and get a JWT token |
+| `POST` | `/forgot-password` | Send password reset link |
+| `POST` | `/reset-password` | Reset password using token |
 
-### Company (`/api/company`)
+### 🏢 Company — `/api/company`
 
-| Method | Endpoint | Description | Request Body |
-|--------|----------|-------------|-------------|
-| `GET` | `/api/company` | Get the singleton company | — |
-| `POST` | `/api/company` | Create or update the company | `{ name: string, region: string }` |
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `GET` | `/` | ✅ | Get company profile |
+| `PUT` | `/` | ✅ Admin | Update company details |
 
-### Departments (`/api/departments`)
+### 🏬 Departments — `/api/departments`
 
-| Method | Endpoint | Description | Request Body |
-|--------|----------|-------------|-------------|
-| `GET` | `/api/departments` | List all active departments | — |
-| `POST` | `/api/departments` | Create a department | `{ companyId: string, name: string }` |
-| `DELETE` | `/api/departments/:id` | Soft-delete (sets `active: false`) | — |
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `GET` | `/` | ✅ | List all departments |
+| `POST` | `/` | ✅ Admin | Create a department |
+| `PUT` | `/:id` | ✅ Admin | Update a department |
+| `DELETE` | `/:id` | ✅ Admin | Delete a department |
 
-### Emission Logs (`/api/logs`)
+### 📋 Emission Logs — `/api/logs`
 
-| Method | Endpoint | Description | Request Body / Query |
-|--------|----------|-------------|---------------------|
-| `GET` | `/api/logs` | List logs (paginated) | `?page=1&limit=10&departmentId=...&startDate=...&endDate=...` |
-| `POST` | `/api/logs` | Create a single log | `{ departmentId, date, activityType, rawAmount, rawUnit, source }` |
-| `PUT` | `/api/logs/:id` | Update a log (recalculates CO2e) | Partial body with fields to update |
-| `DELETE` | `/api/logs/:id` | Delete a log | — |
-| `POST` | `/api/logs/bulk-upload` | Bulk upload via CSV file | `multipart/form-data` with field `file` |
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `GET` | `/` | ✅ | List emission logs (filterable) |
+| `POST` | `/` | ✅ | Create a new emission log |
+| `PUT` | `/:id` | ✅ | Update a log entry |
+| `DELETE` | `/:id` | ✅ Manager+ | Delete a log entry |
+| `POST` | `/import` | ✅ Admin | Bulk import logs via CSV |
 
-### Analytics (`/api/analytics`)
+### 📊 Analytics — `/api/analytics`
 
-| Method | Endpoint | Description | Query Params |
-|--------|----------|-------------|-------------|
-| `GET` | `/api/analytics/summary` | KPI data (total emissions, top dept, MoM change) | `?departmentId=...&startDate=...&endDate=...` |
-| `GET` | `/api/analytics/trend` | Monthly emission trend data | Same as above |
-| `GET` | `/api/analytics/by-source` | Emissions grouped by activity type | Same as above |
-| `GET` | `/api/analytics/export` | Download `.xlsx` spreadsheet of filtered data | Same as above |
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `GET` | `/summary` | ✅ | Total CO₂e, goals, KPIs |
+| `GET` | `/trends` | ✅ | Monthly/yearly emission trends |
+| `GET` | `/by-department` | ✅ | Breakdown by department |
 
-### Users (`/api/users`)
+### 👤 Users — `/api/users`
 
-| Method | Endpoint | Description | Request Body / Query |
-|--------|----------|-------------|---------------------|
-| `GET` | `/api/users` | List users for a company | `?companyId=...` (required) |
-| `POST` | `/api/users` | Create a user | `{ name, email, role, companyId, departmentId? }` |
-| `DELETE` | `/api/users/:id` | Delete a user | — |
+| Method | Endpoint | Auth | Description |
+|---|---|---|---|
+| `GET` | `/` | ✅ Admin | List all users in company |
+| `PUT` | `/:id/role` | ✅ Admin | Change a user's role |
+| `DELETE` | `/:id` | ✅ Admin | Remove a user |
+
+> All protected routes require the header: `Authorization: Bearer <your_jwt_token>`
 
 ---
 
-## Frontend Application
+## 🔒 Role-Based Access Control
 
-### Entry Flow
+EcoTrack enforces a 5-tier RBAC hierarchy on both the **frontend** (route guards) and **backend** (middleware):
 
 ```
-index.html → src/main.tsx → <App />
-                                │
-                    ┌───────────┴───────────┐
-                    │   AuthProvider         │
-                    │   FilterProvider       │
-                    │   BrowserRouter        │
-                    │                        │
-                    │ ┌─ Public Routes ────┐ │
-                    │ │  / → LandingPage   │ │
-                    │ │  /login → LoginPage │ │
-                    │ │  /register         │ │
-                    │ │  /forgot-password   │ │
-                    │ └────────────────────┘ │
-                    │                        │
-                    │ ┌─ Protected Routes ─┐ │
-                    │ │  /dashboard/*      │ │
-                    │ │  (DashboardLayout) │ │
-                    │ └────────────────────┘ │
-                    └────────────────────────┘
+┌─────────────────────────────────────────────────────┐
+│  🔴  SUPERADMIN   — Cross-company platform admin    │
+│        ↓                                            │
+│  🟠  ADMIN        — Full access within company      │
+│        ↓                                            │
+│  🟡  EXECUTIVE    — Read analytics & reports        │
+│        ↓                                            │
+│  🟢  MANAGER      — Manage department & logs        │
+│        ↓                                            │
+│  🔵  VIEWER       — Read-only access               │
+└─────────────────────────────────────────────────────┘
 ```
 
-### Context Providers
-
-1. **`AuthProvider`** (wraps entire app)
-   - State: `isAuthenticated`, `companyName`, `role`, `userName`, `departmentId`
-   - Persisted to `localStorage` under key `"auth"`
-   - Exposes `login(data)` and `logout()` methods
-   - Type `Role = "superadmin" | "admin" | "employee" | "executive"`
-
-2. **`FilterProvider`** (wraps entire app)
-   - State: `departmentId`, `startDate`, `endDate`, `preset`
-   - Used by dashboard charts and analytics pages to filter data
-   - Not persisted
-
-### API Client
-
-`src/api/axiosClient.ts` exports a pre-configured Axios instance:
-- `baseURL: "/api"` — works because Vite middleware runs on the same Express server
-- `Content-Type: application/json`
+Each role inherits all permissions of the roles below it, in addition to its own.
 
 ---
 
-## Authentication & RBAC
+## 🤝 Contributing
 
-### Current Implementation (Mock)
+All contributions are welcome! Here's how to get involved:
 
-**There is no real authentication backend.** The login page uses a mock system:
-- Any email + any password will log you in.
-- The **role** is determined by keyword matching on the email:
-  - Contains `"superadmin"` → `superadmin`
-  - Contains `"employee"` → `employee`
-  - Contains `"exec"` → `executive`
-  - Anything else → `admin`
+1. **Fork** the repo
+2. **Create** a feature branch  
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+3. **Commit** your changes using [Conventional Commits](https://www.conventionalcommits.org/)
+   ```bash
+   git commit -m "feat: add your feature description"
+   ```
+4. **Push** to your fork  
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+5. **Open** a Pull Request against `main`
 
-Demo credentials shown on login page:
-| Role | Email |
-|------|-------|
-| Admin | `admin@ecotrack.com` |
-| Employee | `employee@ecotrack.com` |
-| Executive | `exec@ecotrack.com` |
-| Super Admin | `superadmin@ecotrack.com` |
-
-Password can be anything (e.g., `password`).
-
-### RBAC Matrix
-
-| Page / Feature | superadmin | admin | employee | executive |
-|----------------|:---:|:---:|:---:|:---:|
-| Dashboard | ✅ | ✅ | ✅ (limited) | ✅ |
-| Company Profile | ✅ (edit) | ✅ (edit) | ❌ | ❌ |
-| Departments | ✅ (manage) | ✅ (manage) | ❌ | ❌ |
-| Carbon Logs | ✅ | ✅ (+ CSV upload) | ✅ (manual only) | ❌ |
-| Analytics | ✅ | ✅ | ❌ | ✅ (view only) |
-| Reports / Export | ✅ | ✅ | ❌ | ✅ (view only) |
-| Users | ✅ (manage) | ✅ (manage) | ❌ | ❌ |
-| Settings | ✅ | ✅ | ❌ | ❌ |
-| Profile | ✅ | ✅ | ✅ | ✅ |
-
-### ProtectedRoute Component
-
-```tsx
-function ProtectedRoute({ children, allowedRoles }) {
-  const { isAuthenticated, role } = useAuth();
-  if (!isAuthenticated) return <Navigate to="/login" />;
-  if (allowedRoles && role && !allowedRoles.includes(role)) {
-    return <Navigate to="/dashboard" />;
-  }
-  return children;
-}
-```
-
-The sidebar (`DashboardLayout.tsx`) also filters navigation items by role so users only see links they have access to.
+Please make sure your code passes `npm run lint` before submitting.
 
 ---
 
-## Routing Map
+## 📄 License
 
-### Public Routes (with Navbar)
-
-| Path | Component | Description |
-|------|-----------|-------------|
-| `/` | `LandingPage` | Marketing hero page |
-| `/login` | `LoginPage` | Sign in form |
-| `/register` | `RegisterPage` | Registration form (UI only, no backend) |
-| `/forgot-password` | `ForgotPasswordPage` | Password reset form (UI only) |
-
-### Protected Routes (with DashboardLayout sidebar)
-
-| Path | Component | Allowed Roles |
-|------|-----------|---------------|
-| `/dashboard` | `DashboardPage` | All |
-| `/dashboard/profile` | `ProfilePage` | All |
-| `/dashboard/company` | `CompanyProfilePage` | superadmin, admin |
-| `/dashboard/departments` | `DepartmentsPage` | superadmin, admin |
-| `/dashboard/logs` | `CarbonLogsPage` | superadmin, admin, employee |
-| `/dashboard/analytics` | `AnalyticsPage` | superadmin, admin, executive |
-| `/dashboard/reports` | `ReportsPage` | superadmin, admin, executive |
-| `/dashboard/users` | `UsersPage` | superadmin, admin |
-| `/dashboard/settings` | `SettingsPage` | superadmin, admin |
-
-### Catch-All
-
-`/*` → Redirects to `/dashboard`
+This project is licensed under the **Apache 2.0 License**.  
+See the [LICENSE](./LICENSE) file for full details.
 
 ---
 
-## Components Reference
+<div align="center">
 
-### Layout Components
+<br/>
 
-| Component | File | Description |
-|-----------|------|-------------|
-| `Navbar` | `src/components/layout/Navbar.tsx` | Top navigation for public pages. Shows "EcoTrack" brand + Login/Register links. |
-| `DashboardLayout` | `src/components/layout/DashboardLayout.tsx` | Sidebar + main content container. Handles role-filtered nav, mobile hamburger menu, logout. Uses `<Outlet />` for nested routes. |
-| `Footer` | `src/components/layout/Footer.tsx` | Simple footer used on landing page. |
+Built with 💚 by [**Mohit Chauhan**](https://github.com/mohitchauhan21) [**Aman Kumar**](https://github.com/aman08-yadav)
 
-### Dashboard Components
+*If this project helped you, consider giving it a ⭐ — it means a lot!*
 
-| Component | File | Description |
-|-----------|------|-------------|
-| `KpiCard` | `src/components/dashboard/KpiCard.tsx` | Displays a single metric (title, value, subtitle, optional trend indicator). Shows loading shimmer. |
-| `FilterBar` | `src/components/dashboard/FilterBar.tsx` | Department dropdown + date pickers + preset buttons (Last 7 Days, Last 30 Days, Last 90 Days, YTD, All Time). Updates `FilterContext`. |
-| `EmissionTrendChart` | `src/components/dashboard/EmissionTrendChart.tsx` | Recharts `LineChart` showing monthly tCO2e over time. Fetches from `/api/analytics/trend`. |
-| `EmissionSourcePieChart` | `src/components/dashboard/EmissionSourcePieChart.tsx` | Recharts `PieChart` showing breakdown by activity type. Fetches from `/api/analytics/by-source`. |
+<br/>
 
-### Data Components
-
-| Component | File | Description |
-|-----------|------|-------------|
-| `ManualEntryForm` | `src/components/data/ManualEntryForm.tsx` | Form to create a single emission log. Fields: department, date, activity type, raw amount, unit. Auto-calculates CO2e preview. Employee role gets fixed department. |
-| `CsvUploader` | `src/components/data/CsvUploader.tsx` | Drag-and-drop CSV upload zone. Posts to `/api/logs/bulk-upload`. Shows inserted count and row-level errors. |
-| `LogsTable` | `src/components/data/LogsTable.tsx` | Paginated table of emission logs. Shows date, department, activity, amount, CO2e. Has delete buttons (admin only). Respects `FilterContext`. |
-
-### Onboarding Components
-
-| Component | File | Description |
-|-----------|------|-------------|
-| `CompanyBoundariesStep` | `src/components/onboarding/CompanyBoundariesStep.tsx` | Step 1 of first-time setup: enter company name and region. |
-| `DepartmentTaggingStep` | `src/components/onboarding/DepartmentTaggingStep.tsx` | Step 2: add department tags to the company. |
-
----
-
-## Design System & Styling
-
-### Color Palette
-
-| Token | Value | Usage |
-|-------|-------|-------|
-| Background (primary) | `#050505` | Page background |
-| Background (surface) | `#0f0f0f` | Cards, forms |
-| Background (sidebar) | `#0a0a0a` | DashboardLayout sidebar |
-| Border | `white/5` or `white/10` | Subtle borders |
-| Text (primary) | `zinc-100` | Headings, body |
-| Text (secondary) | `zinc-400` / `zinc-500` | Descriptions, labels |
-| Accent (primary) | `emerald-500` (`#10b981`) | Buttons, active states, icons |
-| Accent (hover) | `emerald-400` | Button hover |
-| Destructive | `red-400` / `red-500` | Delete actions |
-
-### Typography Conventions
-
-- **Page headings**: `text-3xl font-light text-zinc-100`
-- **Subtitles**: `text-zinc-500 text-sm`
-- **Labels**: `text-[10px] uppercase tracking-widest font-bold text-zinc-500`
-- **Body text**: `text-sm text-zinc-300`
-
-### Form Input Style
-
-```
-bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-zinc-100
-focus:outline-none focus:border-emerald-500/50 transition-colors
-```
-
-### Button Style (Primary)
-
-```
-bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-3 rounded-lg
-font-bold uppercase tracking-wide transition-colors text-sm
-```
-
----
-
-## Key Behaviors & Gotchas
-
-### 1. First-Run MongoDB Download
-
-`mongodb-memory-server` downloads a ~660MB MongoDB binary the first time `npm run dev` is run. This is cached in `~/.cache/mongodb-binaries/` afterward. The server will not respond to HTTP requests until this finishes.
-
-### 2. Single-Port Architecture
-
-Both the API and the frontend are served from **port 3000**. The Vite dev server runs as Express middleware, NOT as a separate process. This means:
-- `http://localhost:3000` serves the React SPA
-- `http://localhost:3000/api/*` serves the REST API
-- There is no separate port 5173 (Vite's default standalone port is not used)
-
-### 3. Authentication is Mocked
-
-There is no JWT, session, or password hashing. The `AuthContext` simply stores role info in `localStorage`. The backend has **no auth middleware** — all API endpoints are public. This is intentional for the MVP.
-
-### 4. Singleton Company Pattern
-
-The backend assumes only ONE company exists. `Company.findOne()` (no filter) is used everywhere. If you create a second company, behavior is undefined.
-
-### 5. Soft-Delete for Departments
-
-`deleteDepartment` sets `active: false` rather than actually removing the document. `getDepartments` filters for `active: true`.
-
-### 6. DataManagementPage is Legacy
-
-`src/pages/DataManagementPage.tsx` still exists but is **not routed** in `App.tsx`. Its functionality has been moved to `src/pages/dashboard/CarbonLogsPage.tsx`. It can be safely deleted.
-
-### 7. Settings are Client-Only
-
-The Settings page saves preferences to `localStorage` under key `"ecotrack_settings"`. There is no backend persistence for settings. The theme toggle is present but does not actually change the app theme (the app is always dark mode).
-
-### 8. Export Format
-
-The Reports page's "Generate CSV Report" button actually downloads an **Excel `.xlsx` file** (via ExcelJS), not a CSV. The file is generated server-side at `/api/analytics/export`.
-
----
-
-## Known Limitations & TODOs
-
-### Missing Features
-
-- [ ] **Real Authentication**: No JWT/session auth, no password hashing, no registration backend.
-- [ ] **Multi-Tenancy**: App only supports a single company. No company isolation.
-- [ ] **User Seed Data**: The `seedMockData.ts` does not create any `User` documents. The Users page will show "No users found" until users are manually created.
-- [ ] **Register / Forgot Password**: These pages exist as UI only. They do not connect to any backend endpoint.
-- [ ] **Theme Toggle**: Settings page has a theme selector but it doesn't actually apply light mode.
-- [ ] **Title Tag**: `index.html` still says "My Google AI Studio App" — should be changed to "EcoTrack".
-- [ ] **Onboarding Flow**: The `/onboarding` route is not connected in the current routing. The setup wizard exists but is not accessible from the login flow.
-- [ ] **Real-time Updates**: No WebSocket or SSE for live data updates.
-- [ ] **Test Suite**: No unit or integration tests exist.
-
-### Known Bugs
-
-- The `ProfilePage` hardcodes the email as `client@ecotrack.com` instead of reading it from auth state.
-- The `LandingPage` "Get Started" button links to `/auth` which doesn't exist — it should link to `/login`.
-
----
-
-## CSV Upload Format
-
-For bulk uploading emission logs via the CSV uploader, the file must have these column headers (case-sensitive):
-
-```csv
-date,department,activityType,rawAmount,rawUnit,source
-2024-01-15,HR,Travel,500,miles,Business trip
-2024-01-16,Manufacturing,Utilities,2000,kWh,Monthly bill
-2024-01-17,Logistics,Supply Chain,1500,kg,Shipment
-```
-
-| Column | Required | Description |
-|--------|----------|-------------|
-| `date` | ✅ | ISO date string (YYYY-MM-DD) |
-| `department` | ✅ | Must match an existing department name (case-insensitive) |
-| `activityType` | ✅ | One of: `Travel`, `Utilities`, `Supply Chain`, `Other` |
-| `rawAmount` | ✅ | Numeric value |
-| `rawUnit` | ✅ | Unit matching the activity type (e.g., `miles`, `kWh`, `kg`, `unit`) |
-| `source` | ❌ | Optional description |
-
-Unmatched department names or invalid data will be reported as row-level errors in the upload response.
-
----
-
-## For Future Agents
-
-If you are an agent picking up this project, here is a quick-start checklist:
-
-1. **Run** `npm install && npm run dev` and wait for `Server running on http://0.0.0.0:3000`.
-2. **Lint** with `npm run lint` (runs `tsc --noEmit`). The project should pass cleanly.
-3. **Login** at `http://localhost:3000/login` with `admin@ecotrack.com` / any password.
-4. **Key files to understand first**:
-   - `server.ts` — entire server bootstrap
-   - `src/App.tsx` — all routes and RBAC logic
-   - `src/components/layout/DashboardLayout.tsx` — sidebar navigation and role filtering
-   - `src/context/AuthContext.tsx` — how auth state works
-5. **The database is ephemeral** — all data is lost when the server restarts (unless `MONGO_URI` is set).
-6. **There is no auth middleware on the backend** — all API routes are open.
-7. **The legacy `DataManagementPage.tsx`** is dead code and can be removed.
+</div>

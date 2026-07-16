@@ -8,7 +8,7 @@ export interface IDepartment extends Document {
 
 const DepartmentSchema = new Schema<IDepartment>({
   companyId: { type: Schema.Types.ObjectId, ref: "Company", required: true },
-  name: { type: String, required: true },
+  name: { type: String, required: true, trim: true },
   active: { type: Boolean, default: true }
 });
 

@@ -1,25 +1,51 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Leaf } from "lucide-react";
+import { useAuth } from "../../context/AuthContext";
+import { COUNTRIES } from "../../constants/regions";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
+  const { register } = useAuth();
   const [formData, setFormData] = useState({
     companyName: "",
+    region: "",
     name: "",
     email: "",
     password: "",
     confirmPassword: ""
   });
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate successful registration
+    setError(null);
+
     if (formData.password !== formData.confirmPassword) {
-      alert("Passwords do not match");
+      setError("Passwords do not match");
       return;
     }
-    navigate("/login");
+    if (formData.password.length < 8) {
+      setError("Password must be at least 8 characters");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      await register({
+        name: formData.name,
+        email: formData.email,
+        password: formData.password,
+        companyName: formData.companyName,
+        region: formData.region
+      });
+      navigate("/onboarding");
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Registration failed. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -49,6 +75,20 @@ export default function RegisterPage() {
                 placeholder="Acme Corp"
                 required
               />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Country</label>
+              <select
+                value={formData.region}
+                onChange={e => setFormData({...formData, region: e.target.value})}
+                className="w-full bg-zinc-900 border border-white/10 rounded-lg px-4 py-3 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500/50 transition-colors cursor-pointer"
+                required
+              >
+                <option value="" disabled>Select a country...</option>
+                {COUNTRIES.map((country) => (
+                  <option key={country} value={country}>{country}</option>
+                ))}
+              </select>
             </div>
             <div>
               <label className="block text-[10px] uppercase tracking-widest font-bold text-zinc-500 mb-2">Your Name</label>
@@ -96,11 +136,18 @@ export default function RegisterPage() {
             </div>
           </div>
           
+          {error && (
+            <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3 mt-6">
+              {error}
+            </div>
+          )}
+
           <button
             type="submit"
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wide py-3 rounded-lg transition-colors text-sm mt-6"
+            disabled={loading}
+            className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-500 text-black font-bold uppercase tracking-wide py-3 rounded-lg transition-colors text-sm mt-6"
           >
-            Create Account
+            {loading ? "Creating Account..." : "Create Account"}
           </button>
           
           <div className="text-center mt-6">

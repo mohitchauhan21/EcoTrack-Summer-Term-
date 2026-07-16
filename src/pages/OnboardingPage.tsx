@@ -1,37 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import CompanyBoundariesStep from "../components/onboarding/CompanyBoundariesStep";
 import DepartmentTaggingStep from "../components/onboarding/DepartmentTaggingStep";
 import apiClient from "../api/axiosClient";
-import { useAuth } from "../context/AuthContext";
 
 export default function OnboardingPage() {
-  const [step, setStep] = useState(1);
-  const [companyCreated, setCompanyCreated] = useState(false);
   const navigate = useNavigate();
-  const { login } = useAuth();
+  const [companyId, setCompanyId] = useState<string | undefined>(undefined);
+  const [deptCount, setDeptCount] = useState(0);
 
-  const handleCompanyComplete = async (name: string, region: string) => {
+  useEffect(() => {
+    // By the time someone reaches this page, register() has already created
+    // their company and logged them in — this step only needs the companyId
+    // so DepartmentTaggingStep doesn't have to re-fetch it on every tag add.
+    apiClient.get("/company")
+      .then((res) => setCompanyId(res.data._id))
+      .catch((err) => console.error("Failed to fetch company", err));
+
+    refreshDeptCount();
+  }, []);
+
+  const refreshDeptCount = async () => {
     try {
-      await apiClient.post("/company", { name, region });
-      setCompanyCreated(true);
-      login({ companyName: name, role: "admin", userName: "Admin User" });
-      setStep(2);
+      const res = await apiClient.get("/departments");
+      setDeptCount(res.data.length);
     } catch (error) {
-      console.error("Failed to create company", error);
+      console.error("Error checking departments", error);
     }
   };
 
-  const handleCompleteSetup = async () => {
-    try {
-      const depts = await apiClient.get("/departments");
-      if (depts.data.length > 0) {
-        navigate("/dashboard");
-      } else {
-        alert("Please add at least one department tag to continue.");
-      }
-    } catch (error) {
-      console.error("Error verifying departments", error);
+  const handleCompleteSetup = () => {
+    if (deptCount > 0) {
+      navigate("/dashboard");
+    } else {
+      alert("Please add at least one department tag to continue.");
     }
   };
 
@@ -40,20 +41,15 @@ export default function OnboardingPage() {
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="mb-8">
           <h1 className="text-3xl font-light text-zinc-100 tracking-tight">Welcome to EcoTrack</h1>
-          <p className="text-zinc-500 mt-2">Let's set up your workspace before we dive into the data.</p>
+          <p className="text-zinc-500 mt-2">One more step — tag your departments before we dive into the data.</p>
         </div>
 
-        <CompanyBoundariesStep onComplete={handleCompanyComplete} />
-        
-        {step === 2 && (
-          <DepartmentTaggingStep />
-        )}
+        <DepartmentTaggingStep companyId={companyId} onTagsChanged={refreshDeptCount} />
 
         <div className="pt-6">
           <button
             onClick={handleCompleteSetup}
-            disabled={step !== 2}
-            className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-500 text-black font-bold uppercase tracking-wide py-4 rounded-xl transition-colors"
+            className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wide py-4 rounded-xl transition-colors"
           >
             COMPLETE SETUP & LAUNCH DASHBOARD
           </button>

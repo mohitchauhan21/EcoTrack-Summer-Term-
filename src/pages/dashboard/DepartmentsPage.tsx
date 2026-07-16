@@ -26,8 +26,6 @@ export default function DepartmentsPage() {
     } catch (error) {
       console.error('Failed to fetch departments', error);
       toast('Failed to fetch departments', 'error');
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -41,13 +39,20 @@ export default function DepartmentsPage() {
   };
 
   useEffect(() => {
-    fetchCompanyId();
-    fetchDepartments();
+    (async () => {
+      setLoading(true);
+      await Promise.all([fetchCompanyId(), fetchDepartments()]);
+      setLoading(false);
+    })();
   }, []);
 
   const handleAddDepartment = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newDeptName.trim() || !companyId) return;
+    if (!newDeptName.trim()) return;
+    if (!companyId) {
+      toast('Company details are still loading. Please try again in a moment.', 'error');
+      return;
+    }
 
     setAdding(true);
     try {
@@ -55,9 +60,9 @@ export default function DepartmentsPage() {
       toast('Department added successfully', 'success');
       setNewDeptName('');
       await fetchDepartments();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to add department', error);
-      toast('Failed to add department', 'error');
+      toast(error?.response?.data?.message || 'Failed to add department', 'error');
     } finally {
       setAdding(false);
     }

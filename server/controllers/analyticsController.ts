@@ -6,7 +6,11 @@ import ExcelJS from "exceljs";
 const buildMatchStage = (req: Request) => {
   const { departmentId, startDate, endDate } = req.query;
   const match: any = {};
-  
+
+  // Every analytics query must be scoped to the caller's own company —
+  // without this, one company could see another company's emissions data.
+  match.companyId = new mongoose.Types.ObjectId(req.user!.companyId);
+
   if (departmentId && departmentId !== "all") {
     match.departmentId = new mongoose.Types.ObjectId(departmentId as string);
   }
