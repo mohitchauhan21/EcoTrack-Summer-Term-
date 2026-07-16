@@ -468,7 +468,7 @@ See the [LICENSE](./LICENSE) file for full details.
 
 <br/>
 
-Built with 💚 by [**Mohit Chauhan**](https://github.com/mohitchauhan21)
+Built with 💚 by [**Mohit Chauhan**](https://github.com/mohitchauhan21) [**Aman Kumar**](https://github.com/aman08-yadav)
 
 *If this project helped you, consider giving it a ⭐ — it means a lot!*
 
