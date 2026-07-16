@@ -23,9 +23,11 @@ import ReportsPage from "./pages/dashboard/ReportsPage";
 import UsersPage from "./pages/dashboard/UsersPage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
+import OnboardingPage from "./pages/OnboardingPage";
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) {
-  const { isAuthenticated, role } = useAuth();
+  const { isAuthenticated, role, isLoading } = useAuth();
+  if (isLoading) return null; // still checking localStorage, don't redirect yet
   if (!isAuthenticated) return <Navigate to="/login" />;
   if (allowedRoles && role && !allowedRoles.includes(role)) {
     return <Navigate to="/dashboard" />;
@@ -58,6 +60,13 @@ export default function App() {
                   <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 </Route>
                 
+                {/* Onboarding: reachable immediately after registration, before the full dashboard */}
+                <Route path="/onboarding" element={
+                  <ProtectedRoute>
+                    <OnboardingPage />
+                  </ProtectedRoute>
+                } />
+
                 {/* Protected Dashboard Routes with Sidebar */}
                 <Route path="/dashboard" element={
                   <ProtectedRoute>

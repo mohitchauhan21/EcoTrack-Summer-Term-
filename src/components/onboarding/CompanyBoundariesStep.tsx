@@ -48,7 +48,6 @@ export default function CompanyBoundariesStep({ onComplete }: Props) {
             <option value="Asia Pacific">Asia Pacific</option>
             <option value="Latin America">Latin America</option>
             <option value="Middle East & Africa">Middle East & Africa</option>
-            <option value="Mumbai/India">Mumbai/India</option>
           </select>
         </div>
         <button

@@ -2,10 +2,14 @@ import express from "express";
 import path from "path";
 import cors from "cors";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { createServer as createViteServer } from "vite";
 
+dotenv.config();
+
 // Routes
+import authRoutes from "./server/routes/authRoutes.js";
 import companyRoutes from "./server/routes/companyRoutes.js";
 import departmentRoutes from "./server/routes/departmentRoutes.js";
 import logRoutes from "./server/routes/logRoutes.js";
@@ -37,6 +41,7 @@ async function startServer() {
 
   // API Routes
   app.get("/api/health", (req, res) => res.json({ status: "ok" }));
+  app.use("/api/auth", authRoutes);
   app.use("/api/company", companyRoutes);
   app.use("/api/departments", departmentRoutes);
   app.use("/api/logs", logRoutes);

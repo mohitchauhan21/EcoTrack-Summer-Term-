@@ -1,30 +1,26 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import apiClient from "../../api/axiosClient";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
   const { login } = useAuth();
   const navigate = useNavigate();
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    // Mock role-based login based on email for testing
-    let role: "superadmin" | "admin" | "employee" | "executive" = "admin";
-    if (email.includes("superadmin")) role = "superadmin";
-    else if (email.includes("employee")) role = "employee";
-    else if (email.includes("exec")) role = "executive";
-
+    setError(null);
+    setLoading(true);
     try {
-      // In a real app, this would be a POST to /auth/login
-      login({ companyName: "Acme Corporation", role, userName: `${role.charAt(0).toUpperCase() + role.slice(1)} User` });
+      await login(email, password);
       navigate("/dashboard");
-    } catch (error) {
-      console.error(error);
-      navigate("/dashboard");
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Invalid email or password");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -69,11 +65,19 @@ export default function LoginPage() {
           <div className="flex justify-end">
             <Link to="/forgot-password" className="text-xs text-emerald-500 hover:text-emerald-400">Forgot Password?</Link>
           </div>
+
+          {error && (
+            <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+              {error}
+            </div>
+          )}
+
           <button
             type="submit"
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wide py-3 rounded-lg transition-colors text-sm mt-2"
+            disabled={loading}
+            className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-500 text-black font-bold uppercase tracking-wide py-3 rounded-lg transition-colors text-sm mt-2"
           >
-            Sign In
+            {loading ? "Signing In..." : "Sign In"}
           </button>
           
           <div className="text-center mt-4">
@@ -83,7 +87,7 @@ export default function LoginPage() {
         </form>
         
         <div className="mt-8 p-4 bg-zinc-900/50 border border-white/5 rounded-lg text-xs text-zinc-400 space-y-2">
-          <p className="font-bold text-zinc-300 mb-2 uppercase tracking-widest text-[10px]">Demo Credentials (Type email to test roles):</p>
+          <p className="font-bold text-zinc-300 mb-2 uppercase tracking-widest text-[10px]">Demo Credentials (all share the same password)</p>
           <div className="flex justify-between items-center">
             <span>Admin: <strong className="text-zinc-200">admin@ecotrack.com</strong></span>
           </div>
@@ -95,6 +99,9 @@ export default function LoginPage() {
           </div>
           <div className="flex justify-between items-center">
             <span>Super Admin: <strong className="text-zinc-200">superadmin@ecotrack.com</strong></span>
+          </div>
+          <div className="flex justify-between items-center pt-2 border-t border-white/5 mt-2">
+            <span>Password: <strong className="text-zinc-200">Password123!</strong></span>
           </div>
         </div>
       </div>
