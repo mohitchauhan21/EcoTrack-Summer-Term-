@@ -22,15 +22,11 @@ export default function DepartmentTaggingStep() {
   const handleAddTag = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!newTag.trim()) return;
-    
+
     try {
-      // Assuming company is already created, we might need companyId but backend might handle if only 1 company.
-      // Wait, backend createDepartment expects { companyId, name }. We should fetch company to get ID, or modify backend to auto-attach if single company.
-      // Let's modify backend or fetch company here.
-      const compRes = await apiClient.get("/company");
-      await apiClient.post("/departments", { companyId: compRes.data._id, name: newTag.trim() });
+      await apiClient.post("/departments", { name: newTag.trim() });
       setNewTag("");
-      fetchTags();
+      await fetchTags();
     } catch (error) {
       console.error("Error adding tag", error);
     }
@@ -39,7 +35,7 @@ export default function DepartmentTaggingStep() {
   const handleRemoveTag = async (id: string) => {
     try {
       await apiClient.delete(`/departments/${id}`);
-      fetchTags();
+      await fetchTags();
     } catch (error) {
       console.error("Error removing tag", error);
     }

@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
+import apiClient from "../../api/axiosClient";
 import { 
   LayoutDashboard, 
   Building2, 
@@ -21,6 +22,19 @@ export default function DashboardLayout() {
   const navigate = useNavigate();
   const location = useLocation();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const checkCompany = async () => {
+      try {
+        await apiClient.get("/company");
+      } catch (error: any) {
+        if (error.response && error.response.status === 404) {
+          navigate("/onboarding");
+        }
+      }
+    };
+    checkCompany();
+  }, [navigate]);
 
   const handleLogout = () => {
     logout();

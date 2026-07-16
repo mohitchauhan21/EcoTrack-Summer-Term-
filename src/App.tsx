@@ -23,6 +23,7 @@ import ReportsPage from "./pages/dashboard/ReportsPage";
 import UsersPage from "./pages/dashboard/UsersPage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
+import OnboardingPage from "./pages/OnboardingPage";
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) {
   const { isAuthenticated, role } = useAuth();
@@ -57,6 +58,12 @@ export default function App() {
                   <Route path="/register" element={<RegisterPage />} />
                   <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 </Route>
+
+                <Route path="/onboarding" element={
+                  <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
+                    <OnboardingPage />
+                  </ProtectedRoute>
+                } />
                 
                 {/* Protected Dashboard Routes with Sidebar */}
                 <Route path="/dashboard" element={

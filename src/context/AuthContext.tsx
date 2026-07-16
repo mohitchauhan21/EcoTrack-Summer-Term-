@@ -13,6 +13,7 @@ interface AuthState {
 interface AuthContextType extends AuthState {
   login: (data: { companyName: string, role: Role, userName: string, departmentId?: string }) => void;
   logout: () => void;
+  updateCompanyName: (name: string) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -44,8 +45,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.removeItem("auth");
   };
 
+  const updateCompanyName = (name: string) => {
+    setAuth((prev) => {
+      const newState = { ...prev, companyName: name };
+      localStorage.setItem("auth", JSON.stringify(newState));
+      return newState;
+    });
+  };
+
   return (
-    <AuthContext.Provider value={{ ...auth, login, logout }}>
+    <AuthContext.Provider value={{ ...auth, login, logout, updateCompanyName }}>
       {children}
     </AuthContext.Provider>
   );

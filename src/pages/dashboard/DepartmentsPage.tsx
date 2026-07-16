@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Trash2 } from 'lucide-react';
+import { Plus, Trash2, Edit2, Check, X } from 'lucide-react';
 import apiClient from '../../api/axiosClient';
 import { useAuth } from '../../context/AuthContext';
 import { useToast } from '../../context/ToastContext';
@@ -18,6 +18,11 @@ export default function DepartmentsPage() {
   const [newDeptName, setNewDeptName] = useState('');
   const [adding, setAdding] = useState(false);
   const [companyId, setCompanyId] = useState<string>('');
+
+  // Inline editing states
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [editingName, setEditingName] = useState<string>('');
+  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   const fetchDepartments = async () => {
     try {
@@ -55,11 +60,30 @@ export default function DepartmentsPage() {
       toast('Department added successfully', 'success');
       setNewDeptName('');
       await fetchDepartments();
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to add department', error);
-      toast('Failed to add department', 'error');
+      const errMsg = error.response?.data?.message || 'Failed to add department';
+      toast(errMsg, 'error');
     } finally {
       setAdding(false);
+    }
+  };
+
+  const handleUpdateDepartment = async (id: string) => {
+    if (!editingName.trim()) return;
+
+    setUpdatingId(id);
+    try {
+      await apiClient.put(`/departments/${id}`, { name: editingName.trim() });
+      toast('Department updated successfully', 'success');
+      setEditingId(null);
+      await fetchDepartments();
+    } catch (error: any) {
+      console.error('Failed to update department', error);
+      const errMsg = error.response?.data?.message || 'Failed to update department';
+      toast(errMsg, 'error');
+    } finally {
+      setUpdatingId(null);
     }
   };
 
@@ -68,6 +92,10 @@ export default function DepartmentsPage() {
     try {
       await apiClient.delete(`/departments/${id}`);
       toast('Department removed', 'success');
+      // If we are currently editing this department, clear editing state
+      if (editingId === id) {
+        setEditingId(null);
+      }
       await fetchDepartments();
     } catch (error) {
       console.error('Failed to delete department', error);
@@ -129,18 +157,62 @@ export default function DepartmentsPage() {
             <tbody className="text-sm text-zinc-300">
               {departments.map((dept) => (
                 <tr key={dept._id} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors">
-                  <td className="px-6 py-4 font-medium text-zinc-100">{dept.name}</td>
-                  <td className="px-6 py-4 font-mono text-xs text-zinc-500">{dept._id}</td>
-                  {canManage && (
-                    <td className="px-6 py-4 text-right">
-                      <button
-                        onClick={() => handleDelete(dept._id)}
-                        className="text-red-400 hover:text-red-300 transition-colors p-2 rounded-lg hover:bg-red-500/10 inline-flex items-center"
-                        title="Delete Department"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </td>
+                  {editingId === dept._id ? (
+                    <>
+                      <td className="px-6 py-4 font-medium text-zinc-100">
+                        <input
+                          type="text"
+                          value={editingName}
+                          onChange={(e) => setEditingName(e.target.value)}
+                          className="bg-zinc-900 border border-emerald-500/50 rounded-lg px-3 py-1.5 text-sm text-zinc-100 focus:outline-none focus:border-emerald-500 transition-colors w-full max-w-xs"
+                          required
+                        />
+                      </td>
+                      <td className="px-6 py-4 font-mono text-xs text-zinc-500">{dept._id}</td>
+                      <td className="px-6 py-4 text-right space-x-2">
+                        <button
+                          onClick={() => handleUpdateDepartment(dept._id)}
+                          disabled={updatingId === dept._id || !editingName.trim()}
+                          className="text-emerald-400 hover:text-emerald-300 disabled:opacity-50 transition-colors p-2 rounded-lg hover:bg-emerald-500/10 inline-flex items-center"
+                          title="Save Changes"
+                        >
+                          <Check className="w-4.5 h-4.5" />
+                        </button>
+                        <button
+                          onClick={() => setEditingId(null)}
+                          className="text-zinc-500 hover:text-zinc-300 transition-colors p-2 rounded-lg hover:bg-white/5 inline-flex items-center"
+                          title="Cancel"
+                        >
+                          <X className="w-4.5 h-4.5" />
+                        </button>
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="px-6 py-4 font-medium text-zinc-100">{dept.name}</td>
+                      <td className="px-6 py-4 font-mono text-xs text-zinc-500">{dept._id}</td>
+                      {canManage && (
+                        <td className="px-6 py-4 text-right space-x-2">
+                          <button
+                            onClick={() => {
+                              setEditingId(dept._id);
+                              setEditingName(dept.name);
+                            }}
+                            className="text-zinc-400 hover:text-zinc-200 transition-colors p-2 rounded-lg hover:bg-white/5 inline-flex items-center"
+                            title="Edit Department"
+                          >
+                            <Edit2 className="w-4 h-4" />
+                          </button>
+                          <button
+                            onClick={() => handleDelete(dept._id)}
+                            className="text-red-400 hover:text-red-300 transition-colors p-2 rounded-lg hover:bg-red-500/10 inline-flex items-center"
+                            title="Delete Department"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </td>
+                      )}
+                    </>
                   )}
                 </tr>
               ))}

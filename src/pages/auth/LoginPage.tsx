@@ -19,8 +19,18 @@ export default function LoginPage() {
     else if (email.includes("exec")) role = "executive";
 
     try {
-      // In a real app, this would be a POST to /auth/login
-      login({ companyName: "Acme Corporation", role, userName: `${role.charAt(0).toUpperCase() + role.slice(1)} User` });
+      let companyName = "Acme Corporation";
+      try {
+        const compRes = await apiClient.get("/company");
+        if (compRes.data && compRes.data.name) {
+          companyName = compRes.data.name;
+        }
+      } catch (err) {
+        console.warn("No company profile found during login.");
+        companyName = "";
+      }
+
+      login({ companyName, role, userName: `${role.charAt(0).toUpperCase() + role.slice(1)} User` });
       navigate("/dashboard");
     } catch (error) {
       console.error(error);
