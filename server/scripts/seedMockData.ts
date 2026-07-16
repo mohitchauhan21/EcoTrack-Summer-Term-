@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 import { MongoMemoryServer } from "mongodb-memory-server";
 import { Company } from "../models/Company.js";
 import { Department } from "../models/Department.js";
@@ -93,15 +94,21 @@ export async function seedData() {
     console.log(`Seeded ${logs.length} logs successfully!`);
 
     console.log("Seeding users...");
+    // All seeded/demo accounts share this password so the whole team and grader
+    // can log in and test the app. Never use a hardcoded password like this in production.
+    const DEFAULT_PASSWORD = "Password123!";
+    const hashedPassword = await bcrypt.hash(DEFAULT_PASSWORD, 10);
+
     await User.insertMany([
-      { name: "Super Admin", email: "superadmin@ecotrack.com", role: "superadmin", companyId: company._id },
-      { name: "Company Admin", email: "admin@ecotrack.com", role: "admin", companyId: company._id },
-      { name: "Executive Viewer", email: "exec@ecotrack.com", role: "executive", companyId: company._id },
-      { name: "John Employee", email: "employee@ecotrack.com", role: "employee", companyId: company._id, departmentId: deptMap["HR"] },
-      { name: "Jane Logistics", email: "jane@ecotrack.com", role: "employee", companyId: company._id, departmentId: deptMap["Logistics"] },
-      { name: "Alice Mfg", email: "alice@ecotrack.com", role: "employee", companyId: company._id, departmentId: deptMap["Manufacturing"] }
+      { name: "Super Admin", email: "superadmin@ecotrack.com", password: hashedPassword, role: "superadmin", companyId: company._id },
+      { name: "Company Admin", email: "admin@ecotrack.com", password: hashedPassword, role: "admin", companyId: company._id },
+      { name: "Executive Viewer", email: "exec@ecotrack.com", password: hashedPassword, role: "executive", companyId: company._id },
+      { name: "John Employee", email: "employee@ecotrack.com", password: hashedPassword, role: "employee", companyId: company._id, departmentId: deptMap["HR"] },
+      { name: "Jane Logistics", email: "jane@ecotrack.com", password: hashedPassword, role: "employee", companyId: company._id, departmentId: deptMap["Logistics"] },
+      { name: "Alice Mfg", email: "alice@ecotrack.com", password: hashedPassword, role: "employee", companyId: company._id, departmentId: deptMap["Manufacturing"] }
     ]);
     console.log("Seeded 6 users successfully!");
+    console.log(`All seeded users share the password: ${DEFAULT_PASSWORD}`);
 
   } catch (error) {
     console.error("Error seeding data:", error);

@@ -1,11 +1,10 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import { Department } from "../models/Department.js";
-import { Company } from "../models/Company.js";
 
 export const getDepartments = async (req: Request, res: Response) => {
   try {
-    const departments = await Department.find({ active: true });
+    const departments = await Department.find({ active: true, companyId: req.user!.companyId });
     res.json(departments);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
@@ -14,22 +13,13 @@ export const getDepartments = async (req: Request, res: Response) => {
 
 export const createDepartment = async (req: Request, res: Response) => {
   try {
-    const { companyId } = req.body;
+    const companyId = req.user!.companyId; // trust the token, not the request body
     const name = typeof req.body.name === "string" ? req.body.name.trim() : "";
 
     if (!name) {
       return res.status(400).json({ message: "Department name is required" });
     }
-    if (!mongoose.Types.ObjectId.isValid(companyId)) {
-      return res.status(400).json({ message: "Valid companyId is required" });
-    }
 
-    const companyExists = await Company.exists({ _id: companyId });
-    if (!companyExists) {
-      return res.status(404).json({ message: "Company not found" });
-    }
-
-    // Case-insensitive duplicate check within the same company
     const duplicate = await Department.findOne({
       companyId,
       active: true,
@@ -53,7 +43,11 @@ export const deleteDepartment = async (req: Request, res: Response) => {
       return res.status(400).json({ message: "Invalid department id" });
     }
 
-    const department = await Department.findByIdAndUpdate(id, { active: false });
+    // Scope the update to the caller's own company so one company can't deactivate another's department.
+    const department = await Department.findOneAndUpdate(
+      { _id: id, companyId: req.user!.companyId },
+      { active: false }
+    );
     if (!department) {
       return res.status(404).json({ message: "Department not found" });
     }

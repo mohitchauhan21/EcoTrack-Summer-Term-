@@ -4,9 +4,10 @@ import apiClient from "../../api/axiosClient";
 
 interface Props {
   companyId?: string;
+  onTagsChanged?: (count: number) => void;
 }
 
-export default function DepartmentTaggingStep({ companyId: companyIdProp }: Props) {
+export default function DepartmentTaggingStep({ companyId: companyIdProp, onTagsChanged }: Props) {
   const [tags, setTags] = useState<{ _id: string; name: string }[]>([]);
   const [newTag, setNewTag] = useState("");
   const [companyId, setCompanyId] = useState<string | undefined>(companyIdProp);
@@ -26,6 +27,7 @@ export default function DepartmentTaggingStep({ companyId: companyIdProp }: Prop
     try {
       const res = await apiClient.get("/departments");
       setTags(res.data);
+      onTagsChanged?.(res.data.length);
     } catch (error) {
       console.error("Error fetching tags", error);
     }

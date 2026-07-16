@@ -1,6 +1,5 @@
 import { Request, Response } from "express";
 import { EmissionLog } from "../models/EmissionLog.js";
-import { Company } from "../models/Company.js";
 import { Department } from "../models/Department.js";
 import { calculateCarbonEquivalent } from "../utils/conversionFactors.js";
 import csvParser from "csv-parser";
@@ -8,14 +7,20 @@ import { Readable } from "stream";
 
 export const createLog = async (req: Request, res: Response) => {
   try {
+    const companyId = req.user!.companyId;
     const { departmentId, date, activityType, rawAmount, rawUnit, source } = req.body;
-    const company = await Company.findOne();
-    if (!company) return res.status(404).json({ message: "Company not found" });
+
+    // Make sure the department actually belongs to this user's company —
+    // otherwise a log could be attached to another company's department.
+    const department = await Department.findOne({ _id: departmentId, companyId });
+    if (!department) {
+      return res.status(404).json({ message: "Department not found" });
+    }
 
     const carbonEquivalent = calculateCarbonEquivalent(activityType, rawUnit, rawAmount);
 
     const log = await EmissionLog.create({
-      companyId: company._id,
+      companyId,
       departmentId,
       date,
       activityType,
@@ -35,7 +40,7 @@ export const getLogs = async (req: Request, res: Response) => {
   try {
     const { page = 1, limit = 10, departmentId, startDate, endDate } = req.query;
     
-    const query: any = {};
+    const query: any = { companyId: req.user!.companyId };
     if (departmentId && departmentId !== "all") query.departmentId = departmentId;
     if (startDate || endDate) {
       query.date = {};
@@ -61,20 +66,23 @@ export const updateLog = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const { activityType, rawAmount, rawUnit } = req.body;
-    
+    const companyId = req.user!.companyId;
+
+    const log = await EmissionLog.findOne({ _id: id, companyId });
+    if (!log) return res.status(404).json({ message: "Log not found" });
+
     const updates = { ...req.body };
     if (activityType || rawAmount || rawUnit) {
-      const log = await EmissionLog.findById(id);
-      if (!log) return res.status(404).json({ message: "Log not found" });
-      
       const newActivity = activityType || log.activityType;
       const newUnit = rawUnit || log.rawUnit;
       const newAmount = rawAmount !== undefined ? rawAmount : log.rawAmount;
-      
+
       updates.carbonEquivalent = calculateCarbonEquivalent(newActivity, newUnit, newAmount);
     }
+    // Never let the request body override which company this log belongs to.
+    delete updates.companyId;
 
-    const updatedLog = await EmissionLog.findByIdAndUpdate(id, updates, { new: true });
+    const updatedLog = await EmissionLog.findOneAndUpdate({ _id: id, companyId }, updates, { new: true });
     res.json(updatedLog);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
@@ -84,7 +92,8 @@ export const updateLog = async (req: Request, res: Response) => {
 export const deleteLog = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    await EmissionLog.findByIdAndDelete(id);
+    const deleted = await EmissionLog.findOneAndDelete({ _id: id, companyId: req.user!.companyId });
+    if (!deleted) return res.status(404).json({ message: "Log not found" });
     res.json({ message: "Log deleted" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
@@ -96,10 +105,9 @@ export const bulkUploadLogs = async (req: Request, res: Response) => {
   if (!file) return res.status(400).json({ message: "No file uploaded" });
 
   try {
-    const company = await Company.findOne();
-    if (!company) return res.status(404).json({ message: "Company not found" });
+    const companyId = req.user!.companyId;
 
-    const departments = await Department.find({ companyId: company._id });
+    const departments = await Department.find({ companyId });
     const deptMap = new Map(departments.map(d => [d.name.toLowerCase(), d._id]));
 
     const docs: any[] = [];
@@ -139,7 +147,7 @@ export const bulkUploadLogs = async (req: Request, res: Response) => {
         const carbonEquivalent = calculateCarbonEquivalent(activityType, rawUnit, amount);
 
         docs.push({
-          companyId: company._id,
+          companyId,
           departmentId: deptId,
           date: parsedDate,
           activityType,
