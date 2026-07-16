@@ -1,14 +1,26 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { KeyRound, ArrowLeft } from "lucide-react";
+import apiClient from "../../api/axiosClient";
 
 export default function ForgotPasswordPage() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setSubmitted(true);
+    setError(null);
+    setLoading(true);
+    try {
+      await apiClient.post("/auth/forgot-password", { email });
+      setSubmitted(true);
+    } catch (err: any) {
+      setError(err?.response?.data?.message || "Failed to send reset request. Please try again.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,12 +60,19 @@ export default function ForgotPasswordPage() {
                 required
               />
             </div>
+
+            {error && (
+              <div className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">
+                {error}
+              </div>
+            )}
             
             <button
               type="submit"
-              className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wide py-3 rounded-lg transition-colors text-sm mt-2"
+              disabled={loading}
+              className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:bg-zinc-800 disabled:text-zinc-500 text-black font-bold uppercase tracking-wide py-3 rounded-lg transition-colors text-sm mt-2"
             >
-              Send Reset Link
+              {loading ? "Sending..." : "Send Reset Link"}
             </button>
             
             <div className="text-center mt-6">

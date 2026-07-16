@@ -24,10 +24,12 @@ import UsersPage from "./pages/dashboard/UsersPage";
 import SettingsPage from "./pages/dashboard/SettingsPage";
 import ProfilePage from "./pages/ProfilePage";
 import OnboardingPage from "./pages/OnboardingPage";
+import EcoInsightsPage from "./pages/ai/EcoInsightsPage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 function ProtectedRoute({ children, allowedRoles }: { children: React.ReactNode, allowedRoles?: string[] }) {
   const { isAuthenticated, role, isLoading } = useAuth();
-  if (isLoading) return null; // still checking localStorage, don't redirect yet
+  if (isLoading) return null;
   if (!isAuthenticated) return <Navigate to="/login" />;
   if (allowedRoles && role && !allowedRoles.includes(role)) {
     return <Navigate to="/dashboard" />;
@@ -60,24 +62,23 @@ export default function App() {
                   <Route path="/forgot-password" element={<ForgotPasswordPage />} />
                 </Route>
                 
-                {/* Onboarding: reachable immediately after registration, before the full dashboard */}
+                {/* Onboarding */}
                 <Route path="/onboarding" element={
                   <ProtectedRoute>
                     <OnboardingPage />
                   </ProtectedRoute>
                 } />
 
-                {/* Protected Dashboard Routes with Sidebar */}
+                {/* Protected Dashboard Routes */}
                 <Route path="/dashboard" element={
                   <ProtectedRoute>
                     <DashboardLayout />
                   </ProtectedRoute>
                 }>
-                  {/* All authenticated users can see the dashboard index and profile */}
                   <Route index element={<DashboardPage />} />
                   <Route path="profile" element={<ProfilePage />} />
 
-                  {/* Company & Departments: superadmin, admin */}
+                  {/* Company & Departments */}
                   <Route path="company" element={
                     <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
                       <CompanyProfilePage />
@@ -90,7 +91,7 @@ export default function App() {
                   } />
                   <Route path="departments/add" element={
                     <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
-                      <DepartmentsPage /> {/* Reusing component for now */}
+                      <DepartmentsPage />
                     </ProtectedRoute>
                   } />
                   <Route path="departments/:id/edit" element={
@@ -99,7 +100,7 @@ export default function App() {
                     </ProtectedRoute>
                   } />
 
-                  {/* Logs: superadmin, admin, employee */}
+                  {/* Logs */}
                   <Route path="logs" element={
                     <ProtectedRoute allowedRoles={["superadmin", "admin", "employee"]}>
                       <CarbonLogsPage />
@@ -121,7 +122,7 @@ export default function App() {
                     </ProtectedRoute>
                   } />
 
-                  {/* Analytics & Reports: superadmin, admin, executive */}
+                  {/* Analytics & Reports & Eco Insights */}
                   <Route path="analytics" element={
                     <ProtectedRoute allowedRoles={["superadmin", "admin", "executive"]}>
                       <AnalyticsPage />
@@ -132,8 +133,13 @@ export default function App() {
                       <ReportsPage />
                     </ProtectedRoute>
                   } />
+                  <Route path="insights" element={
+                    <ProtectedRoute allowedRoles={["superadmin", "admin", "executive"]}>
+                      <EcoInsightsPage />
+                    </ProtectedRoute>
+                  } />
 
-                  {/* Users & Settings: superadmin, admin */}
+                  {/* Users & Settings */}
                   <Route path="users" element={
                     <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
                       <UsersPage />
@@ -146,7 +152,8 @@ export default function App() {
                   } />
                 </Route>
 
-                <Route path="*" element={<Navigate to="/" />} />
+                {/* 404 - Not Found */}
+                <Route path="*" element={<NotFoundPage />} />
               </Routes>
             </div>
           </BrowserRouter>

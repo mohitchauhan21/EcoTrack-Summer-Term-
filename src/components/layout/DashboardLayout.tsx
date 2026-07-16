@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Outlet, NavLink, useNavigate, useLocation } from "react-router-dom";
 import { 
+  Sparkles,
   LayoutDashboard, 
   Building2, 
   Tags, 
@@ -71,6 +72,12 @@ export default function DashboardLayout() {
       path: "/dashboard/users",
       icon: Users,
       roles: ["superadmin", "admin"]
+    },
+    {
+      name: "Eco Insights",
+      path: "/dashboard/insights",
+      icon: Sparkles,
+      roles: ["superadmin", "admin", "executive"]
     },
     {
       name: "Settings",

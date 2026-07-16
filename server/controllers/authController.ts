@@ -100,3 +100,61 @@ export const getMe = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Server error", error });
   }
 };
+
+// Forgot password - accepts email and generates a reset token
+// In a production app, this would send an email. For this demo, we return the token directly.
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({ message: "Email is required" });
+    }
+
+    const user = await User.findOne({ email: email.toLowerCase() });
+    if (!user) {
+      // Don't reveal whether the email exists - security best practice
+      return res.json({ message: "If an account with that email exists, a reset link has been sent." });
+    }
+
+    // Generate a password reset token valid for 1 hour
+    const resetToken = jwt.sign(
+      { id: user._id.toString(), purpose: "password-reset" },
+      process.env.JWT_SECRET || "fallback-secret",
+      { expiresIn: "1h" }
+    );
+
+    console.log(`[DEMO] Password reset token for ${email}: ${resetToken}`);
+
+    res.json({ message: "If an account with that email exists, a reset link has been sent." });
+  } catch (error) {
+    res.status(500).json({ message: "Server error", error });
+  }
+};
+
+// Reset password using a valid reset token
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const { token, password } = req.body;
+
+    if (!token || !password) {
+      return res.status(400).json({ message: "Token and new password are required" });
+    }
+    if (password.length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters" });
+    }
+
+    const secret = process.env.JWT_SECRET || "fallback-secret";
+    const decoded = jwt.verify(token, secret) as { id: string; purpose: string };
+
+    if (decoded.purpose !== "password-reset") {
+      return res.status(400).json({ message: "Invalid reset token" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    await User.findByIdAndUpdate(decoded.id, { password: hashedPassword });
+
+    res.json({ message: "Password reset successfully. You can now log in with your new password." });
+  } catch (error) {
+    res.status(400).json({ message: "Invalid or expired reset token" });
+  }
+};
