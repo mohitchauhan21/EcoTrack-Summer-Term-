@@ -24,15 +24,61 @@ async function connectDb() {
     }
 
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("Connected to MongoDB Atlas");
+
+    console.log("✅ Connected to MongoDB Atlas (Production)");
+    console.log("📂 Database:", mongoose.connection.db?.databaseName);
+    console.log("🌐 Host:", mongoose.connection.host);
+
+    if (mongoose.connection.db) {
+      const collections = await mongoose.connection.db
+        .listCollections()
+        .toArray();
+
+      console.log(
+        "📑 Collections:",
+        collections.map((c) => c.name)
+      );
+    }
   } else {
     if (process.env.MONGO_URI) {
       await mongoose.connect(process.env.MONGO_URI);
+
+      console.log("✅ Connected to MongoDB Atlas (Development)");
+      console.log("📂 Database:", mongoose.connection.db?.databaseName);
+      console.log("🌐 Host:", mongoose.connection.host);
+
+      if (mongoose.connection.db) {
+        const collections = await mongoose.connection.db
+          .listCollections()
+          .toArray();
+
+        console.log(
+          "📑 Collections:",
+          collections.map((c) => c.name)
+        );
+      }
     } else {
       const mongoServer = await MongoMemoryServer.create();
       const uri = mongoServer.getUri();
+
       await mongoose.connect(uri);
+
+      console.log("🟡 Connected to In-Memory MongoDB");
+
       await seedData();
+
+      console.log("📂 Database:", mongoose.connection.db?.databaseName);
+
+      if (mongoose.connection.db) {
+        const collections = await mongoose.connection.db
+          .listCollections()
+          .toArray();
+
+        console.log(
+          "📑 Collections:",
+          collections.map((c) => c.name)
+        );
+      }
     }
   }
 }
