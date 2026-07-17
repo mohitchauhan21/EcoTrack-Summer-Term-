@@ -5,7 +5,7 @@ import { requireRole } from "../middleware/requireRole.js";
 
 const router = express.Router();
 
-const canManageUsers = requireRole(["superadmin", "admin"]);
+const canManageUsers = requireRole(["admin"]);
 
 router.get("/", requireAuth, canManageUsers, getUsers);
 router.post("/", requireAuth, canManageUsers, createUser);

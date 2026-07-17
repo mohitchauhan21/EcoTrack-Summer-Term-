@@ -79,39 +79,39 @@ export default function DashboardLayout() {
       name: "Dashboard",
       path: "/dashboard",
       icon: LayoutDashboard,
-      roles: ["superadmin", "admin", "employee", "executive"],
+      roles: ["admin", "employee", "executive"],
       exact: true,
     },
     {
       name: "Company",
       path: "/dashboard/company",
       icon: Building2,
-      roles: ["superadmin", "admin"],
+      roles: ["admin"],
     },
 
     {
       name: "Carbon Logs",
       path: "/dashboard/logs",
       icon: FileSpreadsheet,
-      roles: ["superadmin", "admin", "employee"],
+      roles: ["admin", "employee"],
     },
     {
       name: "Analytics",
       path: "/dashboard/analytics",
       icon: BarChart3,
-      roles: ["superadmin", "admin", "executive"],
+      roles: ["admin", "executive"],
     },
     {
       name: "Reports",
       path: "/dashboard/reports",
       icon: FileText,
-      roles: ["superadmin", "admin", "executive"],
+      roles: ["admin", "executive"],
     },
     {
       name: "Users",
       path: "/dashboard/users",
       icon: Users,
-      roles: ["superadmin", "admin"],
+      roles: ["admin"],
     },
   ];
 

@@ -6,7 +6,7 @@ import { requireRole } from "../middleware/requireRole.js";
 
 const router = Router();
 
-const canManageLogs = requireRole(["superadmin", "admin", "employee"]);
+const canManageLogs = requireRole(["admin", "employee"]);
 
 router.post("/", requireAuth, canManageLogs, createLog);
 router.get("/", requireAuth, canManageLogs, getLogs);

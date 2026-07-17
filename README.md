@@ -305,7 +305,6 @@ When running without `MONGO_URI`, demo data is auto-seeded. Use any of these acc
 
 | Role | Email | Password | What you can do |
 |---|---|---|---|
-| 🔴 **Superadmin** | `superadmin@ecotrack.com` | `Password123!` | Full access across all companies |
 | 🟠 **Admin** | `admin@ecotrack.com` | `Password123!` | Full access within a company |
 | 🟡 **Executive** | `exec@ecotrack.com` | `Password123!` | View analytics & reports |
 | 🟢 **Employee** | `employee@ecotrack.com` | `Password123!` | Manage personal emission logs |
@@ -398,8 +397,6 @@ EcoTrack enforces a 5-tier RBAC hierarchy on both the **frontend** (route guards
 
 ```
 ┌─────────────────────────────────────────────────────┐
-│  🔴  SUPERADMIN   — Cross-company platform admin    │
-│        ↓                                            │
 │  🟠  ADMIN        — Full access within company      │
 │        ↓                                            │
 │  🟡  EXECUTIVE    — Read analytics & reports        │

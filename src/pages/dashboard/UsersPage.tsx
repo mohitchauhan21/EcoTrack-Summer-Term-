@@ -20,17 +20,15 @@ interface Department {
 
 const getRoleRank = (r: string) => {
   switch (r) {
-    case 'superadmin': return 1;
-    case 'admin': return 2;
-    case 'executive': return 3;
-    case 'employee': return 4;
+    case 'admin': return 1;
+    case 'executive': return 2;
+    case 'employee': return 3;
     default: return 99;
   }
 };
 
 const getRoleColor = (role: string) => {
   switch (role) {
-    case 'superadmin': return 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20';
     case 'admin': return 'bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border-emerald-500/20';
     case 'executive': return 'bg-purple-500/10 text-purple-600 dark:text-purple-400 border-purple-500/20';
     default: return 'bg-gray-500/10 text-gray-600 dark:text-gray-400 border-gray-500/20';
@@ -122,7 +120,7 @@ export default function UsersPage() {
     }
   };
 
-  const canManage = role === 'admin' || role === 'superadmin';
+  const canManage = role === 'admin';
 
   if (loading) {
     return <div className="dark:text-zinc-500 text-gray-500">Loading...</div>;
@@ -176,9 +174,8 @@ export default function UsersPage() {
                   options={[
                     { value: 'employee', label: 'Employee' },
                     { value: 'executive', label: 'Executive' },
-                    ...(role === 'superadmin' ? [
-                      { value: 'admin', label: 'Admin' },
-                      { value: 'superadmin', label: 'Super Admin' }
+                    ...(role === 'admin' ? [
+                      { value: 'admin', label: 'Admin' }
                     ] : [])
                   ]}
                 />
@@ -234,7 +231,7 @@ export default function UsersPage() {
             </thead>
             <tbody className="text-sm dark:text-zinc-300 text-gray-700">
               {users.map((user) => {
-                const isProtected = role !== 'superadmin' && getRoleRank(role || '') >= getRoleRank(user.role);
+                const isProtected = getRoleRank(role || '') >= getRoleRank(user.role);
                 
                 return (
                   <tr key={user._id} className="border-b dark:border-white/[0.06] border-gray-200 dark:hover:bg-white/[0.02] hover:bg-gray-50 transition-colors">

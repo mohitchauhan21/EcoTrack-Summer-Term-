@@ -141,63 +141,63 @@ export default function App() {
 
                   {/* Company & Departments */}
                   <Route path="company" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
+                    <ProtectedRoute allowedRoles={["admin"]}>
                       <CompanyProfilePage />
                     </ProtectedRoute>
                   } />
                   <Route path="departments" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
+                    <ProtectedRoute allowedRoles={["admin"]}>
                       <DepartmentsPage />
                     </ProtectedRoute>
                   } />
                   <Route path="departments/add" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
+                    <ProtectedRoute allowedRoles={["admin"]}>
                       <DepartmentsPage />
                     </ProtectedRoute>
                   } />
                   <Route path="departments/:id/edit" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
+                    <ProtectedRoute allowedRoles={["admin"]}>
                       <DepartmentsPage />
                     </ProtectedRoute>
                   } />
 
                   {/* Logs */}
                   <Route path="logs" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin", "employee"]}>
+                    <ProtectedRoute allowedRoles={["admin", "employee"]}>
                       <CarbonLogsPage />
                     </ProtectedRoute>
                   } />
                   <Route path="logs/add" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin", "employee"]}>
+                    <ProtectedRoute allowedRoles={["admin", "employee"]}>
                       <CarbonLogsPage />
                     </ProtectedRoute>
                   } />
                   <Route path="logs/upload" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin", "employee"]}>
+                    <ProtectedRoute allowedRoles={["admin", "employee"]}>
                       <CarbonLogsPage />
                     </ProtectedRoute>
                   } />
                   <Route path="logs/:id/edit" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin", "employee"]}>
+                    <ProtectedRoute allowedRoles={["admin", "employee"]}>
                       <CarbonLogsPage />
                     </ProtectedRoute>
                   } />
 
                   {/* Analytics & Reports */}
                   <Route path="analytics" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin", "executive"]}>
+                    <ProtectedRoute allowedRoles={["admin", "executive"]}>
                       <AnalyticsPage />
                     </ProtectedRoute>
                   } />
                   <Route path="reports" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin", "executive"]}>
+                    <ProtectedRoute allowedRoles={["admin", "executive"]}>
                       <ReportsPage />
                     </ProtectedRoute>
                   } />
 
                   {/* Users */}
                   <Route path="users" element={
-                    <ProtectedRoute allowedRoles={["superadmin", "admin"]}>
+                    <ProtectedRoute allowedRoles={["admin"]}>
                       <UsersPage />
                     </ProtectedRoute>
                   } />
