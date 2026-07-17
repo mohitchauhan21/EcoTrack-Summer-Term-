@@ -40,8 +40,8 @@ export default function OnboardingPage() {
     <div className="flex-1 bg-[#050505] pt-24 pb-12 px-4">
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="mb-8">
-          <h1 className="text-3xl font-light text-zinc-100 tracking-tight">Welcome to EcoTrack</h1>
-          <p className="text-zinc-500 mt-2">One more step — tag your departments before we dive into the data.</p>
+          <h1 className="text-3xl font-light dark:text-zinc-100 text-gray-900 tracking-tight">Welcome to EcoTrack</h1>
+          <p className="dark:text-zinc-500 text-gray-500 mt-2">One more step — tag your departments before we dive into the data.</p>
         </div>
 
         <DepartmentTaggingStep companyId={companyId} onTagsChanged={refreshDeptCount} />

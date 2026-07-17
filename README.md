@@ -56,11 +56,11 @@
 
 **EcoTrack** is a full-stack web platform built to help corporations **measure, monitor, and reduce their carbon footprint** — all from one clean, modern dashboard.
 
-From logging raw emission data and auto-converting it to CO₂e, to generating regulatory-ready reports and getting real-time AI recommendations powered by **Google Gemini** — EcoTrack gives sustainability teams everything they need in one place.
+From logging raw emission data and auto-converting it to CO₂e, to generating regulatory-ready reports — EcoTrack gives sustainability teams everything they need in one place.
 
 > **No fluff. Just data, insights, and action.**
 
-Built with a **React 19** frontend and an **Express + MongoDB** backend, it includes complete JWT authentication, multi-role access control, interactive charts, CSV import/export, in-memory database for zero-setup demos, and a Gemini AI assistant for smart carbon reduction guidance.
+Built with a **React 19** frontend and an **Express + MongoDB** backend, it includes complete JWT authentication, multi-role access control, interactive charts, CSV import/export, and an in-memory database for zero-setup demos.
 
 ---
 
@@ -68,15 +68,14 @@ Built with a **React 19** frontend and an **Express + MongoDB** backend, it incl
 
 | | Feature | What it does |
 |---|---|---|
-| 🏭 | **Carbon Log Management** | Create, edit, delete emission entries across electricity, fuel, water, waste & refrigerants |
+| 🏭 | **Carbon Log Management** | Inline editing, auto-conversion, create & delete emission entries |
 | 🧮 | **Auto CO₂e Conversion** | 100+ built-in emission factors — units auto-converted to CO₂e on entry |
 | 📊 | **Interactive Analytics** | Recharts-powered trend graphs, department breakdowns, and KPI cards |
-| 🤖 | **Eco Insights AI** | Google Gemini chat assistant for carbon reduction recommendations |
 | 📄 | **Exportable Reports** | Generate PDF/Excel sustainability reports (ExcelJS-powered) |
-| 🏢 | **Multi-Tenant RBAC** | 5-tier role system: Superadmin → Admin → Executive → Manager → Viewer |
-| 🔐 | **Secure Authentication** | JWT tokens, bcrypt hashing, forgot/reset password flow |
-| 🌙 | **Theme Engine** | Dark, Light, and System themes with custom accent colors |
-| 📱 | **Responsive Layout** | Mobile-first design with collapsible sidebar |
+| 🏢 | **Multi-Tenant RBAC** | 5-tier role system strictly enforced across frontend and backend |
+| 🔐 | **Secure Authentication** | JWT tokens, bcrypt hashing, forgot/reset password flow, show/hide password toggle |
+| 🌙 | **Global Theme Engine** | Instant Dark/Light mode toggle synchronized across Landing, Login, and Dashboard |
+| 📱 | **Premium UI/UX** | Custom Select components, glassmorphism cards, and fluid micro-animations |
 | ⚡ | **Zero-Setup Dev Mode** | `mongodb-memory-server` auto-spins an in-memory DB — no MongoDB install needed |
 
 ---
@@ -122,16 +121,7 @@ Built with a **React 19** frontend and an **Express + MongoDB** backend, it incl
 
 </details>
 
-<details>
-<summary><strong>AI & Cloud</strong></summary>
 
-| Service | Purpose |
-|---|---|
-| Google Gemini API | AI-powered carbon insights & chat assistant |
-
-</details>
-
----
 
 ## 🏗️ System Architecture
 
@@ -164,11 +154,7 @@ Built with a **React 19** frontend and an **Express + MongoDB** backend, it incl
 │   ⚡ Dev: mongodb-memory-server (auto, no install required)     │
 │   🚀 Prod: MongoDB Atlas or self-hosted via MONGO_URI           │
 └──────────────────────────────────────────────────────────────────┘
-                              │
-┌─────────────────────────────▼────────────────────────────────────┐
-│                    GOOGLE GEMINI API                             │
-│         AI insights · Carbon chat assistant · Reports           │
-└──────────────────────────────────────────────────────────────────┘
+
 ```
 
 ---
@@ -234,10 +220,8 @@ EcoTrack-Summer-Term-/
         │   ├── ReportsPage.tsx
         │   ├── DepartmentsPage.tsx
         │   ├── CompanyProfilePage.tsx
-        │   ├── UsersPage.tsx
-        │   └── SettingsPage.tsx
-        └── ai/
-            └── EcoInsightsPage.tsx
+        │   └── UsersPage.tsx
+
 ```
 
 ---
@@ -279,8 +263,6 @@ Open `.env` and configure the following:
 ```env
 # ─── Required ─────────────────────────────────────────────────────────────────
 
-# Your Google Gemini API key (get one at https://aistudio.google.com)
-GEMINI_API_KEY="your-gemini-api-key-here"
 
 # Secret used to sign JWT tokens — use any long random string
 JWT_SECRET="replace-with-a-long-random-secret"
@@ -346,8 +328,6 @@ When running without `MONGO_URI`, demo data is auto-seeded. Use any of these acc
 | Departments | `/dashboard/departments` | Auth | Manage departments |
 | Company Profile | `/dashboard/company` | Admin | Company settings |
 | Users | `/dashboard/users` | Admin | Team & role management |
-| Eco Insights AI | `/dashboard/eco-insights` | Auth | Gemini AI carbon assistant |
-| Settings | `/dashboard/settings` | Auth | Theme, notifications, security |
 | Profile | `/profile` | Auth | Personal profile & password |
 | 404 | `*` | — | Animated not-found page |
 

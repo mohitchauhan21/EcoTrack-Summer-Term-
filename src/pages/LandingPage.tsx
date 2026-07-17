@@ -43,11 +43,11 @@ function FloatingOrbs() {
   return (
     <>
       {/* Large floating gradient orbs */}
-      <div className="absolute top-[-10%] left-[-5%] w-[800px] h-[800px] rounded-full opacity-[0.03] animate-float-slow" 
+      <div className="absolute top-[-10%] left-[-5%] w-[800px] h-[800px] rounded-full opacity-[0.03] animate-float-slow"
         style={{ background: 'radial-gradient(circle, #10b981 0%, transparent 70%)', filter: 'blur(60px)' }} />
-      <div className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full opacity-[0.03] animate-float-reverse" 
+      <div className="absolute bottom-[-10%] right-[-5%] w-[600px] h-[600px] rounded-full opacity-[0.03] animate-float-reverse"
         style={{ background: 'radial-gradient(circle, #06b6d4 0%, transparent 70%)', filter: 'blur(60px)' }} />
-      <div className="absolute top-[40%] left-[60%] w-[400px] h-[400px] rounded-full opacity-[0.02] animate-float" 
+      <div className="absolute top-[40%] left-[60%] w-[400px] h-[400px] rounded-full opacity-[0.02] animate-float"
         style={{ background: 'radial-gradient(circle, #8b5cf6 0%, transparent 70%)', filter: 'blur(60px)' }} />
     </>
   );
@@ -61,9 +61,9 @@ function OrbitalRing() {
       <div className="absolute inset-24 border border-blue-500/10 rounded-full animate-float-reverse" style={{ animationDuration: '12s' }} />
       <div className="absolute inset-36 border border-purple-500/10 rounded-full animate-float" style={{ animationDuration: '15s' }} />
       {/* Orbiting dots */}
-      <div className="absolute w-3 h-3 bg-emerald-500/40 rounded-full animate-float" 
+      <div className="absolute w-3 h-3 bg-emerald-500/40 rounded-full animate-float"
         style={{ top: 'calc(50% - 6px)', left: 'calc(50% - 6px)', animation: 'orbit 8s linear infinite' }} />
-      <div className="absolute w-2 h-2 bg-blue-500/40 rounded-full animate-float-reverse" 
+      <div className="absolute w-2 h-2 bg-blue-500/40 rounded-full animate-float-reverse"
         style={{ top: 'calc(50% - 4px)', left: 'calc(50% - 4px)', animation: 'orbit-reverse 12s linear infinite' }} />
       {/* Center glow */}
       <div className="absolute inset-[35%] bg-emerald-500/5 rounded-full blur-3xl animate-breathe" />
@@ -106,7 +106,7 @@ function AnimatedStat({ end, suffix = "", label }: { end: number; suffix?: strin
       <div className="text-4xl md:text-5xl font-bold text-white mb-2 tracking-tight">
         {count.toLocaleString()}{suffix}
       </div>
-      <div className="text-zinc-500 text-sm font-medium uppercase tracking-widest group-hover:text-zinc-300 transition-colors">{label}</div>
+      <div className="dark:text-zinc-500 text-gray-500 text-sm font-medium uppercase tracking-widest group-hover:dark:text-zinc-300 text-gray-700 transition-colors">{label}</div>
     </div>
   );
 }
@@ -140,33 +140,33 @@ function SectionReveal({ children, className = "" }: { children: React.ReactNode
 
 export default function LandingPage() {
   return (
-    <div className="flex-1 bg-[#050505] flex flex-col pt-16 overflow-hidden">
+    <div className="flex-1 dark:bg-[#050505] bg-white flex flex-col pt-16 overflow-hidden transition-colors">
       <main className="flex-grow">
         {/* Hero Section */}
         <section className="relative overflow-hidden min-h-[90vh] flex items-center">
           <Particles />
           <FloatingOrbs />
           <OrbitalRing />
-          
+
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36 flex flex-col items-center text-center relative z-10 w-full">
             {/* Badge */}
             <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-1.5 mb-8 animate-fade-in-up">
               <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
               <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest">Carbon Intelligence Platform v2.0</span>
             </div>
-            
+
             {/* Main heading */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-light text-zinc-100 mb-6 leading-tight animate-fade-in-up delay-200">
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold dark:text-white text-gray-900 mb-6 leading-tight animate-fade-in-up delay-200 tracking-tight">
               Track. Measure.
               <br />
-              <span className="text-gradient-animate font-medium">Decarbonize.</span>
+              <span className="text-gradient-animate font-bold">Decarbonize.</span>
             </h1>
-            
-            <p className="text-lg md:text-xl text-zinc-400 max-w-3xl mb-12 font-medium leading-relaxed animate-fade-in-up delay-300">
-              EcoTrack simplifies carbon accounting for modern businesses. Ingest data, automate CO2e conversions, 
-              and gain <span className="text-emerald-400">actionable AI-powered insights</span> across your entire organization.
+
+            <p className="text-lg md:text-xl dark:text-zinc-400 text-gray-600 max-w-3xl mb-12 font-medium leading-relaxed animate-fade-in-up delay-300">
+              EcoTrack simplifies carbon accounting for modern businesses. Ingest data, automate CO2e conversions,
+              and gain <span className="text-emerald-400">actionable insights</span> across your entire organization.
             </p>
-            
+
             <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up delay-400">
               <Link
                 to="/login"
@@ -177,7 +177,7 @@ export default function LandingPage() {
               </Link>
               <a
                 href="#features"
-                className="inline-flex items-center justify-center space-x-2 glass-light text-white px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest transition-all duration-300 hover:bg-white/10"
+                className="inline-flex items-center justify-center space-x-2 dark:glass-light bg-gray-200 dark:text-white text-gray-900 px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest transition-all duration-300 dark:hover:bg-white/10 hover:bg-gray-300"
               >
                 <span>Explore Features</span>
               </a>
@@ -185,4 +185,29 @@ export default function LandingPage() {
 
             {/* Scroll indicator */}
             <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
-              <div className="w-6 h
+              <div className="w-6 h-10 rounded-full border-2 border-zinc-400/50 flex items-start justify-center pt-2">
+                <div className="w-1 h-2 bg-zinc-400/70 rounded-full" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* Placeholders for Navigation */}
+        <section id="features" className="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t dark:border-white/5 border-gray-200">
+          <h2 className="text-3xl font-bold dark:text-white text-gray-900">Features</h2>
+          <p className="dark:text-zinc-400 text-gray-500 mt-4 max-w-2xl mx-auto">Explore how EcoTrack can help you automate carbon accounting and gain actionable insights.</p>
+        </section>
+
+        <section id="about" className="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t dark:border-white/5 border-gray-200">
+          <h2 className="text-3xl font-bold dark:text-white text-gray-900">About Us</h2>
+          <p className="dark:text-zinc-400 text-gray-500 mt-4 max-w-2xl mx-auto">Learn more about our mission to decarbonize modern businesses through transparent data.</p>
+        </section>
+
+        <section id="contact" className="py-32 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center border-t dark:border-white/5 border-gray-200">
+          <h2 className="text-3xl font-bold dark:text-white text-gray-900">Contact</h2>
+          <p className="dark:text-zinc-400 text-gray-500 mt-4 max-w-2xl mx-auto">Get in touch with our enterprise sales team to start your journey.</p>
+        </section>
+      </main>
+    </div>
+  );
+};

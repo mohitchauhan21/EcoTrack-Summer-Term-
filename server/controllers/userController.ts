@@ -2,6 +2,16 @@ import { Request, Response } from "express";
 import bcrypt from "bcryptjs";
 import User from "../models/User.js";
 
+const getRoleRank = (r: string) => {
+  switch (r) {
+    case 'superadmin': return 1;
+    case 'admin': return 2;
+    case 'executive': return 3;
+    case 'employee': return 4;
+    default: return 99;
+  }
+};
+
 export const getUsers = async (req: Request, res: Response) => {
   try {
     const companyId = req.user!.companyId;
@@ -23,6 +33,11 @@ export const createUser = async (req: Request, res: Response) => {
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ message: "User with this email already exists" });
+    }
+
+    const reqRole = req.user!.role;
+    if (reqRole !== 'superadmin' && getRoleRank(reqRole) >= getRoleRank(role)) {
+      return res.status(403).json({ message: "Insufficient permissions to create user with this role." });
     }
 
     // Generate a random temporary password for new users
@@ -56,8 +71,20 @@ export const createUser = async (req: Request, res: Response) => {
 export const deleteUser = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const deleted = await User.findOneAndDelete({ _id: id, companyId: req.user!.companyId });
-    if (!deleted) return res.status(404).json({ message: "User not found" });
+    const reqRole = req.user!.role;
+
+    const targetUser = await User.findOne({ _id: id, companyId: req.user!.companyId });
+    if (!targetUser) return res.status(404).json({ message: "User not found" });
+
+    if (reqRole !== 'superadmin' && getRoleRank(reqRole) >= getRoleRank(targetUser.role)) {
+      return res.status(403).json({ message: "Insufficient permissions to delete this user." });
+    }
+    
+    if (reqRole === 'superadmin' && id === req.user!.id) {
+      return res.status(403).json({ message: "Super Admin cannot delete themselves." });
+    }
+
+    await User.findByIdAndDelete(id);
     res.json({ message: "User deleted" });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
