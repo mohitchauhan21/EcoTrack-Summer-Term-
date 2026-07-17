@@ -24,12 +24,12 @@ export default function ForgotPasswordPage() {
   };
 
   return (
-    <div className="flex-1 bg-[#050505] flex flex-col justify-center items-center pt-16 px-4 min-h-screen relative overflow-hidden">
+    <div className="flex-1 dark:bg-[#050505] bg-gray-50 flex flex-col justify-center items-center pt-16 px-4 min-h-screen relative overflow-hidden">
       {/* Animated gradient orbs */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
 
-      <div className="max-w-md w-full bg-[#0a0a0a]/80 backdrop-blur-xl border dark:border-white/10 border-gray-200 rounded-3xl p-10 shadow-2xl relative z-10">
+      <div className="max-w-md w-full dark:bg-[#0a0a0a]/80 bg-white/80 backdrop-blur-xl border dark:border-white/10 border-gray-200 rounded-3xl p-10 shadow-2xl relative z-10">
         <div className="text-center mb-10">
           <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <KeyRound className="w-6 h-6 text-emerald-500" />

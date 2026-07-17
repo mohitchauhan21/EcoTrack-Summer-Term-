@@ -27,7 +27,7 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex-1 bg-[#050505] flex flex-col justify-center items-center pt-16 px-4 min-h-screen relative overflow-hidden">
+    <div className="flex-1 dark:bg-[#050505] bg-gray-50 flex flex-col justify-center items-center pt-16 px-4 min-h-screen relative overflow-hidden">
       {/* Animated gradient orbs */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />

@@ -2,6 +2,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 @variant dark (&:where(.dark, .dark *));
 
@@ -118,6 +119,22 @@ html {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 0.8; }
 }
+
+/* Hero card gentle float */
+@keyframes float-card {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Hero card float — offset variant */
+@keyframes float-card-offset {
+  0%, 100% { transform: translateY(-6px); }
+  50% { transform: translateY(6px); }
+}
+
+.animate-float-card { animation: float-card 6s ease-in-out infinite; }
+.animate-float-card-offset { animation: float-card-offset 7s ease-in-out infinite; }
+.animate-float-card-slow { animation: float-card 9s ease-in-out infinite; }
 
 /* ===== UTILITY CLASSES ===== */
 

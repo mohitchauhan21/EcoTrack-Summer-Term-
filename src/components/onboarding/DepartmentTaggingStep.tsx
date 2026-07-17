@@ -86,7 +86,7 @@ export default function DepartmentTaggingStep({ companyId: companyIdProp, onTags
         <button
           type="submit"
           disabled={!newTag.trim()}
-          className="bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 bg-gray-200 disabled:dark:text-zinc-500 text-gray-500 text-black font-bold uppercase tracking-wide px-6 py-3 rounded-lg transition-colors text-sm flex items-center space-x-2"
+          className="bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 disabled:bg-gray-200 disabled:dark:text-zinc-500 disabled:text-gray-500 text-black font-bold uppercase tracking-wide px-6 py-3 rounded-lg transition-all duration-300 text-sm flex items-center space-x-2 shadow-[0_0_15px_rgba(16,185,129,0.15)] hover:shadow-[0_0_25px_rgba(16,185,129,0.25)] disabled:shadow-none"
         >
           <Plus className="w-4 h-4" />
           <span>ADD TAG</span>
