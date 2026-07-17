@@ -18,15 +18,22 @@ import userRoutes from "./server/routes/userRoutes.js";
 import { seedData } from "./server/scripts/seedMockData.js";
 
 async function connectDb() {
-  if (process.env.MONGO_URI) {
+  if (process.env.NODE_ENV === "production") {
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI is required in production.");
+    }
+
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("Connected to MongoDB via MONGO_URI");
+    console.log("Connected to MongoDB Atlas");
   } else {
-    const mongoServer = await MongoMemoryServer.create();
-    const uri = mongoServer.getUri();
-    await mongoose.connect(uri);
-    console.log(`Connected to in-memory MongoDB at ${uri}`);
-    await seedData();
+    if (process.env.MONGO_URI) {
+      await mongoose.connect(process.env.MONGO_URI);
+    } else {
+      const mongoServer = await MongoMemoryServer.create();
+      const uri = mongoServer.getUri();
+      await mongoose.connect(uri);
+      await seedData();
+    }
   }
 }
 
@@ -34,9 +41,12 @@ async function startServer() {
   await connectDb();
 
   const app = express();
-  const PORT = 3000;
+  const PORT = Number(process.env.PORT) || 3000;
 
-  app.use(cors());
+  app.use(cors({
+    origin: process.env.CLIENT_URL || "http://localhost:3000",
+    credentials: true,
+  }));
   app.use(express.json());
 
   // API Routes
