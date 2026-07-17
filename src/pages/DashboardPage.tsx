@@ -23,7 +23,7 @@ export default function DashboardPage() {
   const [summary, setSummary] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
-  const canViewAnalytics = role === "admin" || role === "superadmin" || role === "executive";
+  const canViewAnalytics = role === "admin" || role === "executive";
 
   useEffect(() => {
     if (!canViewAnalytics) {

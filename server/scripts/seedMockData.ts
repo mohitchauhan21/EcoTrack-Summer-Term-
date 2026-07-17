@@ -100,7 +100,6 @@ export async function seedData() {
     const hashedPassword = await bcrypt.hash(DEFAULT_PASSWORD, 10);
 
     await User.insertMany([
-      { name: "Super Admin", email: "superadmin@ecotrack.com", password: hashedPassword, role: "superadmin", companyId: company._id },
       { name: "Company Admin", email: "admin@ecotrack.com", password: hashedPassword, role: "admin", companyId: company._id },
       { name: "Executive Viewer", email: "exec@ecotrack.com", password: hashedPassword, role: "executive", companyId: company._id },
       { name: "John Employee", email: "employee@ecotrack.com", password: hashedPassword, role: "employee", companyId: company._id, departmentId: deptMap["HR"] },

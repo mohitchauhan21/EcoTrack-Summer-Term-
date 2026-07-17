@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 
 export interface AuthPayload {
   id: string;
-  role: "superadmin" | "admin" | "employee" | "executive";
+  role: "admin" | "employee" | "executive";
   companyId: string;
 }
 

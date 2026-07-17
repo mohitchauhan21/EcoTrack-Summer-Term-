@@ -80,7 +80,7 @@ export default function CompanyDepartmentsTab() {
     }
   };
 
-  const canManage = role === 'admin' || role === 'superadmin';
+  const canManage = role === 'admin';
 
   if (loading) {
     return (

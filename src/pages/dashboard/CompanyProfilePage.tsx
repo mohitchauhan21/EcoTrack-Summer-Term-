@@ -79,7 +79,7 @@ export default function CompanyProfilePage() {
     }
   };
 
-  const isEditable = role === 'admin' || role === 'superadmin';
+  const isEditable = role === 'admin';
 
   const overviewItems: OverviewStat[] = [
     {

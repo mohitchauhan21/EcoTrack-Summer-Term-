@@ -111,9 +111,7 @@ export default function LoginPage() {
             <div className="flex justify-between items-center">
               <span>Executive: <strong className="dark:text-zinc-200 text-gray-800">exec@ecotrack.com</strong></span>
             </div>
-            <div className="flex justify-between items-center">
-              <span>Super Admin: <strong className="dark:text-zinc-200 text-gray-800">superadmin@ecotrack.com</strong></span>
-            </div>
+
             <div className="flex justify-between items-center pt-3 border-t dark:border-white/[0.06] border-gray-200 mt-1">
               <span>Password: <strong className="dark:text-zinc-200 text-gray-800">Password123!</strong></span>
             </div>

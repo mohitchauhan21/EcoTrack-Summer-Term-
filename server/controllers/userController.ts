@@ -4,10 +4,9 @@ import User from "../models/User.js";
 
 const getRoleRank = (r: string) => {
   switch (r) {
-    case 'superadmin': return 1;
-    case 'admin': return 2;
-    case 'executive': return 3;
-    case 'employee': return 4;
+    case 'admin': return 1;
+    case 'executive': return 2;
+    case 'employee': return 3;
     default: return 99;
   }
 };
@@ -36,7 +35,7 @@ export const createUser = async (req: Request, res: Response) => {
     }
 
     const reqRole = req.user!.role;
-    if (reqRole !== 'superadmin' && getRoleRank(reqRole) >= getRoleRank(role)) {
+    if (getRoleRank(reqRole) >= getRoleRank(role)) {
       return res.status(403).json({ message: "Insufficient permissions to create user with this role." });
     }
 
@@ -76,12 +75,8 @@ export const deleteUser = async (req: Request, res: Response) => {
     const targetUser = await User.findOne({ _id: id, companyId: req.user!.companyId });
     if (!targetUser) return res.status(404).json({ message: "User not found" });
 
-    if (reqRole !== 'superadmin' && getRoleRank(reqRole) >= getRoleRank(targetUser.role)) {
+    if (getRoleRank(reqRole) >= getRoleRank(targetUser.role)) {
       return res.status(403).json({ message: "Insufficient permissions to delete this user." });
-    }
-    
-    if (reqRole === 'superadmin' && id === req.user!.id) {
-      return res.status(403).json({ message: "Super Admin cannot delete themselves." });
     }
 
     await User.findByIdAndDelete(id);

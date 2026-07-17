@@ -106,7 +106,7 @@ export default function Navbar() {
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            <div className="hidden md:flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-3">
               {isAuthenticated ? (
                 <>
                   <Link
@@ -122,13 +122,21 @@ export default function Navbar() {
                     Logout
                   </button>
                 </>
-              ) : location.pathname !== "/login" ? (
-                <Link
-                  to="/login"
-                  className="bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(16,185,129,0.3)] active:scale-[0.98]"
-                >
-                  Sign In
-                </Link>
+              ) : location.pathname !== "/login" && location.pathname !== "/register" ? (
+                <>
+                  <Link
+                    to="/register"
+                    className="bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(16,185,129,0.3)] active:scale-[0.98]"
+                  >
+                    Sign Up
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(16,185,129,0.3)] active:scale-[0.98]"
+                  >
+                    Sign In
+                  </Link>
+                </>
               ) : null}
             </div>
 
@@ -164,14 +172,23 @@ export default function Navbar() {
               {link.name}
             </a>
           ))}
-          {!isAuthenticated && location.pathname !== "/login" && (
-            <Link
-              to="/login"
-              onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-4 w-full text-center bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all duration-300"
-            >
-              Sign In
-            </Link>
+          {!isAuthenticated && location.pathname !== "/login" && location.pathname !== "/register" && (
+            <div className="w-full mt-4 flex flex-col gap-3">
+              <Link
+                to="/register"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full text-center bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all duration-300"
+              >
+                Sign Up
+              </Link>
+              <Link
+                to="/login"
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="w-full text-center bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all duration-300"
+              >
+                Sign In
+              </Link>
+            </div>
           )}
           {isAuthenticated && (
             <>

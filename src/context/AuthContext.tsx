@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from "react";
 import apiClient from "../api/axiosClient";
 
-export type Role = "superadmin" | "admin" | "employee" | "executive";
+export type Role = "admin" | "employee" | "executive";
 
 interface AuthState {
   isAuthenticated: boolean;
