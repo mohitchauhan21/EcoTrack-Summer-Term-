@@ -88,10 +88,10 @@ export default function FilterBar({ hideLogEntry }: FilterBarProps = {}) {
   const logRoute = '/dashboard/logs/add';
 
   const selectClasses = "bg-transparent border-none outline-none text-sm font-medium dark:text-zinc-100 text-gray-900 cursor-pointer focus:ring-0 appearance-none pr-6";
-  const controlClasses = "dark:bg-zinc-900/80 bg-gray-50 border dark:border-white/[0.08] border-gray-200 rounded-xl px-4 h-10 flex items-center gap-2.5 transition-colors hover:dark:border-white/[0.14] border-gray-300";
+  const controlClasses = "dark:bg-zinc-900/80 bg-gray-50 border dark:border-white/[0.08] border-gray-200 rounded-2xl px-4 h-10 flex items-center gap-2.5 transition-colors hover:dark:border-white/[0.14] border-gray-300";
 
   return (
-    <div className="flex flex-wrap items-center justify-between w-full gap-4">
+    <div className="flex flex-wrap items-center justify-between w-full gap-6">
       {/* Left side filters */}
       <div className="flex flex-wrap items-center gap-2.5">
         <div className={controlClasses}>
@@ -139,7 +139,7 @@ export default function FilterBar({ hideLogEntry }: FilterBarProps = {}) {
         <button
           onClick={handleExport}
           title="Export Spreadsheet"
-          className="h-10 px-4 flex items-center gap-2 rounded-xl dark:bg-zinc-900/80 bg-white border dark:border-white/[0.08] border-gray-200 dark:text-zinc-300 text-gray-700 hover:dark:text-white hover:text-gray-900 hover:dark:border-white/[0.14] hover:bg-gray-50 transition-all text-xs font-bold uppercase tracking-wider shadow-sm"
+          className="h-10 px-4 flex items-center gap-2 rounded-2xl dark:bg-zinc-900/80 bg-white border dark:border-white/[0.08] border-gray-200 dark:text-zinc-300 text-gray-700 hover:dark:text-white hover:text-gray-900 hover:dark:border-white/[0.14] hover:bg-gray-50 transition-all text-xs font-bold uppercase tracking-wider shadow-sm"
         >
           <Download className="w-4 h-4" />
           Export
@@ -148,7 +148,7 @@ export default function FilterBar({ hideLogEntry }: FilterBarProps = {}) {
         {!hideLogEntry && (
           <button
             onClick={() => navigate(logRoute)}
-            className="bg-emerald-500 hover:bg-emerald-400 text-black h-10 px-5 rounded-xl text-sm font-bold uppercase tracking-wide transition-all whitespace-nowrap hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] active:scale-[0.98] flex items-center gap-2"
+            className="bg-emerald-500 hover:bg-emerald-400 text-black h-10 px-5 rounded-2xl text-sm font-bold uppercase tracking-wide transition-all whitespace-nowrap hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] active:scale-[0.98] flex items-center gap-2"
           >
             <Plus className="w-4 h-4" />
             Log Entry

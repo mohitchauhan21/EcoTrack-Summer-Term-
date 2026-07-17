@@ -62,7 +62,7 @@ export default function DepartmentTaggingStep({ companyId: companyIdProp, onTags
   };
 
   return (
-    <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-6">
+    <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6">
       <div className="flex items-center space-x-4 mb-2">
         <div className="w-10 h-10 rounded-full bg-emerald-500 text-black flex items-center justify-center font-bold text-lg shadow-[0_0_15px_rgba(16,185,129,0.3)]">2</div>
         <h2 className="text-xl font-light tracking-wide dark:text-zinc-100 text-gray-900">Department Tagging Engine</h2>
@@ -80,13 +80,13 @@ export default function DepartmentTaggingStep({ companyId: companyIdProp, onTags
           type="text"
           value={newTag}
           onChange={(e) => setNewTag(e.target.value)}
-          className="flex-grow dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+          className="flex-grow dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
           placeholder="New Tag Name (e.g. Finance)"
         />
         <button
           type="submit"
           disabled={!newTag.trim()}
-          className="bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 bg-gray-200 disabled:dark:text-zinc-500 text-gray-500 text-black font-bold uppercase tracking-wide px-6 py-3 rounded-lg transition-colors text-sm flex items-center space-x-2"
+          className="bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 disabled:bg-gray-200 disabled:dark:text-zinc-500 disabled:text-gray-500 text-black font-bold uppercase tracking-wide px-6 py-3 rounded-lg transition-all duration-300 text-sm flex items-center space-x-2 shadow-[0_0_15px_rgba(16,185,129,0.15)] hover:shadow-[0_0_25px_rgba(16,185,129,0.25)] disabled:shadow-none"
         >
           <Plus className="w-4 h-4" />
           <span>ADD TAG</span>
@@ -97,7 +97,7 @@ export default function DepartmentTaggingStep({ companyId: companyIdProp, onTags
         <h3 className="text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500 mb-4">Active Tags</h3>
         <div className="flex flex-wrap gap-3">
           {tags.map((tag) => (
-            <div key={tag._id} className="flex items-center space-x-2 dark:bg-zinc-900 bg-gray-50 dark:text-zinc-200 text-gray-800 px-4 py-2 rounded-lg text-sm border dark:border-white/5 border-gray-200">
+            <div key={tag._id} className="flex items-center space-x-2 dark:bg-zinc-800 bg-gray-50 dark:text-zinc-200 text-gray-800 px-4 py-2 rounded-lg text-sm border dark:border-white/[0.06] border-gray-200">
               <span className="font-medium tracking-wide">{tag.name}</span>
               <button onClick={() => handleRemoveTag(tag._id)} className="dark:text-zinc-500 text-gray-500 hover:text-red-400 focus:outline-none transition-colors">
                 <X className="w-4 h-4" />

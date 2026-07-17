@@ -37,7 +37,7 @@ export default function OnboardingPage() {
   };
 
   return (
-    <div className="flex-1 bg-[#050505] pt-24 pb-12 px-4">
+    <div className="flex-1 dark:bg-zinc-950 bg-gray-50 pt-24 pb-12 px-4 min-h-screen">
       <div className="max-w-3xl mx-auto space-y-6">
         <div className="mb-8">
           <h1 className="text-3xl font-light dark:text-zinc-100 text-gray-900 tracking-tight">Welcome to EcoTrack</h1>
@@ -49,7 +49,7 @@ export default function OnboardingPage() {
         <div className="pt-6">
           <button
             onClick={handleCompleteSetup}
-            className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wide py-4 rounded-xl transition-colors"
+            className="w-full bg-emerald-500 hover:bg-emerald-400 text-black font-bold uppercase tracking-wide py-4 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgba(16,185,129,0.15)] hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] active:scale-[0.98]"
           >
             COMPLETE SETUP & LAUNCH DASHBOARD
           </button>

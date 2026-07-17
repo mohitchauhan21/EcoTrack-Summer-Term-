@@ -40,7 +40,7 @@ export default function AnalyticsPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-12 gap-5">
+      <div className="grid grid-cols-12 gap-6">
         <div className="col-span-12 flex justify-end mb-2">
           <FilterBar />
         </div>

@@ -42,7 +42,7 @@ export function Select({ value, onChange, options, className = '', placeholder, 
         onClick={() => !disabled && setIsOpen(!isOpen)}
         className={`w-full flex items-center justify-between focus:outline-none transition-colors text-left text-sm dark:text-zinc-100 text-gray-900 
           ${disabled ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer'}
-          ${variant === 'default' ? 'dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 focus:border-emerald-500/50' : ''}
+          ${variant === 'default' ? 'dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 focus:border-emerald-500/50' : ''}
           ${variant === 'ghost' ? 'bg-transparent border-none py-1' : ''}
         `}
       >
@@ -51,7 +51,7 @@ export function Select({ value, onChange, options, className = '', placeholder, 
       </button>
 
       {isOpen && (
-        <div className="absolute z-50 mt-2 w-full rounded-lg border dark:border-white/10 border-gray-200 dark:bg-[#0f0f0f] bg-white shadow-xl max-h-60 overflow-y-auto py-1">
+        <div className="absolute z-50 mt-2 w-full rounded-lg border dark:border-white/[0.06] border-gray-200 dark:bg-zinc-800 bg-white shadow-xl max-h-60 overflow-y-auto py-1">
           {options.map((option) => {
             const isSelected = option.value === value;
             return (

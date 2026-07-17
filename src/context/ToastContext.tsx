@@ -54,11 +54,11 @@ export function ToastProvider({ children }: { children: ReactNode }) {
           <div
             key={toast.id}
             className={`
-              flex items-center gap-3 px-4 py-3 rounded-xl border shadow-xl
+              flex items-center gap-3 px-4 py-3 rounded-2xl border shadow-xl
               transform transition-all duration-300 translate-y-0 opacity-100
-              ${toast.type === 'success' ? 'dark:bg-[#0f0f0f] bg-white border-emerald-500/20 dark:text-zinc-100 text-gray-900' : ''}
-              ${toast.type === 'error' ? 'dark:bg-[#0f0f0f] bg-white border-red-500/20 dark:text-zinc-100 text-gray-900' : ''}
-              ${toast.type === 'info' ? 'dark:bg-[#0f0f0f] bg-white border-blue-500/20 dark:text-zinc-100 text-gray-900' : ''}
+              ${toast.type === 'success' ? 'dark:bg-zinc-900 bg-white border-emerald-500/20 dark:text-zinc-100 text-gray-900' : ''}
+              ${toast.type === 'error' ? 'dark:bg-zinc-900 bg-white border-red-500/20 dark:text-zinc-100 text-gray-900' : ''}
+              ${toast.type === 'info' ? 'dark:bg-zinc-900 bg-white border-blue-500/20 dark:text-zinc-100 text-gray-900' : ''}
             `}
           >
             {toast.type === 'success' && <CheckCircle className="w-5 h-5 text-emerald-500" />}

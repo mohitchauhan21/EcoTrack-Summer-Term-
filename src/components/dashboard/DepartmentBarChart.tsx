@@ -8,7 +8,7 @@ const COLORS = ['#10b981', '#0ea5e9', '#6366f1', '#a855f7', '#f43f5e'];
 const CustomTooltip = ({ active, payload, label }: any) => {
   if (!active || !payload?.length) return null;
   return (
-    <div className="dark:bg-[#18181b] bg-white border dark:border-white/10 border-gray-200 rounded-xl px-4 py-3 shadow-xl">
+    <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl px-4 py-3 shadow-xl">
       <p className="text-xs dark:text-zinc-400 text-gray-600 font-medium mb-1">{label}</p>
       <p className="text-sm font-semibold" style={{ color: payload[0].color }}>
         {payload[0].value?.toLocaleString()} <span className="dark:text-zinc-500 text-gray-500 font-normal">tCO₂e</span>
@@ -44,7 +44,7 @@ export default function DepartmentBarChart() {
 
   if (loading) {
     return (
-      <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl h-80 flex items-center justify-center">
+      <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl h-80 shadow-sm flex items-center justify-center">
         <div className="animate-pulse flex space-x-2">
           <div className="h-4 w-4 bg-emerald-500/50 rounded-full"></div>
           <div className="h-4 w-4 bg-emerald-500/50 rounded-full animation-delay-200"></div>
@@ -56,14 +56,14 @@ export default function DepartmentBarChart() {
 
   if (data.length === 0) {
     return (
-      <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl h-80 flex items-center justify-center dark:text-zinc-500 text-gray-500 text-sm">
+      <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl h-80 shadow-sm flex items-center justify-center dark:text-zinc-500 text-gray-500 text-sm">
         No department data available.
       </div>
     );
   }
 
   return (
-    <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl flex flex-col h-full min-h-[340px] transition-all duration-300 hover:dark:border-white/[0.12] border-gray-200">
+    <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl flex flex-col h-full min-h-[340px] transition-all duration-300 shadow-sm hover:border-emerald-500/30 dark:hover:border-white/[0.12] hover:shadow-md hover:-translate-y-0.5">
       <span className="text-[10px] dark:text-zinc-500 text-gray-500 uppercase tracking-[0.15em] font-semibold mb-5">Emissions by Department</span>
       <div className="flex-grow min-h-0">
         <ResponsiveContainer width="100%" height="100%">

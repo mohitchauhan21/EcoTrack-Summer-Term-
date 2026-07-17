@@ -37,15 +37,34 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const storedAuth = localStorage.getItem("auth");
-    if (storedAuth) {
-      try {
-        setAuth(JSON.parse(storedAuth));
-      } catch {
-        localStorage.removeItem("auth");
+    const initAuth = async () => {
+      const storedAuth = localStorage.getItem("auth");
+      if (storedAuth) {
+        try {
+          const parsed = JSON.parse(storedAuth);
+          if (parsed.token) {
+            // Validate session with backend. This is crucial because the backend uses an
+            // in-memory DB that gets wiped on restart, making old JWTs point to non-existent data.
+            const res = await apiClient.get("/auth/me");
+            setAuth({
+              isAuthenticated: true,
+              companyName: res.data.companyName,
+              role: res.data.user.role,
+              userName: res.data.user.name,
+              departmentId: res.data.user.departmentId || null,
+              token: parsed.token,
+            });
+          }
+        } catch (error) {
+          console.warn("Session validation failed, logging out.");
+          localStorage.removeItem("auth");
+          setAuth(emptyState);
+        }
       }
-    }
-    setIsLoading(false);
+      setIsLoading(false);
+    };
+
+    initAuth();
   }, []);
 
   const applyAuthResponse = (data: any) => {

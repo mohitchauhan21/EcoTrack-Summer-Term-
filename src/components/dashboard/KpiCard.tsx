@@ -12,7 +12,7 @@ interface KpiCardProps {
 
 export default function KpiCard({ title, value, subtitle, trend, loading }: KpiCardProps) {
   return (
-    <div className="group dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl flex flex-col justify-between h-full transition-all duration-300 hover:dark:border-white/[0.12] border-gray-200 hover:shadow-[0_0_30px_rgba(0,0,0,0.4)] hover:-translate-y-0.5">
+    <div className="group dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl flex flex-col justify-between h-full shadow-sm transition-all duration-300 hover:border-emerald-500/30 dark:hover:border-white/[0.12] hover:shadow-md hover:-translate-y-0.5">
       <div>
         <span className="text-[10px] dark:text-zinc-500 text-gray-500 uppercase tracking-[0.15em] font-semibold">{title}</span>
 

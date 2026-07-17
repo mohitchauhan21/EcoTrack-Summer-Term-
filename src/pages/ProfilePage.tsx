@@ -25,15 +25,14 @@ export default function ProfilePage() {
   }, [departmentId]);
 
   return (
-    <div className="flex-1 bg-[#050505] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto space-y-6">
         <div className="mb-6">
           <h1 className="text-3xl font-light dark:text-zinc-100 text-gray-900">User Profile</h1>
           <p className="dark:text-zinc-500 text-gray-500 mt-1 text-sm">Your personal account details.</p>
         </div>
 
-        <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8">
-          <div className="flex items-center space-x-6 mb-8 border-b dark:border-white/5 border-gray-200 pb-8">
+        <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6">
+          <div className="flex items-center space-x-6 mb-8 border-b dark:border-white/[0.06] border-gray-200 pb-8">
             <div className="w-20 h-20 bg-emerald-500 rounded-full flex items-center justify-center text-3xl font-bold text-black uppercase">
               {userName ? userName.charAt(0) : "U"}
             </div>
@@ -45,7 +44,7 @@ export default function ProfilePage() {
 
           <div className="space-y-6">
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 flex items-center justify-center">
                 <User className="w-5 h-5 text-emerald-500" />
               </div>
               <div>
@@ -55,7 +54,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 flex items-center justify-center">
                 <Building className="w-5 h-5 text-emerald-500" />
               </div>
               <div>
@@ -65,7 +64,7 @@ export default function ProfilePage() {
             </div>
 
             <div className="flex items-center space-x-4">
-              <div className="w-10 h-10 rounded-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 flex items-center justify-center">
                 <Tag className="w-5 h-5 text-emerald-500" />
               </div>
               <div>
@@ -76,6 +75,5 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

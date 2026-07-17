@@ -34,10 +34,10 @@ export default function RecentActivityFeed() {
 
   if (loading) {
     return (
-      <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl h-80 flex items-center justify-center">
+      <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl h-80 shadow-sm flex items-center justify-center">
         <div className="animate-pulse flex flex-col space-y-5 w-full px-2">
           {[1, 2, 3, 4, 5].map(i => (
-            <div key={i} className="flex gap-4 items-center">
+            <div key={i} className="flex gap-6 items-center">
               <div className="w-9 h-9 rounded-full dark:bg-zinc-800/60 bg-gray-200"></div>
               <div className="flex-1 space-y-2">
                 <div className="h-3 dark:bg-zinc-800/60 bg-gray-200 rounded-lg w-3/4"></div>
@@ -51,7 +51,7 @@ export default function RecentActivityFeed() {
   }
 
   return (
-    <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl flex flex-col h-full transition-all duration-300 hover:dark:border-white/[0.12] border-gray-200">
+    <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 p-6 rounded-2xl flex flex-col h-full transition-all duration-300 shadow-sm hover:border-emerald-500/30 dark:hover:border-white/[0.12] hover:shadow-md hover:-translate-y-0.5">
       <div className="flex justify-between items-center mb-5">
         <span className="text-[10px] dark:text-zinc-500 text-gray-500 uppercase tracking-[0.15em] font-semibold">Recent Activity</span>
         <Link to="/dashboard/logs" className="text-xs text-emerald-500 hover:text-emerald-400 font-medium flex items-center gap-1.5 transition-colors">
@@ -64,7 +64,7 @@ export default function RecentActivityFeed() {
           <div className="dark:text-zinc-500 text-gray-500 text-sm text-center py-8">No recent activity.</div>
         ) : (
           activities.map((log) => (
-            <div key={log._id} className="group flex gap-3.5 p-2.5 -mx-2 rounded-xl transition-colors dark:hover:bg-white/[0.03] hover:bg-gray-50">
+            <div key={log._id} className="group flex gap-3.5 p-2.5 -mx-2 rounded-2xl transition-colors dark:hover:bg-white/[0.03] hover:bg-gray-50">
               <div className="flex flex-col items-center">
                 <div className="w-9 h-9 rounded-full dark:bg-zinc-900/80 bg-gray-50 border dark:border-white/[0.06] border-gray-200 flex items-center justify-center shrink-0 group-hover:dark:border-white/[0.15] border-gray-300 transition-colors">
                   {getIcon(log.activityType)}

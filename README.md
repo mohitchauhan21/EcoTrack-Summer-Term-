@@ -60,7 +60,7 @@ From logging raw emission data and auto-converting it to CO₂e, to generating r
 
 > **No fluff. Just data, insights, and action.**
 
-Built with a **React 19** frontend and an **Express + MongoDB** backend, it includes complete JWT authentication, multi-role access control, interactive charts, CSV import/export, and an in-memory database for zero-setup demos.
+Built with a **React 19** frontend and an **Express + MongoDB** backend, it features a premium, theme-aware user interface with fluid micro-animations, a responsive landing page with an interactive dashboard preview, and a seamless onboarding flow. It includes complete JWT authentication, multi-role access control, interactive charts, CSV import/export, and an in-memory database for zero-setup demos.
 
 ---
 

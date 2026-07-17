@@ -2,6 +2,7 @@
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
 }
 @variant dark (&:where(.dark, .dark *));
 
@@ -11,7 +12,7 @@ html {
 }
 
 .dark .theme-root {
-  background-color: #050505;
+  background-color: #09090b;
   color: #f4f4f5;
 }
 
@@ -119,6 +120,22 @@ html {
   50% { opacity: 0.8; }
 }
 
+/* Hero card gentle float */
+@keyframes float-card {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+/* Hero card float — offset variant */
+@keyframes float-card-offset {
+  0%, 100% { transform: translateY(-6px); }
+  50% { transform: translateY(6px); }
+}
+
+.animate-float-card { animation: float-card 6s ease-in-out infinite; }
+.animate-float-card-offset { animation: float-card-offset 7s ease-in-out infinite; }
+.animate-float-card-slow { animation: float-card 9s ease-in-out infinite; }
+
 /* ===== UTILITY CLASSES ===== */
 
 .animate-float { animation: float 6s ease-in-out infinite; }
@@ -154,7 +171,7 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 .dark .glass {
-  background: rgba(10, 10, 10, 0.6);
+  background: rgba(24, 24, 27, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -177,7 +194,7 @@ html {
   transition: all 0.3s ease;
 }
 .dark .glass-card {
-  background: rgba(15, 15, 15, 0.7);
+  background: rgba(24, 24, 27, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -256,7 +273,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #050505;
+  background: #09090b;
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 

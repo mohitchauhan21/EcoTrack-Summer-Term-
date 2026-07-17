@@ -97,7 +97,7 @@ export default function ReportsPage() {
 
       {/* 1. Report Summary */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8 flex items-center gap-6 shadow-sm h-full">
+        <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 flex items-center gap-6 shadow-sm h-full">
           <div className="w-16 h-16 bg-emerald-500/10 rounded-2xl flex items-center justify-center border border-emerald-500/20 shrink-0">
             <FileText className="w-8 h-8 text-emerald-500" />
           </div>
@@ -109,7 +109,7 @@ export default function ReportsPage() {
           </div>
         </div>
         
-        <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8 flex items-center gap-6 shadow-sm h-full">
+        <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 flex items-center gap-6 shadow-sm h-full">
           <div className="w-16 h-16 bg-blue-500/10 rounded-2xl flex items-center justify-center border border-blue-500/20 shrink-0">
             <Filter className="w-8 h-8 text-blue-500" />
           </div>
@@ -124,8 +124,8 @@ export default function ReportsPage() {
       </div>
 
       {/* 2. Report Parameters */}
-      <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8 shadow-sm">
-        <div className="mb-8 border-b dark:border-white/5 border-gray-100 pb-4">
+      <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 shadow-sm">
+        <div className="mb-8 border-b dark:border-white/[0.06] border-gray-100 pb-4">
           <h3 className="text-sm font-bold uppercase tracking-widest dark:text-zinc-100 text-gray-900 flex items-center gap-2 mb-1">
             <Filter className="w-4 h-4 text-emerald-500" />
             Report Parameters
@@ -156,7 +156,7 @@ export default function ReportsPage() {
               type="date"
               value={filters.startDate}
               onChange={(e) => setFilters({ ...filters, startDate: e.target.value })}
-              className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors cursor-pointer [color-scheme:dark]"
+              className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors cursor-pointer [color-scheme:dark]"
             />
           </div>
           
@@ -168,7 +168,7 @@ export default function ReportsPage() {
               type="date"
               value={filters.endDate}
               onChange={(e) => setFilters({ ...filters, endDate: e.target.value })}
-              className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors cursor-pointer [color-scheme:dark]"
+              className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors cursor-pointer [color-scheme:dark]"
             />
           </div>
 
@@ -186,15 +186,15 @@ export default function ReportsPage() {
       </div>
 
       {/* 3. Report Preview */}
-      <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl overflow-hidden flex flex-col h-[550px] shadow-sm">
-        <div className="px-6 py-5 border-b dark:border-white/5 border-gray-100 flex justify-between items-center dark:bg-[#0f0f0f] bg-white">
+      <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl overflow-hidden flex flex-col h-[550px] shadow-sm">
+        <div className="px-6 py-5 border-b dark:border-white/[0.06] border-gray-100 flex justify-between items-center dark:bg-zinc-900 bg-white">
           <h3 className="dark:text-zinc-100 text-gray-900 font-bold text-sm uppercase tracking-widest">Data Preview <span className="dark:text-zinc-500 text-gray-500 font-normal tracking-normal normal-case ml-2">(Top 10 Rows)</span></h3>
           {previewLoading && <span className="text-[10px] font-bold uppercase tracking-widest text-emerald-500 animate-pulse">Updating...</span>}
         </div>
         
         <div className="flex-1 overflow-auto relative">
           <table className="w-full text-left border-collapse min-w-[800px]">
-            <thead className="sticky top-0 z-10 dark:bg-[#0a0a0a] bg-gray-50/95 backdrop-blur-md border-b dark:border-white/5 border-gray-200 shadow-sm">
+            <thead className="sticky top-0 z-10 dark:bg-zinc-800 bg-gray-50/95 backdrop-blur-md border-b dark:border-white/[0.06] border-gray-200 shadow-sm">
               <tr>
                 <th className="px-6 py-4 text-[10px] font-bold tracking-wider dark:text-zinc-500 text-gray-500 uppercase">Date</th>
                 <th className="px-6 py-4 text-[10px] font-bold tracking-wider dark:text-zinc-500 text-gray-500 uppercase">Department</th>
@@ -228,7 +228,7 @@ export default function ReportsPage() {
                       {log.departmentId?.name || "Unknown"}
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
-                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] uppercase font-bold tracking-wider bg-white/5 border dark:border-white/10 border-gray-200">
+                      <span className="inline-flex items-center px-2.5 py-1 rounded-full text-[10px] uppercase font-bold tracking-wider bg-white/5 border dark:border-white/[0.06] border-gray-200">
                         {log.activityType}
                       </span>
                     </td>

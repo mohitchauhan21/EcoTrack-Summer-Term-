@@ -58,8 +58,8 @@ export default function LogsTable({ refreshTrigger, onEdit }: Props) {
   const totalPages = Math.max(1, Math.ceil(total / 10));
 
   return (
-    <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl overflow-hidden flex flex-col h-full shadow-sm">
-      <div className="px-6 py-5 border-b dark:border-white/5 border-gray-100 flex justify-between items-center dark:bg-[#0f0f0f] bg-white">
+    <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl overflow-hidden flex flex-col h-full shadow-sm">
+      <div className="px-6 py-5 border-b dark:border-white/[0.06] border-gray-100 flex justify-between items-center dark:bg-zinc-900 bg-white">
         <div>
           <h3 className="text-xl font-medium dark:text-zinc-100 text-gray-900">Emission Logs</h3>
           <p className="text-xs dark:text-zinc-500 text-gray-500 mt-1 tracking-wide">{total} total entries found</p>
@@ -68,7 +68,7 @@ export default function LogsTable({ refreshTrigger, onEdit }: Props) {
       
       <div className="overflow-x-auto flex-grow relative min-h-[650px]">
         <table className="w-full text-left border-collapse min-w-[800px]">
-          <thead className="sticky top-0 z-10 dark:bg-[#0a0a0a] bg-gray-50/95 backdrop-blur-md border-b dark:border-white/5 border-gray-200 shadow-sm">
+          <thead className="sticky top-0 z-10 dark:bg-zinc-800 bg-gray-50/95 backdrop-blur-md border-b dark:border-white/[0.06] border-gray-200 shadow-sm">
             <tr className="dark:text-zinc-500 text-gray-500 text-[10px] uppercase tracking-widest font-bold">
               <th className="px-6 py-4 text-left font-bold tracking-wider">Date</th>
               <th className="px-6 py-4 text-left font-bold tracking-wider">Department</th>
@@ -165,7 +165,7 @@ export default function LogsTable({ refreshTrigger, onEdit }: Props) {
         </table>
       </div>
 
-      <div className="px-6 py-4 border-t dark:border-white/5 border-gray-100 dark:bg-[#0f0f0f] bg-white flex items-center justify-between">
+      <div className="px-6 py-4 border-t dark:border-white/[0.06] border-gray-100 dark:bg-zinc-900 bg-white flex items-center justify-between">
         <span className="dark:text-zinc-500 text-gray-500 text-xs font-bold uppercase tracking-widest">
           Page <span className="dark:text-zinc-200 text-gray-800">{page}</span> of <span className="dark:text-zinc-200 text-gray-800">{totalPages}</span>
         </span>
@@ -173,7 +173,7 @@ export default function LogsTable({ refreshTrigger, onEdit }: Props) {
           <button 
             onClick={() => setPage(p => Math.max(1, p - 1))}
             disabled={page === 1}
-            className="p-2 flex items-center justify-center dark:bg-zinc-900 bg-white border dark:border-white/10 border-gray-200 dark:text-zinc-300 text-gray-700 rounded-lg dark:hover:bg-zinc-800 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm"
+            className="p-2 flex items-center justify-center dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 dark:text-zinc-300 text-gray-700 rounded-lg dark:hover:bg-zinc-800 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm"
             title="Previous Page"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -211,7 +211,7 @@ export default function LogsTable({ refreshTrigger, onEdit }: Props) {
           <button 
             onClick={() => setPage(p => p + 1)}
             disabled={page >= totalPages}
-            className="p-2 flex items-center justify-center dark:bg-zinc-900 bg-white border dark:border-white/10 border-gray-200 dark:text-zinc-300 text-gray-700 rounded-lg dark:hover:bg-zinc-800 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm"
+            className="p-2 flex items-center justify-center dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 dark:text-zinc-300 text-gray-700 rounded-lg dark:hover:bg-zinc-800 hover:bg-gray-50 disabled:opacity-30 disabled:cursor-not-allowed transition-colors shadow-sm"
             title="Next Page"
           >
             <ChevronRight className="w-4 h-4" />

@@ -5,6 +5,7 @@ import { useToast } from '../../context/ToastContext';
 import { COUNTRIES } from '../../constants/regions';
 import { Building2, Users, Tags, FileSpreadsheet, Globe, Shield } from 'lucide-react';
 import { Select } from '../../components/ui/Select';
+import CompanyDepartmentsTab from '../../components/dashboard/CompanyDepartmentsTab';
 
 interface OverviewStat {
   label: string;
@@ -14,6 +15,7 @@ interface OverviewStat {
 
 export default function CompanyProfilePage() {
   const { role } = useAuth();
+  const [activeTab, setActiveTab] = useState<'profile' | 'departments'>('profile');
   const [formData, setFormData] = useState({ name: '', region: '' });
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -24,7 +26,8 @@ export default function CompanyProfilePage() {
     departments: number | null;
     users: number | null;
     logs: number | null;
-  }>({ departments: null, users: null, logs: null });
+    emissions: number | null;
+  }>({ departments: null, users: null, logs: null, emissions: null });
 
   useEffect(() => {
     const fetchCompany = async () => {
@@ -52,8 +55,9 @@ export default function CompanyProfilePage() {
 
         setStats({
           departments: deptRes.status === 'fulfilled' ? deptRes.value.data?.length ?? null : null,
-          users: userRes.status === 'fulfilled' ? deptRes.status === 'fulfilled' ? userRes.value.data?.length ?? null : null : null,
+          users: userRes.status === 'fulfilled' ? userRes.value.data?.length ?? null : null,
           logs: summaryRes.status === 'fulfilled' ? summaryRes.value.data?.logCount ?? null : null,
+          emissions: summaryRes.status === 'fulfilled' ? summaryRes.value.data?.totalEmissions ?? null : null,
         });
       } catch {
         // silent — overview is non-critical
@@ -79,9 +83,9 @@ export default function CompanyProfilePage() {
 
   const overviewItems: OverviewStat[] = [
     {
-      label: 'Role',
-      value: role ? role.charAt(0).toUpperCase() + role.slice(1) : '--',
-      icon: <Shield className="w-4 h-4 text-emerald-500" />,
+      label: 'Total Users',
+      value: stats.users !== null ? stats.users : '--',
+      icon: <Users className="w-4 h-4 text-emerald-500" />,
     },
     {
       label: 'Departments',
@@ -89,12 +93,12 @@ export default function CompanyProfilePage() {
       icon: <Tags className="w-4 h-4 text-blue-500" />,
     },
     {
-      label: 'Users',
-      value: stats.users !== null ? stats.users : '--',
-      icon: <Users className="w-4 h-4 text-purple-500" />,
+      label: 'Total Emissions',
+      value: stats.emissions !== null ? `${stats.emissions.toLocaleString()} tCO₂e` : '--',
+      icon: <Globe className="w-4 h-4 text-purple-500" />,
     },
     {
-      label: 'Emission Logs',
+      label: 'Carbon Logs',
       value: stats.logs !== null ? stats.logs.toLocaleString() : '--',
       icon: <FileSpreadsheet className="w-4 h-4 text-amber-500" />,
     },
@@ -109,15 +113,15 @@ export default function CompanyProfilePage() {
           <div className="h-4 w-80 dark:bg-zinc-800/40 bg-gray-200 rounded mt-3 animate-pulse" />
         </header>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 h-64 animate-pulse" />
-          <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 h-64 animate-pulse" />
+          <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 h-64 animate-pulse" />
+          <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 h-64 animate-pulse" />
         </div>
       </div>
     );
   }
 
   const inputClasses =
-    'w-full dark:bg-zinc-900/80 bg-gray-50 border dark:border-white/[0.08] border-gray-200 rounded-xl px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 placeholder-zinc-600 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed';
+    'w-full dark:bg-zinc-900/80 bg-gray-50 border dark:border-white/[0.08] border-gray-200 rounded-2xl px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 placeholder-zinc-600 focus:outline-none focus:border-emerald-500/50 focus:ring-1 focus:ring-emerald-500/20 transition-all disabled:opacity-40 disabled:cursor-not-allowed';
   const labelClasses =
     'block text-[10px] uppercase tracking-[0.15em] font-semibold dark:text-zinc-500 text-gray-500 mb-2.5';
 
@@ -126,23 +130,48 @@ export default function CompanyProfilePage() {
       {/* ── Page Header ────────────────────────────────────────── */}
       <header className="mb-8">
         <div className="flex items-center gap-3 mb-1.5">
-          <div className="w-9 h-9 rounded-xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-2xl bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center">
             <Building2 className="w-4.5 h-4.5 text-emerald-500" />
           </div>
-          <h1 className="text-3xl font-light dark:text-zinc-50 text-gray-950 tracking-tight">Company Profile</h1>
+          <h1 className="text-3xl font-light dark:text-zinc-50 text-gray-950 tracking-tight">Company Settings</h1>
         </div>
-        <p className="dark:text-zinc-500 text-gray-500 text-sm ml-12">
-          Manage your organization's core details and geographical region.
+        <p className="dark:text-zinc-500 text-gray-500 text-sm ml-12 mb-8">
+          Manage your organization's core details, departments, and geographical region.
         </p>
+
+        {/* Custom Tabs */}
+        <div className="ml-12 inline-flex dark:bg-zinc-900 bg-gray-100/50 p-1 rounded-2xl border dark:border-white/[0.06] border-gray-200">
+          <button
+            onClick={() => setActiveTab('profile')}
+            className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+              activeTab === 'profile'
+                ? 'bg-white dark:bg-zinc-800 text-emerald-500 shadow-sm'
+                : 'dark:text-zinc-400 text-gray-500 hover:text-gray-900 dark:hover:text-zinc-300'
+            }`}
+          >
+            Company Profile
+          </button>
+          <button
+            onClick={() => setActiveTab('departments')}
+            className={`px-6 py-2 rounded-lg text-sm font-semibold transition-all duration-300 ${
+              activeTab === 'departments'
+                ? 'bg-white dark:bg-zinc-800 text-emerald-500 shadow-sm'
+                : 'dark:text-zinc-400 text-gray-500 hover:text-gray-900 dark:hover:text-zinc-300'
+            }`}
+          >
+            Departments
+          </button>
+        </div>
       </header>
 
-      {/* ── Two-column grid ────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div key={activeTab} className="animate-in fade-in slide-in-from-bottom-2 duration-300">
+        {activeTab === 'profile' ? (
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
         {/* ── Section 1: Company Information (Form) ──────────── */}
         <form
           onSubmit={handleSubmit}
-          className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 flex flex-col transition-all duration-300 hover:dark:border-white/[0.12] border-gray-200"
+          className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 flex flex-col transition-all duration-300 hover:dark:border-white/[0.12] border-gray-200"
         >
           {/* Card header */}
           <div className="mb-6">
@@ -193,7 +222,7 @@ export default function CompanyProfilePage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 bg-gray-200 disabled:dark:text-zinc-500 text-gray-500 text-black h-10 px-6 rounded-xl font-bold uppercase tracking-wide transition-all text-sm w-full sm:w-auto hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] active:scale-[0.98]"
+                className="bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 bg-gray-200 disabled:dark:text-zinc-500 text-gray-500 text-black h-10 px-6 rounded-2xl font-bold uppercase tracking-wide transition-all text-sm w-full sm:w-auto hover:shadow-[0_0_20px_rgba(16,185,129,0.25)] active:scale-[0.98]"
               >
                 {saving ? 'Saving...' : 'Save Changes'}
               </button>
@@ -202,7 +231,7 @@ export default function CompanyProfilePage() {
         </form>
 
         {/* ── Section 2: Company Overview (read-only) ────────── */}
-        <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 transition-all duration-300 hover:dark:border-white/[0.12] border-gray-200 flex flex-col">
+        <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 transition-all duration-300 hover:dark:border-white/[0.12] border-gray-200 flex flex-col">
           {/* Card header */}
           <div className="mb-6">
             <h2 className="text-sm font-semibold dark:text-zinc-200 text-gray-800 tracking-tight">Company Overview</h2>
@@ -212,11 +241,11 @@ export default function CompanyProfilePage() {
           </div>
 
           {/* Stats grid */}
-          <div className="grid grid-cols-2 gap-4 flex-1">
+          <div className="grid grid-cols-2 gap-6 flex-1">
             {overviewItems.map((item) => (
               <div
                 key={item.label}
-                className="dark:bg-zinc-900/40 bg-gray-50 border dark:border-white/[0.04] border-gray-100 rounded-xl p-4 flex flex-col justify-between transition-all duration-200 hover:dark:border-white/[0.1] border-gray-200 hover:dark:bg-zinc-900/60 bg-gray-100"
+                className="dark:bg-zinc-900/40 bg-gray-50 border dark:border-white/[0.04] border-gray-100 rounded-2xl p-4 flex flex-col justify-between transition-all duration-200 hover:dark:border-white/[0.1] border-gray-200 hover:dark:bg-zinc-900/60 bg-gray-100"
               >
                 <div className="flex items-center gap-2 mb-3">
                   <div className="w-7 h-7 rounded-lg bg-white/[0.04] flex items-center justify-center">
@@ -231,6 +260,10 @@ export default function CompanyProfilePage() {
             ))}
           </div>
         </div>
+        </div>
+      ) : (
+        <CompanyDepartmentsTab />
+      )}
       </div>
     </div>
   );
