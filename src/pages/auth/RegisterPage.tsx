@@ -50,22 +50,22 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex-1 dark:bg-zinc-950 bg-gray-50 flex flex-col justify-center items-center pt-16 px-4 min-h-screen relative overflow-hidden">
+    <div className="flex-1 dark:bg-zinc-950 bg-gray-50 flex flex-col justify-center items-center pt-28 pb-12 px-4 min-h-screen relative overflow-hidden">
       {/* Animated gradient orbs */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
 
-      <div className="max-w-xl w-full dark:bg-zinc-900/80 bg-white/80 backdrop-blur-xl border dark:border-white/[0.06] border-gray-200 rounded-2xl p-10 shadow-sm relative z-10">
-        <div className="text-center mb-10">
-          <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+      <div className="max-w-xl w-full dark:bg-zinc-900/80 bg-white/80 backdrop-blur-xl border dark:border-white/[0.06] border-gray-200 rounded-2xl p-10 pb-12 shadow-sm relative z-10">
+        <div className="text-center mb-12">
+          <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-8">
             <Leaf className="w-6 h-6 text-emerald-500" />
           </div>
           <h2 className="text-2xl font-light dark:text-zinc-100 text-gray-900 tracking-tight">Create an Account</h2>
-          <p className="dark:text-zinc-500 text-gray-500 mt-2 text-sm">Join EcoTrack and manage your corporate emissions.</p>
+          <p className="dark:text-zinc-500 text-gray-500 mt-4 text-sm">Join EcoTrack and manage your corporate emissions.</p>
         </div>
         
-        <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div className="md:col-span-2">
               <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500 mb-2">Company Name</label>
               <input
@@ -144,12 +144,12 @@ export default function RegisterPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 bg-gray-200 disabled:dark:text-zinc-500 text-gray-500 text-black font-bold uppercase tracking-wide py-3 rounded-lg transition-colors text-sm mt-6"
+            className="w-full bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 bg-gray-200 disabled:dark:text-zinc-500 text-gray-500 text-black font-bold uppercase tracking-wide py-3.5 rounded-lg transition-colors text-sm mt-10"
           >
             {loading ? "Creating Account..." : "Create Account"}
           </button>
           
-          <div className="text-center mt-6">
+          <div className="text-center pt-2">
             <span className="text-xs dark:text-zinc-500 text-gray-500">Already have an account? </span>
             <Link to="/login" className="text-xs text-emerald-500 hover:text-emerald-400 font-bold transition-colors">Sign In</Link>
           </div>
