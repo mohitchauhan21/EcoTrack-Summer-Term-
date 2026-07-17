@@ -12,7 +12,7 @@ html {
 }
 
 .dark .theme-root {
-  background-color: #050505;
+  background-color: #09090b;
   color: #f4f4f5;
 }
 
@@ -171,7 +171,7 @@ html {
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 .dark .glass {
-  background: rgba(10, 10, 10, 0.6);
+  background: rgba(24, 24, 27, 0.6);
   border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
@@ -194,7 +194,7 @@ html {
   transition: all 0.3s ease;
 }
 .dark .glass-card {
-  background: rgba(15, 15, 15, 0.7);
+  background: rgba(24, 24, 27, 0.7);
   border: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -273,7 +273,7 @@ html {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: #050505;
+  background: #09090b;
   transition: opacity 0.8s ease, transform 0.8s ease;
 }
 

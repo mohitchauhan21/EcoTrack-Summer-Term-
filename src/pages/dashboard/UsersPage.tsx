@@ -138,7 +138,7 @@ export default function UsersPage() {
       </div>
 
       {canManage && (
-        <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8 mb-8 shadow-sm">
+        <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 mb-8 shadow-sm">
           <div className="mb-8">
             <h3 className="text-sm font-bold uppercase tracking-widest dark:text-zinc-100 text-gray-900 mb-1">Add New User</h3>
             <p className="dark:text-zinc-500 text-gray-500 text-xs">Create a new member and assign their role and department.</p>
@@ -152,7 +152,7 @@ export default function UsersPage() {
                   type="text"
                   value={newUser.name}
                   onChange={(e) => setNewUser({ ...newUser, name: e.target.value })}
-                  className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                  className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
                   placeholder="Enter full name"
                   required
                 />
@@ -163,7 +163,7 @@ export default function UsersPage() {
                   type="email"
                   value={newUser.email}
                   onChange={(e) => setNewUser({ ...newUser, email: e.target.value })}
-                  className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                  className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
                   placeholder="Enter email address"
                   required
                 />
@@ -196,7 +196,7 @@ export default function UsersPage() {
               </div>
             </div>
             
-            <div className="flex justify-end pt-4 border-t dark:border-white/5 border-gray-100">
+            <div className="flex justify-end pt-4 border-t dark:border-white/[0.06] border-gray-100">
               <button
                 type="submit"
                 disabled={adding || !newUser.name || !newUser.email}
@@ -216,15 +216,15 @@ export default function UsersPage() {
         </div>
       )}
 
-      <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl overflow-hidden">
+      <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl overflow-hidden">
         {users.length === 0 ? (
-          <div className="p-8 text-center dark:text-zinc-500 text-gray-500 text-sm">
+          <div className="p-6 text-center dark:text-zinc-500 text-gray-500 text-sm">
             No users found.
           </div>
         ) : (
           <table className="w-full text-left border-collapse">
             <thead>
-              <tr className="border-b dark:border-white/5 border-gray-200 dark:bg-[#0a0a0a] bg-gray-50/80">
+              <tr className="border-b dark:border-white/[0.06] border-gray-200 dark:bg-zinc-800 bg-gray-50/80">
                 <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Name</th>
                 <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Email</th>
                 <th className="px-6 py-4 text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Role</th>
@@ -237,7 +237,7 @@ export default function UsersPage() {
                 const isProtected = role !== 'superadmin' && getRoleRank(role || '') >= getRoleRank(user.role);
                 
                 return (
-                  <tr key={user._id} className="border-b dark:border-white/5 border-gray-200 dark:hover:bg-white/[0.02] hover:bg-gray-50 transition-colors">
+                  <tr key={user._id} className="border-b dark:border-white/[0.06] border-gray-200 dark:hover:bg-white/[0.02] hover:bg-gray-50 transition-colors">
                     <td className="px-6 py-4 font-medium dark:text-zinc-100 text-gray-900 flex items-center gap-3">
                       <div className="w-8 h-8 rounded-full bg-emerald-500/10 text-emerald-500 flex items-center justify-center border border-emerald-500/20">
                         <UserCog className="w-4 h-4" />

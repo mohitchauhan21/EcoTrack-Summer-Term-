@@ -97,7 +97,7 @@ export default function CsvUploader({ onSuccess }: Props) {
   };
 
   return (
-    <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8 h-full flex flex-col shadow-sm relative">
+    <div className="dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 h-full flex flex-col shadow-sm relative">
       <h3 className="text-sm font-bold uppercase tracking-widest dark:text-zinc-100 text-gray-900 mb-6">Bulk Upload (CSV)</h3>
       
       {successAlert && (
@@ -111,10 +111,10 @@ export default function CsvUploader({ onSuccess }: Props) {
       
       {!file ? (
         <div 
-          className={`flex-grow flex flex-col justify-center items-center border-2 border-dashed rounded-xl p-10 text-center transition-all duration-300 cursor-pointer ${
+          className={`flex-grow flex flex-col justify-center items-center border-2 border-dashed rounded-2xl p-10 text-center transition-all duration-300 cursor-pointer ${
             isDragging 
               ? "border-emerald-500 bg-emerald-500/5" 
-              : "dark:border-white/10 border-gray-300 hover:border-emerald-500/50 hover:bg-gray-50 dark:hover:bg-white/[0.02]"
+              : "dark:border-white/[0.06] border-gray-300 hover:border-emerald-500/50 hover:bg-gray-50 dark:hover:bg-white/[0.02]"
           }`}
           onClick={() => fileInputRef.current?.click()}
           onDragOver={(e) => { e.preventDefault(); setIsDragging(true); }}
@@ -142,7 +142,7 @@ export default function CsvUploader({ onSuccess }: Props) {
         </div>
       ) : (
         <div className="space-y-6 flex-grow flex flex-col justify-center">
-          <div className="flex items-center justify-between dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg p-5">
+          <div className="flex items-center justify-between dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg p-5">
             <div className="flex items-center space-x-4">
               <div className="w-10 h-10 rounded-full bg-emerald-500/10 flex items-center justify-center border border-emerald-500/20">
                 <FileText className="w-5 h-5 text-emerald-500" />
@@ -162,11 +162,11 @@ export default function CsvUploader({ onSuccess }: Props) {
           </div>
 
           {!result && headers.length > 0 && (
-            <div className="dark:bg-zinc-900 bg-gray-50 border dark:border-white/5 border-gray-200 rounded-lg p-5">
+            <div className="dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg p-5">
               <h4 className="text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500 mb-4">Detected Columns</h4>
               <div className="flex flex-wrap gap-2">
                 {headers.map((h, i) => (
-                  <span key={i} className="bg-white/5 border dark:border-white/10 border-gray-200 dark:text-zinc-300 text-gray-700 text-xs px-2.5 py-1.5 rounded font-medium">
+                  <span key={i} className="bg-white/5 border dark:border-white/[0.06] border-gray-200 dark:text-zinc-300 text-gray-700 text-xs px-2.5 py-1.5 rounded font-medium">
                     {h}
                   </span>
                 ))}

@@ -50,12 +50,12 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="flex-1 dark:bg-[#050505] bg-gray-50 flex flex-col justify-center items-center pt-16 px-4 min-h-screen relative overflow-hidden">
+    <div className="flex-1 dark:bg-zinc-950 bg-gray-50 flex flex-col justify-center items-center pt-16 px-4 min-h-screen relative overflow-hidden">
       {/* Animated gradient orbs */}
       <div className="absolute top-1/4 left-1/4 w-[500px] h-[500px] bg-emerald-500/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] bg-blue-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1.5s' }} />
 
-      <div className="max-w-xl w-full dark:bg-[#0a0a0a]/80 bg-white/80 backdrop-blur-xl border dark:border-white/10 border-gray-200 rounded-3xl p-10 shadow-2xl relative z-10">
+      <div className="max-w-xl w-full dark:bg-zinc-900/80 bg-white/80 backdrop-blur-xl border dark:border-white/[0.06] border-gray-200 rounded-2xl p-10 shadow-sm relative z-10">
         <div className="text-center mb-10">
           <div className="w-12 h-12 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-6">
             <Leaf className="w-6 h-6 text-emerald-500" />
@@ -65,14 +65,14 @@ export default function RegisterPage() {
         </div>
         
         <form onSubmit={handleSubmit} className="space-y-5">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="md:col-span-2">
               <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500 mb-2">Company Name</label>
               <input
                 type="text"
                 value={formData.companyName}
                 onChange={e => setFormData({...formData, companyName: e.target.value})}
-                className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
                 placeholder="Acme Corp"
                 required
               />
@@ -95,7 +95,7 @@ export default function RegisterPage() {
                 type="text"
                 value={formData.name}
                 onChange={e => setFormData({...formData, name: e.target.value})}
-                className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
                 placeholder="John Doe"
                 required
               />
@@ -106,7 +106,7 @@ export default function RegisterPage() {
                 type="email"
                 value={formData.email}
                 onChange={e => setFormData({...formData, email: e.target.value})}
-                className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
                 placeholder="john@acme.com"
                 required
               />
@@ -117,7 +117,7 @@ export default function RegisterPage() {
                 type="password"
                 value={formData.password}
                 onChange={e => setFormData({...formData, password: e.target.value})}
-                className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
                 placeholder="••••••••"
                 required
               />
@@ -128,7 +128,7 @@ export default function RegisterPage() {
                 type="password"
                 value={formData.confirmPassword}
                 onChange={e => setFormData({...formData, confirmPassword: e.target.value})}
-                className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
                 placeholder="••••••••"
                 required
               />

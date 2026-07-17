@@ -121,10 +121,10 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
   return (
     <div 
       ref={formRef}
-      className={`bg-white border rounded-2xl p-8 h-full flex flex-col transition-all duration-300 ${
+      className={`bg-white border rounded-2xl p-6 h-full flex flex-col transition-all duration-300 ${
         isEditing 
           ? "dark:bg-emerald-900/5 dark:border-emerald-500/30 border-emerald-500/40 shadow-[0_0_20px_rgba(16,185,129,0.05)]" 
-          : "dark:bg-[#0f0f0f] dark:border-white/5 border-gray-200 shadow-sm"
+          : "dark:bg-zinc-900 dark:border-white/[0.06] border-gray-200 shadow-sm"
       }`}
     >
       <div className="flex items-center gap-3 mb-8">
@@ -146,7 +146,7 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
               type="date"
               value={formData.date}
               onChange={e => setFormData({ ...formData, date: e.target.value })}
-              className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors [color-scheme:dark]"
+              className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors [color-scheme:dark]"
               required
             />
           </div>
@@ -179,7 +179,7 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
             />
           </div>
           
-          <div className="flex gap-4">
+          <div className="flex gap-6">
             <div className="flex-grow space-y-2">
               <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Amount</label>
               <input
@@ -188,7 +188,7 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
                 step="0.01"
                 value={formData.rawAmount}
                 onChange={e => setFormData({ ...formData, rawAmount: e.target.value })}
-                className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+                className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
                 placeholder="e.g. 500"
                 required
               />
@@ -200,7 +200,7 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
                 value={formData.rawUnit}
                 readOnly
                 disabled
-                className="w-full dark:bg-zinc-900/50 bg-gray-100 border dark:border-white/5 border-gray-200 rounded-lg px-4 py-3 text-sm font-medium dark:text-zinc-500 text-gray-500 cursor-not-allowed focus:outline-none"
+                className="w-full dark:bg-zinc-800/50 bg-gray-100 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm font-medium dark:text-zinc-500 text-gray-500 cursor-not-allowed focus:outline-none"
               />
             </div>
           </div>
@@ -211,7 +211,7 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
               type="text"
               value={formData.source}
               onChange={e => setFormData({ ...formData, source: e.target.value })}
-              className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
+              className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
               placeholder="e.g. Q1 Electricity Bill"
             />
           </div>
@@ -231,7 +231,7 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
               type="button"
               onClick={handleCancel}
               disabled={loading}
-              className="px-6 py-3.5 rounded-lg font-bold uppercase tracking-wide transition-colors duration-300 text-sm dark:bg-zinc-900 bg-gray-100 dark:hover:bg-zinc-800 hover:bg-gray-200 dark:text-zinc-300 text-gray-700 border dark:border-white/10 border-transparent disabled:opacity-50"
+              className="px-6 py-3.5 rounded-lg font-bold uppercase tracking-wide transition-colors duration-300 text-sm dark:bg-zinc-900 bg-gray-100 dark:hover:bg-zinc-800 hover:bg-gray-200 dark:text-zinc-300 text-gray-700 border dark:border-white/[0.06] border-transparent disabled:opacity-50"
             >
               Cancel
             </button>

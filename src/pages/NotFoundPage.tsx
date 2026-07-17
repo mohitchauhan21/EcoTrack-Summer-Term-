@@ -38,7 +38,7 @@ function Particles() {
 
 export default function NotFoundPage() {
   return (
-    <div className="flex-1 bg-[#050505] flex items-center justify-center min-h-screen relative overflow-hidden">
+    <div className="flex-1 bg-zinc-950 flex items-center justify-center min-h-screen relative overflow-hidden">
       <Particles />
       
       {/* Ambient orbs */}
@@ -46,7 +46,7 @@ export default function NotFoundPage() {
       <div className="absolute bottom-1/4 right-1/4 w-[300px] h-[300px] bg-blue-500/5 rounded-full blur-3xl animate-breathe" style={{ animationDelay: '2s' }} />
       
       <div className="text-center relative z-10 px-4">
-        <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-3xl flex items-center justify-center mx-auto mb-8 animate-float">
+        <div className="w-20 h-20 bg-emerald-500/10 border border-emerald-500/20 rounded-2xl flex items-center justify-center mx-auto mb-8 animate-float">
           <Search className="w-8 h-8 text-emerald-500" />
         </div>
         
@@ -60,17 +60,17 @@ export default function NotFoundPage() {
           Let's get you back on track.
         </p>
         
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+        <div className="flex flex-col sm:flex-row gap-6 justify-center">
           <Link
             to="/"
-            className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest transition-all hover:shadow-[0_0_30px_rgba(16,185,129,0.3)]"
+            className="inline-flex items-center gap-2 bg-emerald-500 hover:bg-emerald-400 text-black px-8 py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all hover:shadow-[0_0_30px_rgba(16,185,129,0.3)]"
           >
             <Home className="w-4 h-4" />
             Go Home
           </Link>
           <button
             onClick={() => window.history.back()}
-            className="inline-flex items-center gap-2 glass-light text-white px-8 py-4 rounded-xl text-sm font-bold uppercase tracking-widest transition-all hover:bg-white/10"
+            className="inline-flex items-center gap-2 glass-light text-white px-8 py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all hover:bg-white/10"
           >
             <ArrowLeft className="w-4 h-4" />
             Go Back

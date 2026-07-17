@@ -73,7 +73,7 @@ export default function DashboardPreviewModal({ isOpen, onClose }: DashboardPrev
       <div 
         ref={modalRef}
         tabIndex={-1}
-        className={`relative w-full max-w-[1100px] max-h-[90vh] overflow-y-auto dark:bg-[#0a0a0a] bg-white rounded-3xl border dark:border-white/10 border-gray-200 shadow-2xl transition-all duration-300 transform outline-none ${
+        className={`relative w-full max-w-[1100px] max-h-[90vh] overflow-y-auto dark:bg-zinc-900 bg-white rounded-2xl border dark:border-white/[0.06] border-gray-200 shadow-2xl transition-all duration-300 transform outline-none ${
           isAnimating ? "scale-100 translate-y-0" : "scale-95 translate-y-4"
         }`}
         role="dialog"
@@ -81,7 +81,7 @@ export default function DashboardPreviewModal({ isOpen, onClose }: DashboardPrev
         aria-labelledby="modal-title"
       >
         {/* Header */}
-        <div className="sticky top-0 z-10 flex items-start sm:items-center justify-between px-6 py-5 md:px-8 md:py-6 border-b dark:border-white/10 border-gray-200 dark:bg-[#0a0a0a]/90 bg-white/90 backdrop-blur-md">
+        <div className="sticky top-0 z-10 flex items-start sm:items-center justify-between px-6 py-5 md:px-8 md:py-6 border-b dark:border-white/[0.06] border-gray-200 dark:bg-zinc-900/90 bg-white/90 backdrop-blur-md">
           <div className="pr-4">
             <h2 id="modal-title" className="text-xl md:text-2xl font-bold dark:text-white text-gray-900 tracking-tight">
               Dashboard Preview
@@ -101,7 +101,7 @@ export default function DashboardPreviewModal({ isOpen, onClose }: DashboardPrev
 
         {/* Body */}
         <div className="p-6 md:p-8">
-          <div className="rounded-2xl overflow-hidden border dark:border-white/10 border-gray-200 shadow-[0_8px_30px_rgba(0,0,0,0.12)] mb-12 relative group bg-gray-50 dark:bg-[#0f0f0f]">
+          <div className="rounded-2xl overflow-hidden border dark:border-white/[0.06] border-gray-200 shadow-[0_8px_30px_rgba(0,0,0,0.12)] mb-12 relative group bg-gray-50 dark:bg-zinc-900">
              <img 
                src="/dashboard-preview.png" 
                alt="EcoTrack Dashboard Preview" 
@@ -118,10 +118,10 @@ export default function DashboardPreviewModal({ isOpen, onClose }: DashboardPrev
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-6">
             {/* Feature 1 */}
-            <div className={`dark:bg-[#0f0f0f] bg-white border dark:border-white/10 border-gray-200 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-[0_8px_20px_rgba(16,185,129,0.08)] ${isAnimating ? 'opacity-100 translate-y-0 delay-100' : 'opacity-0 translate-y-4'}`}>
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-4">
+            <div className={`dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:shadow-md dark:hover:border-white/[0.12] ${isAnimating ? 'opacity-100 translate-y-0 delay-100' : 'opacity-0 translate-y-4'}`}>
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
                 <BarChart3 className="w-5 h-5 text-emerald-500" />
               </div>
               <h4 className="text-base font-bold dark:text-white text-gray-900 mb-2">Analytics Dashboard</h4>
@@ -129,8 +129,8 @@ export default function DashboardPreviewModal({ isOpen, onClose }: DashboardPrev
             </div>
             
             {/* Feature 2 */}
-            <div className={`dark:bg-[#0f0f0f] bg-white border dark:border-white/10 border-gray-200 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-[0_8px_20px_rgba(16,185,129,0.08)] ${isAnimating ? 'opacity-100 translate-y-0 delay-200' : 'opacity-0 translate-y-4'}`}>
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-4">
+            <div className={`dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:shadow-md dark:hover:border-white/[0.12] ${isAnimating ? 'opacity-100 translate-y-0 delay-200' : 'opacity-0 translate-y-4'}`}>
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
                 <Leaf className="w-5 h-5 text-emerald-500" />
               </div>
               <h4 className="text-base font-bold dark:text-white text-gray-900 mb-2">Carbon Tracking</h4>
@@ -138,8 +138,8 @@ export default function DashboardPreviewModal({ isOpen, onClose }: DashboardPrev
             </div>
 
             {/* Feature 3 */}
-            <div className={`dark:bg-[#0f0f0f] bg-white border dark:border-white/10 border-gray-200 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-[0_8px_20px_rgba(16,185,129,0.08)] ${isAnimating ? 'opacity-100 translate-y-0 delay-300' : 'opacity-0 translate-y-4'}`}>
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-4">
+            <div className={`dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:shadow-md dark:hover:border-white/[0.12] ${isAnimating ? 'opacity-100 translate-y-0 delay-300' : 'opacity-0 translate-y-4'}`}>
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
                 <FileSpreadsheet className="w-5 h-5 text-emerald-500" />
               </div>
               <h4 className="text-base font-bold dark:text-white text-gray-900 mb-2">Reports</h4>
@@ -147,8 +147,8 @@ export default function DashboardPreviewModal({ isOpen, onClose }: DashboardPrev
             </div>
 
             {/* Feature 4 */}
-            <div className={`dark:bg-[#0f0f0f] bg-white border dark:border-white/10 border-gray-200 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-1 hover:border-emerald-500/30 hover:shadow-[0_8px_20px_rgba(16,185,129,0.08)] ${isAnimating ? 'opacity-100 translate-y-0 delay-400' : 'opacity-0 translate-y-4'}`}>
-              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 flex items-center justify-center mb-4">
+            <div className={`dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 rounded-2xl p-6 transition-all duration-500 hover:-translate-y-0.5 hover:border-emerald-500/30 hover:shadow-md dark:hover:border-white/[0.12] ${isAnimating ? 'opacity-100 translate-y-0 delay-400' : 'opacity-0 translate-y-4'}`}>
+              <div className="w-10 h-10 rounded-2xl bg-emerald-500/10 flex items-center justify-center mb-4">
                 <Users className="w-5 h-5 text-emerald-500" />
               </div>
               <h4 className="text-base font-bold dark:text-white text-gray-900 mb-2">User Management</h4>
@@ -158,10 +158,10 @@ export default function DashboardPreviewModal({ isOpen, onClose }: DashboardPrev
         </div>
 
         {/* Footer */}
-        <div className="px-6 py-5 md:px-8 md:py-6 border-t dark:border-white/10 border-gray-200 flex justify-center bg-gray-50 dark:bg-[#050505]">
+        <div className="px-6 py-5 md:px-8 md:py-6 border-t dark:border-white/[0.06] border-gray-200 flex justify-center bg-gray-50 dark:bg-zinc-950">
           <button
             onClick={onClose}
-            className="border border-gray-300 dark:border-white/20 dark:text-zinc-200 text-gray-700 px-8 py-3.5 rounded-xl text-sm font-bold uppercase tracking-widest transition-all duration-300 dark:hover:bg-white/5 hover:bg-gray-100 hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            className="border border-gray-300 dark:border-white/20 dark:text-zinc-200 text-gray-700 px-8 py-3.5 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all duration-300 dark:hover:bg-white/5 hover:bg-gray-100 hover:-translate-y-0.5 active:scale-[0.98] focus:outline-none focus:ring-2 focus:ring-emerald-500"
           >
             Close Preview
           </button>

@@ -59,10 +59,10 @@ export default function Navbar() {
 
   return (
     <nav 
-      className={`fixed top-0 w-full z-50 transition-all duration-300 ${
+      className={`fixed top-0 w-full z-50 transition-all duration-300 border-b border-gray-200 dark:border-white/[0.06] backdrop-blur-md shadow-[0_2px_15px_-3px_rgba(0,0,0,0.05),0_10px_20px_-2px_rgba(0,0,0,0.02)] dark:shadow-white/5 ${
         isScrolled 
-          ? 'dark:bg-[#050505]/80 bg-white/80 backdrop-blur-md shadow-sm dark:shadow-white/5 border-b dark:border-white/10 border-gray-200 py-3' 
-          : 'bg-transparent py-5'
+          ? 'dark:bg-zinc-950/90 bg-white/90 py-3' 
+          : 'dark:bg-zinc-950/30 bg-white/40 py-5'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -78,7 +78,7 @@ export default function Navbar() {
           </div>
           
           {/* Center: Nav Links */}
-          <div className="hidden md:flex flex-none items-center justify-center gap-8">
+          <div className="hidden md:flex flex-none items-center justify-center gap-6">
             {navLinks.map((link) => (
               <a 
                 key={link.name}
@@ -97,7 +97,7 @@ export default function Navbar() {
           </div>
 
           {/* Right: Actions */}
-          <div className="flex-1 flex justify-end items-center gap-4">
+          <div className="flex-1 flex justify-end items-center gap-6">
             <button
               onClick={toggleTheme}
               className="p-2 rounded-full dark:hover:bg-white/10 hover:bg-gray-100 dark:text-zinc-400 text-gray-500 transition-colors"
@@ -106,7 +106,7 @@ export default function Navbar() {
               {theme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
             </button>
 
-            <div className="hidden md:flex items-center gap-4">
+            <div className="hidden md:flex items-center gap-6">
               {isAuthenticated ? (
                 <>
                   <Link
@@ -125,7 +125,7 @@ export default function Navbar() {
               ) : location.pathname !== "/login" ? (
                 <Link
                   to="/login"
-                  className="bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-xl text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(16,185,129,0.3)] active:scale-[0.98]"
+                  className="bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-2.5 rounded-2xl text-xs font-bold uppercase tracking-widest transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_4px_15px_rgba(16,185,129,0.3)] active:scale-[0.98]"
                 >
                   Sign In
                 </Link>
@@ -145,8 +145,8 @@ export default function Navbar() {
 
       {/* Mobile Menu */}
       <div 
-        className={`md:hidden absolute top-full left-0 w-full dark:bg-[#050505]/95 bg-white/95 backdrop-blur-xl transition-all duration-300 overflow-hidden ${
-          isMobileMenuOpen ? 'max-h-[400px] border-b dark:border-white/10 border-gray-200 opacity-100' : 'max-h-0 border-transparent opacity-0'
+        className={`md:hidden absolute top-full left-0 w-full dark:bg-zinc-950/95 bg-white/95 backdrop-blur-xl transition-all duration-300 overflow-hidden ${
+          isMobileMenuOpen ? 'max-h-[400px] border-b dark:border-white/[0.06] border-gray-200 opacity-100' : 'max-h-0 border-transparent opacity-0'
         }`}
       >
         <div className="px-4 pt-4 pb-6 space-y-2 flex flex-col items-center shadow-lg">
@@ -168,7 +168,7 @@ export default function Navbar() {
             <Link
               to="/login"
               onClick={() => setIsMobileMenuOpen(false)}
-              className="mt-4 w-full text-center bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-4 rounded-xl text-sm font-bold uppercase tracking-widest transition-all duration-300"
+              className="mt-4 w-full text-center bg-emerald-500 hover:bg-emerald-400 text-black px-6 py-4 rounded-2xl text-sm font-bold uppercase tracking-widest transition-all duration-300"
             >
               Sign In
             </Link>

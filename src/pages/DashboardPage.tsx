@@ -69,7 +69,7 @@ export default function DashboardPage() {
     <div className="flex-1 pb-12">
       {/* ── Dashboard Header ─────────────────────────────────── */}
       <header className="mb-8">
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-5">
+        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-6">
           {/* Left — Title */}
           <div>
             <h1 className="text-3xl font-light dark:text-zinc-50 text-gray-950 tracking-tight">
@@ -90,7 +90,7 @@ export default function DashboardPage() {
       {!canViewAnalytics ? (
         <EmployeeDashboardView />
       ) : (
-        <div className="grid grid-cols-12 gap-5">
+        <div className="grid grid-cols-12 gap-6">
           {/* Section label */}
           <div className="col-span-12 mb-1">
             <h2 className="text-xs dark:text-zinc-500 text-gray-500 uppercase tracking-[0.15em] font-semibold">Company Overview</h2>

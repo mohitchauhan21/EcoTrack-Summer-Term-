@@ -122,12 +122,12 @@ export default function DashboardLayout() {
   const isDark = theme === "dark";
 
   return (
-    <div className={`min-h-screen flex flex-col ${isDark ? "bg-[#050505]" : "bg-gray-50"}`}>
+    <div className={`min-h-screen flex flex-col ${isDark ? "bg-zinc-950" : "bg-gray-50"}`}>
       {/* ── Fixed Top Navbar ─────────────────────────────────── */}
       <nav
         className={`fixed top-0 left-0 right-0 z-50 h-[70px] backdrop-blur-xl border-b transition-colors duration-300 ${
           isDark
-            ? "bg-[#0a0a0a]/95 border-white/10"
+            ? "bg-zinc-950/95 border-white/10"
             : "bg-white/95 border-gray-200"
         }`}
       >
@@ -177,7 +177,7 @@ export default function DashboardLayout() {
             <button
               onClick={toggleTheme}
               aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
-              className={`p-2 rounded-xl transition-all duration-300 cursor-pointer ${
+              className={`p-2 rounded-2xl transition-all duration-300 cursor-pointer ${
                 isDark
                   ? "text-zinc-400 hover:text-yellow-400 hover:bg-white/5"
                   : "text-gray-500 hover:text-gray-900 hover:bg-gray-100"
@@ -202,9 +202,9 @@ export default function DashboardLayout() {
               {dropdownOpen && (
                 <div
                   role="menu"
-                  className={`absolute right-0 top-[calc(100%+8px)] w-52 rounded-xl border shadow-xl overflow-hidden transition-all duration-200 origin-top-right animate-in fade-in zoom-in-95 ${
+                  className={`absolute right-0 top-[calc(100%+8px)] w-52 rounded-2xl border shadow-xl overflow-hidden transition-all duration-200 origin-top-right animate-in fade-in zoom-in-95 ${
                     isDark
-                      ? "bg-[#111111] border-white/10 shadow-black/40"
+                      ? "bg-zinc-900 border-white/10 shadow-black/40"
                       : "bg-white border-gray-200 shadow-gray-200/60"
                   }`}
                 >
@@ -276,7 +276,7 @@ export default function DashboardLayout() {
           <div
             className={`absolute top-0 right-0 w-72 h-full border-l flex flex-col animate-in slide-in-from-right duration-200 ${
               isDark
-                ? "bg-[#0a0a0a] border-white/10"
+                ? "bg-zinc-900 border-white/10"
                 : "bg-white border-gray-200"
             }`}
           >

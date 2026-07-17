@@ -3,9 +3,9 @@ import { Leaf, Github, Linkedin, Mail } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="dark:bg-[#050505] bg-gray-50 border-t dark:border-white/5 border-gray-200 pt-16 pb-8 mt-auto transition-colors">
+    <footer className="dark:bg-zinc-950 bg-gray-50 border-t dark:border-white/[0.06] border-gray-200 pt-16 pb-8 mt-auto transition-colors">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8 mb-16">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-6 mb-16">
           {/* Column 1: Brand */}
           <div className="flex flex-col">
             <Link to="/" className="flex items-center gap-3 mb-6">
@@ -44,14 +44,14 @@ export default function Footer() {
           {/* Column 4: Connect */}
           <div className="flex flex-col">
             <h4 className="text-sm font-bold dark:text-white text-gray-900 uppercase tracking-widest mb-6">Connect</h4>
-            <div className="flex gap-4">
-              <a href="#" className="w-10 h-10 rounded-full dark:bg-[#0f0f0f] bg-white border dark:border-white/10 border-gray-200 flex items-center justify-center dark:text-zinc-400 text-gray-500 dark:hover:text-white hover:text-gray-900 dark:hover:border-white/30 hover:border-gray-400 hover:-translate-y-1 transition-all">
+            <div className="flex gap-6">
+              <a href="#" className="w-10 h-10 rounded-full dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 flex items-center justify-center dark:text-zinc-400 text-gray-500 dark:hover:text-white hover:text-gray-900 dark:hover:border-white/30 hover:border-gray-400 hover:-translate-y-0.5 transition-all">
                 <Github className="w-4 h-4" />
               </a>
-              <a href="#" className="w-10 h-10 rounded-full dark:bg-[#0f0f0f] bg-white border dark:border-white/10 border-gray-200 flex items-center justify-center dark:text-zinc-400 text-gray-500 dark:hover:text-white hover:text-gray-900 dark:hover:border-white/30 hover:border-gray-400 hover:-translate-y-1 transition-all">
+              <a href="#" className="w-10 h-10 rounded-full dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 flex items-center justify-center dark:text-zinc-400 text-gray-500 dark:hover:text-white hover:text-gray-900 dark:hover:border-white/30 hover:border-gray-400 hover:-translate-y-0.5 transition-all">
                 <Linkedin className="w-4 h-4" />
               </a>
-              <a href="mailto:hello@ecotrack.com" className="w-10 h-10 rounded-full dark:bg-[#0f0f0f] bg-white border dark:border-white/10 border-gray-200 flex items-center justify-center dark:text-zinc-400 text-gray-500 dark:hover:text-white hover:text-gray-900 dark:hover:border-white/30 hover:border-gray-400 hover:-translate-y-1 transition-all">
+              <a href="mailto:hello@ecotrack.com" className="w-10 h-10 rounded-full dark:bg-zinc-900 bg-white border dark:border-white/[0.06] border-gray-200 flex items-center justify-center dark:text-zinc-400 text-gray-500 dark:hover:text-white hover:text-gray-900 dark:hover:border-white/30 hover:border-gray-400 hover:-translate-y-0.5 transition-all">
                 <Mail className="w-4 h-4" />
               </a>
             </div>
@@ -59,7 +59,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Bar */}
-        <div className="pt-8 border-t dark:border-white/10 border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="pt-8 border-t dark:border-white/[0.06] border-gray-200 flex flex-col md:flex-row items-center justify-between gap-6">
           <p className="text-xs dark:text-zinc-500 text-gray-500 font-medium">
             &copy; {new Date().getFullYear()} EcoTrack. All rights reserved.
           </p>
