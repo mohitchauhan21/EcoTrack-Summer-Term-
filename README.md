@@ -305,11 +305,11 @@ When running without `MONGO_URI`, demo data is auto-seeded. Use any of these acc
 
 | Role | Email | Password | What you can do |
 |---|---|---|---|
-| 🔴 **Superadmin** | `superadmin@ecotrack.com` | `password123` | Full access across all companies |
-| 🟠 **Admin** | `admin@techcorp.com` | `password123` | Full access within a company |
-| 🟡 **Executive** | `exec@techcorp.com` | `password123` | View analytics & reports |
-| 🟢 **Manager** | `manager@techcorp.com` | `password123` | Manage team's emission logs |
-| 🔵 **Viewer** | `viewer@techcorp.com` | `password123` | Read-only access |
+| 🔴 **Superadmin** | `superadmin@ecotrack.com` | `Password123!` | Full access across all companies |
+| 🟠 **Admin** | `admin@ecotrack.com` | `Password123!` | Full access within a company |
+| 🟡 **Executive** | `exec@ecotrack.com` | `Password123!` | View analytics & reports |
+| 🟢 **Employee** | `employee@ecotrack.com` | `Password123!` | Manage personal emission logs |
+| 🔵 **Employee** | `jane@ecotrack.com` | `Password123!` | Logistics department — log & view entries |
 
 ---
 

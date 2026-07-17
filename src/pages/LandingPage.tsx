@@ -452,6 +452,7 @@ export default function LandingPage() {
           </div>
         </section>
       </main>
+      <Footer />
       <DashboardPreviewModal isOpen={isPreviewOpen} onClose={() => setIsPreviewOpen(false)} />
     </div>
   );
