@@ -89,10 +89,12 @@ async function startServer() {
   const app = express();
   const PORT = Number(process.env.PORT) || 3000;
 
-  app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
-    credentials: true,
-  }));
+  if (process.env.NODE_ENV !== "production") {
+    app.use(cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    }));
+  }
   app.use(express.json());
 
   // API Routes
