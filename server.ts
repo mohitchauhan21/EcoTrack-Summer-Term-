@@ -3,7 +3,6 @@ import path from "path";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { MongoMemoryServer } from "mongodb-memory-server";
 import { createServer as createViteServer } from "vite";
 
 dotenv.config();
@@ -58,6 +57,8 @@ async function connectDb() {
         );
       }
     } else {
+      const { MongoMemoryServer } = await import("mongodb-memory-server");
+
       const mongoServer = await MongoMemoryServer.create();
       const uri = mongoServer.getUri();
 
