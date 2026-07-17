@@ -12,6 +12,8 @@ export default function CsvUploader({ onSuccess }: Props) {
   const [headers, setHeaders] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<{ insertedCount: number, errorCount: number, errors: any[] } | null>(null);
+  const [successAlert, setSuccessAlert] = useState<string | null>(null);
+  const [isFadingOut, setIsFadingOut] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
@@ -52,6 +54,7 @@ export default function CsvUploader({ onSuccess }: Props) {
   const handleUpload = async () => {
     if (!file) return;
     setLoading(true);
+    setResult(null); // Clear previous results
     
     const formData = new FormData();
     formData.append("file", file);
@@ -60,16 +63,33 @@ export default function CsvUploader({ onSuccess }: Props) {
       const res = await apiClient.post("/logs/bulk-upload", formData, {
         headers: { "Content-Type": "multipart/form-data" }
       });
-      setResult(res.data);
-      if (res.data.insertedCount > 0) {
-        toast(`Successfully imported ${res.data.insertedCount} logs`, 'success');
+      
+      if (res.data.insertedCount > 0 && res.data.errorCount === 0) {
+        // 100% Success
+        setSuccessAlert(`Successfully inserted ${res.data.insertedCount} rows.`);
+        setIsFadingOut(false);
+        setFile(null);
+        setHeaders([]);
         onSuccess();
+        
+        setTimeout(() => {
+          setIsFadingOut(true);
+        }, 3500);
+
+        setTimeout(() => {
+          setSuccessAlert(null);
+          setIsFadingOut(false);
+        }, 4000);
       } else {
-        toast(`Import completed with ${res.data.errorCount} errors`, 'error');
+        // Partial success or failure
+        setResult(res.data);
+        if (res.data.insertedCount > 0) {
+          onSuccess();
+        }
       }
     } catch (error: any) {
       console.error("Upload failed", error);
-      const msg = error.response?.data?.message || "Failed to upload file.";
+      const msg = error.response?.data?.message || "Failed to upload file. Please try again.";
       toast(msg, 'error');
     } finally {
       setLoading(false);
@@ -77,8 +97,17 @@ export default function CsvUploader({ onSuccess }: Props) {
   };
 
   return (
-    <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8 h-full flex flex-col shadow-sm">
-      <h3 className="text-sm font-bold uppercase tracking-widest dark:text-zinc-100 text-gray-900 mb-8">Bulk Upload (CSV)</h3>
+    <div className="dark:bg-[#0f0f0f] bg-white border dark:border-white/5 border-gray-200 rounded-2xl p-8 h-full flex flex-col shadow-sm relative">
+      <h3 className="text-sm font-bold uppercase tracking-widest dark:text-zinc-100 text-gray-900 mb-6">Bulk Upload (CSV)</h3>
+      
+      {successAlert && (
+        <div className={`mb-6 transition-opacity duration-500 animate-in fade-in slide-in-from-top-2 ${isFadingOut ? 'opacity-0' : 'opacity-100'}`}>
+           <div className="flex items-center space-x-3 text-emerald-400 bg-emerald-500/10 border border-emerald-500/20 px-5 py-4 rounded-lg">
+             <CheckCircle2 className="w-6 h-6" />
+             <span className="font-medium text-sm">{successAlert}</span>
+           </div>
+        </div>
+      )}
       
       {!file ? (
         <div 

@@ -5,6 +5,15 @@ import { useToast } from "../../context/ToastContext";
 import { Pencil } from "lucide-react";
 import { Select } from "../../components/ui/Select";
 
+const getUnitForActivity = (activityType: string) => {
+  switch (activityType) {
+    case "Travel": return "miles";
+    case "Utilities": return "kWh";
+    case "Supply Chain": return "kg";
+    default: return "unit";
+  }
+};
+
 interface Props {
   onSuccess: () => void;
   editingLog?: any;
@@ -55,7 +64,7 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
         departmentId: editingLog.departmentId._id || editingLog.departmentId,
         activityType: editingLog.activityType,
         rawAmount: editingLog.rawAmount.toString(),
-        rawUnit: editingLog.rawUnit,
+        rawUnit: getUnitForActivity(editingLog.activityType),
         source: editingLog.source || ""
       });
       // Smoothly scroll to the form when edit mode is triggered
@@ -70,11 +79,7 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
   }, [editingLog]);
 
   const handleActivityChange = (activityType: string) => {
-    let rawUnit = "unit";
-    if (activityType === "Travel") rawUnit = "miles";
-    else if (activityType === "Utilities") rawUnit = "kWh";
-    else if (activityType === "Supply Chain") rawUnit = "kg";
-
+    const rawUnit = getUnitForActivity(activityType);
     setFormData(prev => ({ ...prev, activityType, rawUnit }));
   };
 
@@ -193,9 +198,9 @@ export default function ManualEntryForm({ onSuccess, editingLog, onCancelEdit }:
               <input
                 type="text"
                 value={formData.rawUnit}
-                onChange={e => setFormData({ ...formData, rawUnit: e.target.value })}
-                className="w-full dark:bg-zinc-900 bg-gray-50 border dark:border-white/10 border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
-                required
+                readOnly
+                disabled
+                className="w-full dark:bg-zinc-900/50 bg-gray-100 border dark:border-white/5 border-gray-200 rounded-lg px-4 py-3 text-sm font-medium dark:text-zinc-500 text-gray-500 cursor-not-allowed focus:outline-none"
               />
             </div>
           </div>

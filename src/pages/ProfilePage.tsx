@@ -25,8 +25,7 @@ export default function ProfilePage() {
   }, [departmentId]);
 
   return (
-    <div className="flex-1 bg-[#050505] pt-24 pb-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto space-y-6">
+    <div className="max-w-2xl mx-auto space-y-6">
         <div className="mb-6">
           <h1 className="text-3xl font-light dark:text-zinc-100 text-gray-900">User Profile</h1>
           <p className="dark:text-zinc-500 text-gray-500 mt-1 text-sm">Your personal account details.</p>
@@ -76,6 +75,5 @@ export default function ProfilePage() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

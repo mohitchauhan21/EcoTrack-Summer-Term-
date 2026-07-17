@@ -88,12 +88,7 @@ export default function DashboardLayout() {
       icon: Building2,
       roles: ["superadmin", "admin"],
     },
-    {
-      name: "Departments",
-      path: "/dashboard/departments",
-      icon: Tags,
-      roles: ["superadmin", "admin"],
-    },
+
     {
       name: "Carbon Logs",
       path: "/dashboard/logs",
