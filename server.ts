@@ -3,7 +3,6 @@ import path from "path";
 import cors from "cors";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { MongoMemoryServer } from "mongodb-memory-server";
 import { createServer as createViteServer } from "vite";
 
 dotenv.config();
@@ -24,15 +23,63 @@ async function connectDb() {
     }
 
     await mongoose.connect(process.env.MONGO_URI);
-    console.log("Connected to MongoDB Atlas");
+
+    console.log("✅ Connected to MongoDB Atlas (Production)");
+    console.log("📂 Database:", mongoose.connection.db?.databaseName);
+    console.log("🌐 Host:", mongoose.connection.host);
+
+    if (mongoose.connection.db) {
+      const collections = await mongoose.connection.db
+        .listCollections()
+        .toArray();
+
+      console.log(
+        "📑 Collections:",
+        collections.map((c) => c.name)
+      );
+    }
   } else {
     if (process.env.MONGO_URI) {
       await mongoose.connect(process.env.MONGO_URI);
+
+      console.log("✅ Connected to MongoDB Atlas (Development)");
+      console.log("📂 Database:", mongoose.connection.db?.databaseName);
+      console.log("🌐 Host:", mongoose.connection.host);
+
+      if (mongoose.connection.db) {
+        const collections = await mongoose.connection.db
+          .listCollections()
+          .toArray();
+
+        console.log(
+          "📑 Collections:",
+          collections.map((c) => c.name)
+        );
+      }
     } else {
+      const { MongoMemoryServer } = await import("mongodb-memory-server");
+
       const mongoServer = await MongoMemoryServer.create();
       const uri = mongoServer.getUri();
+
       await mongoose.connect(uri);
+
+      console.log("🟡 Connected to In-Memory MongoDB");
+
       await seedData();
+
+      console.log("📂 Database:", mongoose.connection.db?.databaseName);
+
+      if (mongoose.connection.db) {
+        const collections = await mongoose.connection.db
+          .listCollections()
+          .toArray();
+
+        console.log(
+          "📑 Collections:",
+          collections.map((c) => c.name)
+        );
+      }
     }
   }
 }
@@ -43,10 +90,12 @@ async function startServer() {
   const app = express();
   const PORT = Number(process.env.PORT) || 3000;
 
-  app.use(cors({
-    origin: process.env.CLIENT_URL || "http://localhost:3000",
-    credentials: true,
-  }));
+  if (process.env.NODE_ENV !== "production") {
+    app.use(cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+    }));
+  }
   app.use(express.json());
 
   // API Routes
