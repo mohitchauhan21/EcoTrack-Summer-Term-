@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Plus, Trash2, UserCog } from 'lucide-react';
+import { Plus, Trash2, UserCog, Eye, EyeOff } from 'lucide-react';
 import { Select } from '../../components/ui/Select';
 import apiClient from '../../api/axiosClient';
 import { useAuth } from '../../context/AuthContext';
@@ -46,9 +46,15 @@ export default function UsersPage() {
   const [newUser, setNewUser] = useState({
     name: '',
     email: '',
+    password: '',
+    confirmPassword: '',
     role: 'employee',
     departmentId: ''
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
   const [adding, setAdding] = useState(false);
 
   const fetchCompanyId = async () => {
@@ -91,14 +97,67 @@ export default function UsersPage() {
     }
   }, [companyId]);
 
+  const handlePasswordChange = (value: string) => {
+    setNewUser({ ...newUser, password: value });
+    if (!value.trim()) {
+      setPasswordError('Password is required.');
+    } else if (value.trim().length < 8) {
+      setPasswordError('Password must be at least 8 characters.');
+    } else {
+      setPasswordError(null);
+    }
+    if (newUser.confirmPassword && value !== newUser.confirmPassword) {
+      setConfirmPasswordError('Passwords do not match.');
+    } else if (newUser.confirmPassword) {
+      setConfirmPasswordError(null);
+    }
+  };
+
+  const handleConfirmPasswordChange = (value: string) => {
+    setNewUser({ ...newUser, confirmPassword: value });
+    if (!value.trim()) {
+      setConfirmPasswordError('Confirm Password is required.');
+    } else if (value !== newUser.password) {
+      setConfirmPasswordError('Passwords do not match.');
+    } else {
+      setConfirmPasswordError(null);
+    }
+  };
+
   const handleAddUser = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!companyId) return;
+
+    // Validate password fields
+    const trimmedPass = newUser.password.trim();
+    const trimmedConfirm = newUser.confirmPassword.trim();
+    let hasError = false;
+
+    if (!trimmedPass) {
+      setPasswordError('Password is required.');
+      hasError = true;
+    } else if (trimmedPass.length < 8) {
+      setPasswordError('Password must be at least 8 characters.');
+      hasError = true;
+    }
+    if (!trimmedConfirm) {
+      setConfirmPasswordError('Confirm Password is required.');
+      hasError = true;
+    } else if (trimmedPass !== trimmedConfirm) {
+      setConfirmPasswordError('Passwords do not match.');
+      hasError = true;
+    }
+    if (hasError) return;
+
     setAdding(true);
     try {
-      await apiClient.post('/users', { ...newUser, companyId });
-      toast('User added successfully', 'success');
-      setNewUser({ name: '', email: '', role: 'employee', departmentId: '' });
+      await apiClient.post('/users', { ...newUser, password: trimmedPass, companyId });
+      toast('User created successfully.', 'success');
+      setNewUser({ name: '', email: '', password: '', confirmPassword: '', role: 'employee', departmentId: '' });
+      setPasswordError(null);
+      setConfirmPasswordError(null);
+      setShowPassword(false);
+      setShowConfirmPassword(false);
       await fetchUsers(companyId);
     } catch (error: any) {
       console.error('Failed to add user', error);
@@ -145,7 +204,7 @@ export default function UsersPage() {
           <form onSubmit={handleAddUser} className="flex flex-col">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-6 mb-8">
               <div className="space-y-2">
-                <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Name</label>
+                <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Full Name</label>
                 <input
                   type="text"
                   value={newUser.name}
@@ -166,6 +225,65 @@ export default function UsersPage() {
                   required
                 />
               </div>
+              {/* Password */}
+              <div className="space-y-2">
+                <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Password</label>
+                <div className="relative">
+                  <input
+                    type={showPassword ? 'text' : 'password'}
+                    value={newUser.password}
+                    onChange={(e) => handlePasswordChange(e.target.value)}
+                    className={`w-full dark:bg-zinc-800 bg-gray-50 border ${
+                      passwordError
+                        ? 'border-red-500/50'
+                        : 'dark:border-white/[0.06] border-gray-200 focus:border-emerald-500/50'
+                    } rounded-lg px-4 py-3 pr-10 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none transition-colors`}
+                    placeholder="Min. 8 characters"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label={showPassword ? 'Hide password' : 'Show password'}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer dark:text-zinc-500 text-gray-400 hover:dark:text-zinc-300 hover:text-gray-600 transition-colors"
+                  >
+                    {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                {passwordError && (
+                  <p className="text-xs text-red-500 dark:text-red-400">{passwordError}</p>
+                )}
+              </div>
+              {/* Confirm Password */}
+              <div className="space-y-2">
+                <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Confirm Password</label>
+                <div className="relative">
+                  <input
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    value={newUser.confirmPassword}
+                    onChange={(e) => handleConfirmPasswordChange(e.target.value)}
+                    className={`w-full dark:bg-zinc-800 bg-gray-50 border ${
+                      confirmPasswordError
+                        ? 'border-red-500/50'
+                        : 'dark:border-white/[0.06] border-gray-200 focus:border-emerald-500/50'
+                    } rounded-lg px-4 py-3 pr-10 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none transition-colors`}
+                    placeholder="Repeat password"
+                    required
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    aria-label={showConfirmPassword ? 'Hide confirm password' : 'Show confirm password'}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer dark:text-zinc-500 text-gray-400 hover:dark:text-zinc-300 hover:text-gray-600 transition-colors"
+                  >
+                    {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                  </button>
+                </div>
+                {confirmPasswordError && (
+                  <p className="text-xs text-red-500 dark:text-red-400">{confirmPasswordError}</p>
+                )}
+              </div>
+              {/* Role */}
               <div className="space-y-2">
                 <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Role</label>
                 <Select
@@ -180,6 +298,7 @@ export default function UsersPage() {
                   ]}
                 />
               </div>
+              {/* Department */}
               <div className="space-y-2">
                 <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500">Department</label>
                 <Select
@@ -196,7 +315,7 @@ export default function UsersPage() {
             <div className="flex justify-end pt-4 border-t dark:border-white/[0.06] border-gray-100">
               <button
                 type="submit"
-                disabled={adding || !newUser.name || !newUser.email}
+                disabled={adding || !newUser.name || !newUser.email || !newUser.password || !newUser.confirmPassword}
                 className="bg-emerald-500 hover:bg-emerald-400 disabled:dark:bg-zinc-800 bg-gray-200 disabled:dark:text-zinc-500 text-gray-500 text-black px-6 py-3.5 rounded-lg font-bold uppercase tracking-wide transition-all duration-300 text-sm flex items-center justify-center gap-2 shadow-[0_0_20px_rgba(16,185,129,0.15)] hover:shadow-[0_0_30px_rgba(16,185,129,0.25)] disabled:shadow-none min-w-[160px]"
               >
                 {adding ? (

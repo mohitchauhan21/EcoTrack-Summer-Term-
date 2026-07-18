@@ -14,8 +14,8 @@ interface AuthState {
 
 interface AuthContextType extends AuthState {
   isLoading: boolean;
-  login: (email: string, password: string) => Promise<void>;
-  register: (data: { name: string; email: string; password: string; companyName: string; region: string }) => Promise<void>;
+  login: (email: string, password: string) => Promise<any>;
+  register: (data: { name: string; email: string; password: string; companyName: string; region: string }) => Promise<any>;
   logout: () => void;
 }
 
@@ -83,11 +83,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const login = async (email: string, password: string) => {
     const res = await apiClient.post("/auth/login", { email, password });
     applyAuthResponse(res.data);
+    return res.data; // expose user info to the caller
   };
 
   const register = async (data: { name: string; email: string; password: string; companyName: string; region: string }) => {
     const res = await apiClient.post("/auth/register", data);
     applyAuthResponse(res.data);
+    return res.data; // expose user info to the caller
   };
 
   const logout = () => {

@@ -141,17 +141,17 @@ export default function LogsTable({ refreshTrigger, onEdit }: Props) {
                     {log.source || '-'}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right">
-                    <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="flex items-center justify-end gap-1">
                       <button 
                         onClick={() => onEdit && onEdit(log)}
-                        className="p-2 rounded-full dark:text-zinc-400 text-gray-500 dark:hover:text-white hover:text-gray-900 dark:hover:bg-white/10 hover:bg-gray-200 transition-colors" 
+                        className="p-2 rounded-full dark:text-zinc-400 text-gray-500 dark:hover:text-white hover:text-gray-900 dark:hover:bg-white/10 hover:bg-gray-200 transition-all duration-200 hover:scale-105" 
                         title="Edit"
                       >
                         <Pencil className="w-4 h-4" />
                       </button>
                       <button 
                         onClick={() => handleDelete(log._id)} 
-                        className="p-2 rounded-full dark:text-zinc-400 text-gray-500 hover:text-red-500 dark:hover:bg-red-500/10 hover:bg-red-50 transition-colors" 
+                        className="p-2 rounded-full dark:text-zinc-400 text-gray-500 hover:text-red-500 dark:hover:bg-red-500/10 hover:bg-red-50 transition-all duration-200 hover:scale-105" 
                         title="Delete"
                       >
                         <Trash2 className="w-4 h-4" />

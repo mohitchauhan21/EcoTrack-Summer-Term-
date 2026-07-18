@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useToast } from "../../context/ToastContext";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -10,6 +11,7 @@ export default function LoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const { login } = useAuth();
+  const { success: toastSuccess, error: toastError } = useToast();
   const navigate = useNavigate();
 
   const handleSignIn = async (e: React.FormEvent) => {
@@ -17,10 +19,14 @@ export default function LoginPage() {
     setError(null);
     setLoading(true);
     try {
-      await login(email, password);
+      const data = await login(email, password);
+      const name = data?.user?.name;
+      toastSuccess(name ? `Login successful! Welcome back, ${name}.` : 'Login successful! Welcome back.');
       navigate("/dashboard");
     } catch (err: any) {
-      setError(err?.response?.data?.message || "Invalid email or password");
+      const msg = err?.response?.data?.message || "Invalid email or password";
+      setError(msg);
+      toastError(msg);
     } finally {
       setLoading(false);
     }
@@ -67,7 +73,8 @@ export default function LoginPage() {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-4 top-1/2 -translate-y-1/2 dark:text-zinc-500 text-gray-500 hover:dark:text-zinc-300 text-gray-700 transition-colors"
+                aria-label={showPassword ? "Hide password" : "Show password"}
+                className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer dark:text-zinc-500 text-gray-500 hover:dark:text-zinc-300 hover:text-gray-700 transition-colors"
               >
                 {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
               </button>

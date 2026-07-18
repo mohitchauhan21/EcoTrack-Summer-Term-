@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Leaf } from "lucide-react";
+import { Leaf, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import { COUNTRIES } from "../../constants/regions";
 import { Select } from "../../components/ui/Select";
+import { useToast } from "../../context/ToastContext";
 
 export default function RegisterPage() {
   const navigate = useNavigate();
   const { register } = useAuth();
+  const { success: toastSuccess, error: toastError } = useToast();
   const [formData, setFormData] = useState({
     companyName: "",
     region: "",
@@ -16,19 +18,61 @@ export default function RegisterPage() {
     password: "",
     confirmPassword: ""
   });
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
+  const [confirmPasswordError, setConfirmPasswordError] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  const handlePasswordChange = (value: string) => {
+    setFormData({ ...formData, password: value });
+    if (value.trim().length === 0) {
+      setPasswordError("Password is required.");
+    } else if (value.trim().length < 8) {
+      setPasswordError("Password must be at least 8 characters.");
+    } else {
+      setPasswordError(null);
+    }
+    if (formData.confirmPassword && value !== formData.confirmPassword) {
+      setConfirmPasswordError("Passwords do not match.");
+    } else {
+      setConfirmPasswordError(null);
+    }
+  };
+
+  const handleConfirmPasswordChange = (value: string) => {
+    setFormData({ ...formData, confirmPassword: value });
+    if (value.trim().length === 0) {
+      setConfirmPasswordError("Confirm Password is required.");
+    } else if (value !== formData.password) {
+      setConfirmPasswordError("Passwords do not match.");
+    } else {
+      setConfirmPasswordError(null);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
 
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match");
+    const trimmedPassword = formData.password.trim();
+    const trimmedConfirm = formData.confirmPassword.trim();
+
+    if (!trimmedPassword) {
+      setPasswordError("Password is required.");
       return;
     }
-    if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters");
+    if (trimmedPassword.length < 8) {
+      setPasswordError("Password must be at least 8 characters.");
+      return;
+    }
+    if (!trimmedConfirm) {
+      setConfirmPasswordError("Confirm Password is required.");
+      return;
+    }
+    if (trimmedPassword !== trimmedConfirm) {
+      setConfirmPasswordError("Passwords do not match.");
       return;
     }
 
@@ -41,9 +85,12 @@ export default function RegisterPage() {
         companyName: formData.companyName,
         region: formData.region
       });
+      toastSuccess('Account created successfully! Welcome to EcoTrack.');
       navigate("/onboarding");
     } catch (err: any) {
-      setError(err?.response?.data?.message || "Registration failed. Please try again.");
+      const msg = err?.response?.data?.message || "Registration failed. Please try again.";
+      setError(msg);
+      toastError(msg);
     } finally {
       setLoading(false);
     }
@@ -113,25 +160,59 @@ export default function RegisterPage() {
             </div>
             <div>
               <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500 mb-2">Password</label>
-              <input
-                type="password"
-                value={formData.password}
-                onChange={e => setFormData({...formData, password: e.target.value})}
-                className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
-                placeholder="••••••••"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  value={formData.password}
+                  onChange={e => handlePasswordChange(e.target.value)}
+                  className={`w-full dark:bg-zinc-800 bg-gray-50 border ${
+                    passwordError
+                      ? 'border-red-500/50 focus:border-red-500/50'
+                      : 'dark:border-white/[0.06] border-gray-200 focus:border-emerald-500/50'
+                  } rounded-lg px-4 py-3 pr-10 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none transition-colors`}
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  aria-label={showPassword ? "Hide password" : "Show password"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer dark:text-zinc-500 text-gray-400 hover:dark:text-zinc-300 hover:text-gray-600 transition-colors"
+                >
+                  {showPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+              {passwordError && (
+                <p className="mt-1.5 text-xs text-red-500 dark:text-red-400">{passwordError}</p>
+              )}
             </div>
             <div>
               <label className="block text-[10px] uppercase tracking-widest font-bold dark:text-zinc-500 text-gray-500 mb-2">Confirm Password</label>
-              <input
-                type="password"
-                value={formData.confirmPassword}
-                onChange={e => setFormData({...formData, confirmPassword: e.target.value})}
-                className="w-full dark:bg-zinc-800 bg-gray-50 border dark:border-white/[0.06] border-gray-200 rounded-lg px-4 py-3 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none focus:border-emerald-500/50 transition-colors"
-                placeholder="••••••••"
-                required
-              />
+              <div className="relative">
+                <input
+                  type={showConfirmPassword ? "text" : "password"}
+                  value={formData.confirmPassword}
+                  onChange={e => handleConfirmPasswordChange(e.target.value)}
+                  className={`w-full dark:bg-zinc-800 bg-gray-50 border ${
+                    confirmPasswordError
+                      ? 'border-red-500/50 focus:border-red-500/50'
+                      : 'dark:border-white/[0.06] border-gray-200 focus:border-emerald-500/50'
+                  } rounded-lg px-4 py-3 pr-10 text-sm dark:text-zinc-100 text-gray-900 focus:outline-none transition-colors`}
+                  placeholder="••••••••"
+                  required
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 cursor-pointer dark:text-zinc-500 text-gray-400 hover:dark:text-zinc-300 hover:text-gray-600 transition-colors"
+                >
+                  {showConfirmPassword ? <EyeOff size={16} /> : <Eye size={16} />}
+                </button>
+              </div>
+              {confirmPasswordError && (
+                <p className="mt-1.5 text-xs text-red-500 dark:text-red-400">{confirmPasswordError}</p>
+              )}
             </div>
           </div>
           

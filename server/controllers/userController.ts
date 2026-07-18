@@ -23,10 +23,13 @@ export const getUsers = async (req: Request, res: Response) => {
 
 export const createUser = async (req: Request, res: Response) => {
   try {
-    const { name, email, role, companyId, departmentId } = req.body;
+    const { name, email, password, role, companyId, departmentId } = req.body;
 
-    if (!name || !email || !role) {
-      return res.status(400).json({ message: "Name, email, and role are required" });
+    if (!name || !email || !password || !role) {
+      return res.status(400).json({ message: "Name, email, password, and role are required" });
+    }
+    if (password.trim().length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters" });
     }
 
     const existingUser = await User.findOne({ email });
@@ -39,9 +42,7 @@ export const createUser = async (req: Request, res: Response) => {
       return res.status(403).json({ message: "Insufficient permissions to create user with this role." });
     }
 
-    // Generate a random temporary password for new users
-    const tempPassword = Math.random().toString(36).slice(-10) + Math.random().toString(36).slice(-2).toUpperCase() + "1!";
-    const hashedPassword = await bcrypt.hash(tempPassword, 10);
+    const hashedPassword = await bcrypt.hash(password.trim(), 10);
 
     const newUser = new User({
       name,
@@ -53,15 +54,12 @@ export const createUser = async (req: Request, res: Response) => {
     });
 
     await newUser.save();
-    
-    // Return user without exposing the temp password hash
+
+    // Return user without exposing the password hash
     const userObj = newUser.toObject();
-    const { password, ...userWithoutPassword } = userObj;
-    
-    res.status(201).json({ 
-      ...userWithoutPassword,
-      tempPassword // Send back so admin can share it with the new user
-    });
+    const { password: _pw, ...userWithoutPassword } = userObj;
+
+    res.status(201).json(userWithoutPassword);
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
