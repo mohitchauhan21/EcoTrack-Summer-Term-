@@ -140,15 +140,15 @@ Built with a **React 19** frontend and an **Express + MongoDB** backend, it feat
 ┌──────────────────────────────────────────────────────────────────┐
 │                         BROWSER                                  │
 │                                                                  │
-│  React 19 · TypeScript · Vite · TailwindCSS 4 · Recharts        │
-│  React Router v7 · Motion · Lucide Icons · Axios                │
+│  React 19 · TypeScript · Vite · TailwindCSS 4 · Recharts         │
+│  React Router v7 · Motion · Lucide Icons · Axios                 │
 │                                                                  │
-│  Contexts: AuthContext · ThemeContext · ToastContext · Filter     │
+│  Contexts: AuthContext · ThemeContext · ToastContext · Filter    │
 │  Lazy-loaded pages with ErrorBoundary                            │
 └─────────────────────────────┬────────────────────────────────────┘
                               │  HTTP / REST  (port 3000)
 ┌─────────────────────────────▼────────────────────────────────────┐
-│                       EXPRESS SERVER                              │
+│                       EXPRESS SERVER                             │
 │                                                                  │
 │   /api/health        →  Health check                             │
 │   /api/auth          →  Register · Login · Me · Password reset   │
@@ -156,7 +156,7 @@ Built with a **React 19** frontend and an **Express + MongoDB** backend, it feat
 │   /api/departments   →  GET list · POST create · DELETE (admin)  │
 │   /api/logs          →  CRUD + POST /bulk-upload (CSV)           │
 │   /api/analytics     →  Summary · Trend · By-source ·            │
-│                         By-department · Export (.xlsx)            │
+│                         By-department · Export (.xlsx)           │
 │   /api/users         →  GET list · POST create · DELETE (admin)  │
 │                                                                  │
 │   Middleware: requireAuth (JWT) · requireRole (RBAC) · Multer    │
@@ -167,8 +167,8 @@ Built with a **React 19** frontend and an **Express + MongoDB** backend, it feat
 │                                                                  │
 │   Collections: Users · Companies · Departments · EmissionLogs    │
 │                                                                  │
-│   ⚡ Dev: mongodb-memory-server (auto, seeded with 400+ logs)    │
-│   🚀 Prod: MongoDB Atlas via MONGO_URI env variable              │
+│   ⚡ Dev: mongodb-memory-server (auto, seeded with 400+ logs)    |
+│   🚀 Prod: MongoDB Atlas via MONGO_URI env variable              |
 └──────────────────────────────────────────────────────────────────┘
 ```
 
