@@ -212,11 +212,6 @@ export default function LandingPage() {
           <OrbitalRing />
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 lg:py-36 flex flex-col items-center text-center relative z-10 w-full">
-            {/* Badge */}
-            <div className="inline-flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/20 rounded-full px-4 py-1.5 mb-8 animate-fade-in-up">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-500" />
-              <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest">Carbon Intelligence Platform v2.0</span>
-            </div>
 
             {/* Main heading */}
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-semibold dark:text-white text-gray-900 mb-6 leading-tight animate-fade-in-up delay-200 tracking-tight">
